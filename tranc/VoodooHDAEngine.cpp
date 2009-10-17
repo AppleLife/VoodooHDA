@@ -114,17 +114,16 @@ const char *VoodooHDAEngine::getPortName()
 
 	for (numDacs = 0; (numDacs < 16) && (mChannel->io[numDacs] != -1); numDacs++){
 		//Slice - to trace
-		if (mVerbose > 2) {
+/*		if (mVerbose > 2) {
 			logMsg(" io[%d] in assoc %d = %d\n", (int)numDacs, (int)mChannel->assocNum, (int)mChannel->io[numDacs]);
-		}
+		}*/
 	}
-	if (numDacs != 1){
-		if (numDacs > 1) {
+	if (numDacs == 0)
+		goto done;
+	if (numDacs > 1){
 			mPortName = "Complex output";
-		}
 		goto done;
 	}
-		
 	
 	dacNid = mChannel->io[0];
 
@@ -730,9 +729,9 @@ bool VoodooHDAEngine::createAudioControls()
 
     // Create a left & right input gain control with an int range from 0 to 65535
     // and a db range from 0 to 22.5
-    control = IOAudioLevelControl::createVolumeControl(65535,	// Initial value
+    control = IOAudioLevelControl::createVolumeControl(80,	// Initial value
 													   0,		// min value
-													   65535,	// max value
+													   100,	// max value
 													   0,		// min 0.0 in IOFixed
 													   (22 << 16) + (32768),	// 22.5 in IOFixed (16.16)
 													   kIOAudioControlChannelIDDefaultLeft,
@@ -747,9 +746,9 @@ bool VoodooHDAEngine::createAudioControls()
     this->addDefaultAudioControl(control);
     control->release();
     
-    control = IOAudioLevelControl::createVolumeControl(65535,	// Initial value
+    control = IOAudioLevelControl::createVolumeControl(80,	// Initial value
 													   0,		// min value
-													   65535,	// max value
+													   100,	// max value
 													   0,		// min 0.0 in IOFixed
 													   (22 << 16) + (32768),	// max 22.5 in IOFixed (16.16)
 													   kIOAudioControlChannelIDDefaultRight,	// Affects right channel

@@ -160,6 +160,7 @@ typedef struct _Widget {
 	int bindAssoc;
 	int bindSeqMask;
 	int ossdev;
+	int sense;
 	UInt32 ossmask;
 	nid_t conns[HDA_MAX_CONNS];
 	UInt8 connsenable[HDA_MAX_CONNS];
@@ -207,6 +208,7 @@ typedef struct _AudioAssoc {
 	nid_t hpredir;
 	nid_t pins[16];
 	nid_t dacs[16];
+	nid_t activeNid;
 	int chan;
 	//AutumnRain
 	NidForSwitch nidForSwitch[16];

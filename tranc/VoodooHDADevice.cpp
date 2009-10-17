@@ -25,7 +25,11 @@
 #define super IOAudioDevice
 OSDefineMetaClassAndStructors(VoodooHDADevice, IOAudioDevice)
 
+#if __LP64__
+#define MSG_BUFFER_SIZE 262140
+#else
 #define MSG_BUFFER_SIZE 65535
+#endif
 
 #define kVoodooHDAVerboseLevelKey "VoodooHDAVerboseLevel"
 
@@ -937,7 +941,8 @@ void VoodooHDADevice::messageHandler(UInt32 type, const char *format, va_list ar
 		if (mVerbose >= 2)
 			vprintf(format, args);
 		if (lockExists && mMsgBufferEnabled) {
-			ASSERT(mMsgBufferPos < (mMsgBufferSize - 1));
+			//ASSERT(mMsgBufferPos < (mMsgBufferSize - 1));
+			if(mMsgBufferPos > (mMsgBufferSize - 1)) break;
 			if (mMsgBufferPos != (mMsgBufferSize - 2)) {
 				length = vsnprintf(mMsgBuffer + mMsgBufferPos, mMsgBufferSize - mMsgBufferPos,
 						format, args);
@@ -1943,8 +1948,8 @@ int VoodooHDADevice::audioCtlOssMixerSet(PcmDevice *pcmDevice, UInt32 dev, UInt3
 	}
 	//Slice
 	mask = (1 << dev);
-	if(dev == SOUND_MIXER_MIC)
-		mask |= SOUND_MASK_MONITOR;
+/*	if(dev == SOUND_MIXER_MIC)
+		mask |= SOUND_MASK_MONITOR;*/
 	// Recalculate all controls related to this OSS device.
 	for (int i = 0; (control = audioCtlEach(funcGroup, &i)); ) {
 		UInt32 mute;
@@ -2057,8 +2062,8 @@ void VoodooHDADevice::mixerSetDefaults(PcmDevice *pcmDevice)
 	}
 //Slice - attention!	
 	if (audioCtlOssMixerSetRecSrc(pcmDevice, SOUND_MASK_INPUT) == 0)
-		errorMsg("warning: couldn't set recording source to input\n");
-	 
+		//errorMsg("warning: couldn't set recording source to input\n");
+		return;
 }
 
 /*******************************************************************************************/
