@@ -1,3 +1,20 @@
+VoodooHDA 0.2.52 release notes
+It made by Slice&AutumnRain from Russia based on voodoohda 0.2.2 while original authors dropped the project as is
+with numerous mistakes.
+The driver tested worldwide in very different hardware. Almost always it works.
+The driver was completely revised and additional functionalities were added
+* added NotesToPatch into info.plist so the user can manually correct and tune the audio configuration
+* no more predefined quirks. In previous version there are incorrect quirks.
+* full autodetect of devices in any combinations of outputs and inputs (in 0.2.2 there is only
+	 speaker/headphone autodetect)
+* device names is changed on the fly (only in 10.5.x, but not in 10.6.x - question to Apple)
+* works with internal microphone as never before
+* correct sequence of initializations and starts. No more kernel panics.
+* more advanced names in Sound Preferencies to differ devices. "Line-out (Black Front)"
+* resolved sleep issue didn't mentioned below
+* getExtDump added to provide amplifiers control during work
+* advanced mixer controls
+
 voodoohda 0.2.2 release notes
 
 note: this driver has been tested on only a few systems, so bugs and glitches should be expected.

@@ -25,11 +25,11 @@
 #define super IOAudioDevice
 OSDefineMetaClassAndStructors(VoodooHDADevice, IOAudioDevice)
 
-#if __LP64__
+	//#if __LP64__
 #define MSG_BUFFER_SIZE 262140
-#else
-#define MSG_BUFFER_SIZE 65535
-#endif
+	//#else
+	//#define MSG_BUFFER_SIZE 65535
+	//#endif
 
 #define kVoodooHDAVerboseLevelKey "VoodooHDAVerboseLevel"
 
@@ -278,7 +278,7 @@ bool VoodooHDADevice::initHardware(IOService *provider)
 	bool result = false;
 	UInt16 config, vendorId;
 
-//	logMsg("VoodooHDADevice[%p]::initHardware\n", this);
+	//logMsg("VoodooHDADevice[%p]::initHardware\n", this);
 
 	if (!mPciNub || !super::initHardware(provider))
 		goto done;
@@ -288,8 +288,9 @@ bool VoodooHDADevice::initHardware(IOService *provider)
 	}
 
 	config = mPciNub->configRead16(kIOPCIConfigCommand);
-	config |= (kIOPCICommandBusMaster | kIOPCICommandMemorySpace | kIOPCICommandMemWrInvalidate);
-	config &= ~kIOPCICommandIOSpace;
+	oldConfig = config;
+	config |= (kIOPCICommandBusMaster | kIOPCICommandMemorySpace); // | kIOPCICommandMemWrInvalidate); //Slice
+	 //config &= ~kIOPCICommandIOSpace; //Slice - not implemented for HDA
 	mPciNub->configWrite16(kIOPCIConfigCommand, config);
 
 	// xxx: should mBarMap be retained?
@@ -370,7 +371,7 @@ bool VoodooHDADevice::initHardware(IOService *provider)
 //	logMsg("Scanning HDA codecs...\n");
 	scanCodecs();
 	enableMsgBuffer(false);
-
+	UNLOCK();
 	for (int n = 0; n < HDAC_CODEC_MAX; n++) {
 		Codec *codec = mCodecs[n];
 		if (!codec)
@@ -379,7 +380,7 @@ bool VoodooHDADevice::initHardware(IOService *provider)
 				codec->vendorId, codec->deviceId);
 	}
 
-	UNLOCK();
+		//	UNLOCK();
 
 	if (!mNumChannels) {
 		errorMsg("error: no PCM channels found\n");
@@ -396,12 +397,27 @@ bool VoodooHDADevice::initHardware(IOService *provider)
 		errorMsg("error: no audio engines were created\n");
 		goto done;
 	}
+	//Slice - it's a time to switch engines
+	for (int n = 0; n < HDAC_CODEC_MAX; n++) {
+		Codec *codec = mCodecs[n];
+		if (!codec) continue;
+		for (int funcGroupNum = 0; funcGroupNum < codec->numFuncGroups; funcGroupNum++) {
+			FunctionGroup *funcGroup = &codec->funcGroups[funcGroupNum];
+			if (!funcGroup) continue;
+			if (funcGroup->nodeType != HDA_PARAM_FCT_GRP_TYPE_NODE_TYPE_AUDIO)
+				continue;	
+			if (funcGroup->mSwitchEnable)
+				switchHandler(funcGroup, true);
+		}
+	}
+	
 	
 	//Обновляю информацию о положении регуляторов усиления 
 	updatePrefPanelMemoryBuf();
 
 	result = true;
 done:
+		//	UNLOCK();
 	if (!result)
 		stop(provider);
 
@@ -410,7 +426,7 @@ done:
 
 void VoodooHDADevice::stop(IOService *provider)
 {
-//	logMsg("VoodooHDADevice[%p]::stop\n", this);
+	logMsg("VoodooHDADevice[%p]::stop\n", this);
 
 	disableEventSources();
 
@@ -437,13 +453,19 @@ void VoodooHDADevice::stop(IOService *provider)
 			errorMsg("warning: resetController failed\n");
 		UNLOCK();
 	}
-
+	if (mPciNub) mPciNub->open(this);
+	mPciNub->configWrite16(kIOPCIConfigCommand, oldConfig); //Slice
+	if (mPciNub->hasPCIPowerManagement(kPCIPMCD3Support))
+    {
+        mPciNub->enablePCIPowerManagement(kPCIPMCSPowerStateD0);
+    }
+	
 	super::stop(provider);
 }
 
 void VoodooHDADevice::deactivateAllAudioEngines()
 {
-//	logMsg("VoodooHDADevice[%p]::deactivateAllAudioEngines\n", this);
+	//logMsg("VoodooHDADevice[%p]::deactivateAllAudioEngines\n", this);
 
 	// warning: this is called twice by super, once in stop() and another in free()
 
@@ -455,7 +477,7 @@ void VoodooHDADevice::deactivateAllAudioEngines()
 
 void VoodooHDADevice::free()
 {
-//	logMsg("VoodooHDADevice[%p]::free\n", this);
+	logMsg("VoodooHDADevice[%p]::free\n", this);
 
 	// if probe or initHardware (called by super start) fails, we end up here - stop is not called
 
@@ -523,7 +545,7 @@ bool VoodooHDADevice::createAudioEngine(Channel *channel)
 	VoodooHDAEngine *audioEngine = NULL;
 	bool result = false;
 
-//	logMsg("VoodooHDADevice[%p]::createAudioEngine\n", this);
+	//logMsg("VoodooHDADevice[%p]::createAudioEngine\n", this);
 
 	audioEngine = new VoodooHDAEngine;
 	if (!audioEngine->init(channel)) {
@@ -551,7 +573,7 @@ IOReturn VoodooHDADevice::performPowerStateChange(IOAudioDevicePowerState oldPow
 {
 	IOReturn result = kIOReturnError;
 
-//	logMsg("VoodooHDADevice[%p]::performPowerStateChange(%d, %d)\n", this, oldPowerState, newPowerState);
+	//logMsg("VoodooHDADevice[%p]::performPowerStateChange(%d, %d)\n", this, oldPowerState, newPowerState);
 
 	if (oldPowerState == kIOAudioDeviceSleep) {
 		if (!resume()) {
@@ -575,21 +597,27 @@ done:
  */
 bool VoodooHDADevice::suspend()
 {
-//	logMsg("VoodooHDADevice[%p]::suspend\n", this);
-	
-//	VoodooHDAEngine *engine;
+		//logMsg("VoodooHDADevice[%p]::suspend\n", this);
+
+	VoodooHDAEngine *engine;
 	
 	LOCK();
-
+		//Slice - trace PCI
+/*	for (int i=0; i<0xff; i+=16) {
+		for(int j=0; j<15; j+=4)
+			logMsg("(%02x)=%08x   ",(unsigned int)(i+j), (unsigned int)mPciNub->configRead32(i+j));  //for trace
+		logMsg("\n");
+	}*/
+		//	
 	for (int i = 0; i < mNumChannels; i++) {
 		if (mChannels[i].flags & HDAC_CHN_RUNNING) {
 			errorMsg("warning: found active channel during suspend action\n");
 			channelStop(&mChannels[i], false);
 		}
 		mChannels[i].flags |= HDAC_CHN_SUSPEND;
-//		engine = lookupEngine(i);
-//		if (engine)
-//			engine->pauseAudioEngine();
+		engine = lookupEngine(i);
+		if (engine)
+			engine->pauseAudioEngine();
 	}
 
 	for (int codecNum = 0; codecNum < HDAC_CODEC_MAX; codecNum++) {
@@ -622,11 +650,25 @@ bool VoodooHDADevice::suspend()
  */
 bool VoodooHDADevice::resume()
 {
-//	logMsg("VoodooHDADevice[%p]::resume\n", this);
+	logMsg("VoodooHDADevice[%p]::resume\n", this);
 
 	LOCK();
-
-//	logMsg("Resetting controller...\n");
+		//Slice - dump PCI to understand what is the sleep issue
+/*	for (int i=0; i<0xff; i+=16) {
+		for(int j=0; j<15; j+=4)
+			logMsg("(%02x)=%08x   ",(unsigned int)(i+j), (unsigned int)mPciNub->configRead32(i+j));  //for trace
+		logMsg("\n");
+	}*/
+		//Slice - this trick was resolved weird sleep issue
+	int vendorId = mDeviceId & 0xffff;
+	if (vendorId == INTEL_VENDORID) {
+		/* TCSEL -> TC0 */
+		UInt8 value = mPciNub->configRead8(0x44);
+		mPciNub->configWrite8(0x44, value & 0xf8);
+			//		logMsg("TCSEL: %02x -> %02x\n", value, mPciNub->configRead8(0x44));
+	}
+	
+	logMsg("Resetting controller...\n");
 	if (!resetController(true)) {
 		errorMsg("error: resetController failed\n");
 		return false;
@@ -634,6 +676,10 @@ bool VoodooHDADevice::resume()
 
 	initCorb();
 	initRirb();
+//Slice
+	
+//	setupWorkloop();
+//	enableEventSources();
 
 //	logMsg("Starting CORB Engine...\n");
 	startCorb();
@@ -652,8 +698,8 @@ bool VoodooHDADevice::resume()
 		for (int funcGroupNum = 0; funcGroupNum < codec->numFuncGroups; funcGroupNum++) {
 			FunctionGroup *funcGroup = &codec->funcGroups[funcGroupNum];
 			if (funcGroup->nodeType != HDA_PARAM_FCT_GRP_TYPE_NODE_TYPE_AUDIO) {
-//				logMsg("Power down unsupported non-audio FG cad=%d nid=%d to the D3 state...\n",
-//						codec->cad, funcGroup->nid);
+				logMsg("Power down unsupported non-audio FG cad=%d nid=%d to the D3 state...\n",
+						codec->cad, funcGroup->nid);
 				sendCommand(HDA_CMD_SET_POWER_STATE(codec->cad, funcGroup->nid, HDA_CMD_POWER_STATE_D3),
 						codec->cad);
 				continue;
@@ -670,14 +716,17 @@ bool VoodooHDADevice::resume()
 				// TODO: restore previous status
 				mixerSetDefaults(&funcGroup->audio.pcmDevices[i]);
 			}
-			LOCK(); // xxx
-			hpSwitchInit(funcGroup);
-
 			
+			switchInit(funcGroup);
+
+			if (funcGroup->mSwitchEnable)
+				switchHandler(funcGroup, false);
+			 
+			LOCK(); // xxx
 		}
 	}
 
-//	VoodooHDAEngine *engine;
+	VoodooHDAEngine *engine;
 	
 	for (int i = 0; i < mNumChannels; i++) {
 		if (!(mChannels[i].flags & HDAC_CHN_SUSPEND)) {
@@ -687,11 +736,11 @@ bool VoodooHDADevice::resume()
 		
 		mChannels[i].flags &= ~HDAC_CHN_SUSPEND;
 		
-//		engine = lookupEngine(i);
-//		if (engine) {
-//			engine->resumeAudioEngine();
-//			engine->takeTimeStamp(false);
-//		}
+		engine = lookupEngine(i);
+		if (engine) {
+			engine->resumeAudioEngine();
+			engine->takeTimeStamp(false);
+		}
 	}
 
 	UNLOCK();	
@@ -706,12 +755,13 @@ bool VoodooHDADevice::resume()
 
 /*
  * Reset the controller to a quiescent and known state.
+ hdac_reset(struct hdac_softc *sc, int wakeup)
  */
 bool VoodooHDADevice::resetController(bool wakeup)
 {
 	UInt32 gctl;
 
-//	logMsg("VoodooHDADevice[%p]::resetController(%d)\n", this, wakeup);
+	//logMsg("VoodooHDADevice[%p]::resetController(%d)\n", this, wakeup);
 
 	/* Stop all Streams DMA engine */
 	for (int i = 0; i < mInStreamsSup; i++)
@@ -942,8 +992,8 @@ void VoodooHDADevice::messageHandler(UInt32 type, const char *format, va_list ar
 			vprintf(format, args);
 		if (lockExists && mMsgBufferEnabled) {
 			//ASSERT(mMsgBufferPos < (mMsgBufferSize - 1));
-			if(mMsgBufferPos > (mMsgBufferSize - 1)) break;
-			if (mMsgBufferPos != (mMsgBufferSize - 2)) {
+			if(mMsgBufferPos > (mMsgBufferSize - 255)) break;
+			if (mMsgBufferPos != (mMsgBufferSize - 256)) {
 				length = vsnprintf(mMsgBuffer + mMsgBufferPos, mMsgBufferSize - mMsgBufferPos,
 						format, args);
 				if (length > 0 && length < 255)
@@ -1084,7 +1134,7 @@ ChannelInfo *VoodooHDADevice::getChannelInfo() {
 
 bool VoodooHDADevice::setupWorkloop()
 {
-//	logMsg("VoodooHDADevice[%p]::setupWorkloop\n", this);
+	//logMsg("VoodooHDADevice[%p]::setupWorkloop\n", this);
 
 	mWorkLoop = IOWorkLoop::workLoop(); // create our own workloop (super has workLoop member)
 
@@ -1120,7 +1170,7 @@ bool VoodooHDADevice::setupWorkloop()
 
 void VoodooHDADevice::enableEventSources()
 {
-//	logMsg("VoodooHDADevice[%p]::enableEventSources\n", this);
+	//logMsg("VoodooHDADevice[%p]::enableEventSources\n", this);
 
 	if (mInterruptSource)
 		mInterruptSource->enable();
@@ -1130,7 +1180,7 @@ void VoodooHDADevice::enableEventSources()
 
 void VoodooHDADevice::disableEventSources()
 {
-//	logMsg("VoodooHDADevice[%p]::disableEventSources\n", this);
+	//logMsg("VoodooHDADevice[%p]::disableEventSources\n", this);
 
 	if (mTimerSource)
 		mTimerSource->disable();
@@ -1485,7 +1535,7 @@ void VoodooHDADevice::initCorb()
 	writeData8(HDAC_CORBSIZE, corbSizeReg);
 
 	/* Setup the CORB Address in the hdac */
-	corbPhysAddr = mCorbMem->physAddr;
+	corbPhysAddr = (uint64_t)mCorbMem->physAddr;
 	writeData32(HDAC_CORBLBASE, (UInt32) corbPhysAddr);
 	writeData32(HDAC_CORBUBASE, (UInt32) (corbPhysAddr >> 32));
 
@@ -1667,7 +1717,7 @@ void VoodooHDADevice::handleUnsolicited(Codec *codec, UInt32 tag)
 
 	switch (tag) {
 	case HDAC_UNSOLTAG_EVENT_HP:
-		switchHandler(funcGroup);
+		switchHandler(funcGroup, false);
 		break;
 	default:
 		errorMsg("Unknown unsol tag: 0x%08lx!\n", (long unsigned int)tag);
@@ -2522,7 +2572,7 @@ void VoodooHDADevice::createPrefPanelStruct(FunctionGroup *funcGroup)
 			//logMsg("createPrefPanelStruct:    ctrl = %d  ossmask = 0x%08X\n", mainWidget->pin.ctrl, mainWidget->ossmask); 
 			 //В соответствии с названием устройства называем вкладку
 			//catPinName(mainWidget); //->pin.config, sliderTabs[nSliderTabsCount].name, MAX_SLIDER_TAB_NAME_LENGTH);
-			//sliderTabs[nSliderTabsCount].name = (char *)&mainWidget->name[4];
+			//sliderTabs[nSliderTabsCount].name = (char *)&mainWidget->name[5];
 			for(int l = 0; l < MAX_SLIDER_TAB_NAME_LENGTH; l++)
 				sliderTabs[nSliderTabsCount].name[l] = mainWidget->name[l+5];
 		}

@@ -48,7 +48,7 @@ public:
 
 	void messageHandler(UInt32 type, const char *format, ...) __attribute__ ((format (printf, 3, 4)));
 
-	void setPinName(UInt32 type, const char* name);
+	void setPinName(/*UInt32 type, */const char* name);
 	void enumiratePinNames(void);
 	const char *getPortName();
 	const char *getDescription();

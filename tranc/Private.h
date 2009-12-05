@@ -48,7 +48,8 @@
 #define HDA_BLK_ALIGN			(~(HDA_BLK_MIN - 1))
 
 #define HDA_BUFSZ_MIN			4096
-#define HDA_BUFSZ_MAX			65536
+	//#define HDA_BUFSZ_MAX			65536
+#define HDA_BUFSZ_MAX			262144
 #define HDA_BUFSZ_DEFAULT		HDA_BUFSZ_MAX
 
 #define HDA_PARSE_MAXDEPTH		10
@@ -210,6 +211,7 @@ typedef struct _AudioAssoc {
 	nid_t dacs[16];
 	nid_t activeNid;
 	int chan;
+	int dirty;
 	//AutumnRain
 	NidForSwitch nidForSwitch[16];
 	SInt8 defaultPin;
@@ -234,6 +236,7 @@ typedef struct _FunctionGroup {
 	nid_t nid;
 	nid_t startNode, endNode;
 	int numNodes;
+	bool mSwitchEnable;
 	Codec *codec;
 	Widget *widgets;
 	struct {

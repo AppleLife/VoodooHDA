@@ -216,10 +216,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>328D6E5E107B6FA7006A8ECF</string>
+						<string>3237632610CAAD45007E8046</string>
 						<key>history</key>
 						<array>
-							<string>328B4312107B6E29005D2D6D</string>
+							<string>328D6E5E107B6FA7006A8ECF</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -256,10 +256,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>328D6E5F107B6FA7006A8ECF</string>
+						<string>3237632710CAAD45007E8046</string>
 						<key>history</key>
 						<array>
-							<string>328B4311107B6E29005D2D6D</string>
+							<string>328D6E5F107B6FA7006A8ECF</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -296,10 +296,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>328D6E60107B6FA7006A8ECF</string>
+						<string>3237632810CAAD45007E8046</string>
 						<key>history</key>
 						<array>
-							<string>328B430E107B6E29005D2D6D</string>
+							<string>328D6E60107B6FA7006A8ECF</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -336,10 +336,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>328D6E61107B6FA7006A8ECF</string>
+						<string>3237632910CAAD45007E8046</string>
 						<key>history</key>
 						<array>
-							<string>328B430F107B6E29005D2D6D</string>
+							<string>328D6E61107B6FA7006A8ECF</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -376,10 +376,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>328D6E62107B6FA7006A8ECF</string>
+						<string>3237632A10CAAD45007E8046</string>
 						<key>history</key>
 						<array>
-							<string>328B4310107B6E29005D2D6D</string>
+							<string>328D6E62107B6FA7006A8ECF</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -416,10 +416,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>328D6E63107B6FA7006A8ECF</string>
+						<string>3237632B10CAAD45007E8046</string>
 						<key>history</key>
 						<array>
-							<string>328B4313107B6E29005D2D6D</string>
+							<string>328D6E63107B6FA7006A8ECF</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -456,10 +456,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>328D6E64107B6FA7006A8ECF</string>
+						<string>3237632C10CAAD45007E8046</string>
 						<key>history</key>
 						<array>
-							<string>328B4314107B6E29005D2D6D</string>
+							<string>328D6E64107B6FA7006A8ECF</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -496,10 +496,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>328D6E65107B6FA7006A8ECF</string>
+						<string>3237632D10CAAD45007E8046</string>
 						<key>history</key>
 						<array>
-							<string>328B4315107B6E29005D2D6D</string>
+							<string>328D6E65107B6FA7006A8ECF</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -536,10 +536,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>328D6E66107B6FA7006A8ECF</string>
+						<string>3237632E10CAAD45007E8046</string>
 						<key>history</key>
 						<array>
-							<string>328B4316107B6E29005D2D6D</string>
+							<string>328D6E66107B6FA7006A8ECF</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -589,6 +589,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -633,9 +635,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>4</integer>
-									<integer>2</integer>
-									<integer>0</integer>
+									<integer>10</integer>
+									<integer>9</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
@@ -686,7 +687,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>328D6E5D107B6FA7006A8ECF</string>
+										<string>3237632510CAAD45007E8046</string>
 										<key>history</key>
 										<array>
 											<string>329F879B10162BF200179871</string>
@@ -704,7 +705,7 @@
 											<string>32978B36107B68AD00071C52</string>
 											<string>328D6E57107B6FA7006A8ECF</string>
 											<string>328D6E58107B6FA7006A8ECF</string>
-											<string>328D6E59107B6FA7006A8ECF</string>
+											<string>328D6E5D107B6FA7006A8ECF</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -724,9 +725,6 @@
 											<string>328E3436104AD55E00ABCDFA</string>
 											<string>323346B2105106E800978E51</string>
 											<string>328E2EB5107B64BC0005513A</string>
-											<string>328D6E5A107B6FA7006A8ECF</string>
-											<string>328D6E5B107B6FA7006A8ECF</string>
-											<string>328D6E5C107B6FA7006A8ECF</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -748,8 +746,6 @@
 							<string>375pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -786,9 +782,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>328D6E46107B6EF2006A8ECF</string>
+				<string>3237630910CAACFF007E8046</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>328D6E47107B6EF2006A8ECF</string>
+				<string>3237630A10CAACFF007E8046</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -1012,7 +1008,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>32C824B31011CAD400792F91</string>
-				<string>328D6E67107B6FA7006A8ECF</string>
+				<string>3237631410CAACFF007E8046</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

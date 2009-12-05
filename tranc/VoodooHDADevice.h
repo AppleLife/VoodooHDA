@@ -84,6 +84,7 @@ public:
 	OSArray *NodesToPatch;
 	int NumNodes;
 	PatchArray NodesToPatchArray[MAX_NODES];
+	UInt16 oldConfig;
 //
 	const char *mControllerName;
 	UInt32 mDeviceId, mSubDeviceId;
@@ -139,6 +140,8 @@ public:
 	size_t mMsgBufferSize;
 	size_t mMsgBufferPos;
 	IOLock *mMessageLock;
+	
+	bool mSwitchEnable;
 
 	/**************/
 
@@ -229,8 +232,8 @@ public:
 	void SwitchHandlerRename(FunctionGroup *funcGroup, int assocsNum, nid_t nid, UInt32 res);
 	void micSwitchHandler(FunctionGroup *funcGroup, int nid, UInt32 res);
 	void hpSwitchHandler(FunctionGroup *funcGroup, int nid, UInt32 res);
-	void switchHandler(FunctionGroup *funcGroup);
-	void hpSwitchInit(FunctionGroup *funcGroup);
+	void switchHandler(FunctionGroup *funcGroup, bool first);
+	void switchInit(FunctionGroup *funcGroup);
 
 	char *audioCtlMixerMaskToString(UInt32 mask, char *buf, size_t len);
 

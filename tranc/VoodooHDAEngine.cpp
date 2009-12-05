@@ -102,7 +102,7 @@ const char *VoodooHDAEngine::getPortName()
 	UInt32 numDacs;
 	nid_t dacNid, outputNid;
 	Widget *widget;
-	UInt32 config;
+	//UInt32 config;
 //	const char *devType, *connType;
 	//char buf[64]; // = "Unknown";
 	AudioAssoc *assoc;
@@ -139,15 +139,10 @@ const char *VoodooHDAEngine::getPortName()
 	if (!widget)
 		goto done;
 
-	config = widget->pin.config;
-/*	devType = gDeviceTypes[HDA_CONFIG_DEFAULTCONF_DEVICE(config)];
-	connType = gConnTypes[HDA_CONFIG_DEFAULTCONF_CONNECTIVITY(config)];
-	logMsg("dacNid = %d, outputNid = %d, devType = %s, connType = %s name=%s\n", dacNid, outputNid,
-			devType, connType, widget->name);
-*/	
+	//config = widget->pin.config;
 	//Slice - advanced PinName
 
-	mPortName = &widget->name[4]; 
+	mPortName = &widget->name[5]; 
 done:
 	mDevice->unlock(__FUNCTION__);
 
@@ -252,7 +247,7 @@ const char *VoodooHDAEngine::getOssDevName(int ossDev)
 
 void VoodooHDAEngine::setActiveOssDev(int ossDev)
 {
-//	logMsg("setting active OSS device: %d (%s)\n", ossDev, getOssDevName(ossDev));
+	logMsg("setting active OSS device: %d (%s)\n", ossDev, getOssDevName(ossDev));
 	ASSERT(validateOssDev(ossDev));
 	mActiveOssDev = ossDev;
 }
@@ -260,7 +255,7 @@ void VoodooHDAEngine::setActiveOssDev(int ossDev)
 int VoodooHDAEngine::getActiveOssDev()
 {
 	int ossDev = mActiveOssDev;
-//	logMsg("active OSS device: %d (%s)\n", ossDev, getOssDevName(ossDev));
+	logMsg("active OSS device: %d (%s)\n", ossDev, getOssDevName(ossDev));
 	ASSERT(validateOssDev(ossDev));
 	return ossDev;
 }
@@ -668,7 +663,7 @@ bool VoodooHDAEngine::createAudioControls()
 //	logMsg("minDb: %d (%08lx), maxDb: %d (%08lx)\n", (SInt16) (minDb >> 16), minDb,
 //		   (SInt16) (maxDb >> 16), maxDb);
 	if ((minDb == ~0L) || (maxDb == ~0L)) {
-		errorMsg("warning: found invalid min/max dB (using default -22.5 -> 0.0dB range)\n"); //-22.5 -> 0.0
+		//logMsg("warning: found invalid min/max dB (using default -22.5 -> 0.0dB range)\n"); //-22.5 -> 0.0
 		minDb = (-22 << 16) + (65536 / 2);
 		maxDb = 0 << 16;
 	}
@@ -771,7 +766,7 @@ bool VoodooHDAEngine::createAudioControls()
 	}
 	if(mSelControl != 0) {
 		this->addDefaultAudioControl(mSelControl);
-		enumiratePinNames();
+		//enumiratePinNames();
 	}
 	
 	
@@ -780,7 +775,7 @@ bool VoodooHDAEngine::createAudioControls()
 Done:
 	return result;
 }
-
+/*
 void VoodooHDAEngine::enumiratePinNames(void)
 {
 	if(mSelControl == 0) 
@@ -788,8 +783,8 @@ void VoodooHDAEngine::enumiratePinNames(void)
 	
 	
 }
-
-void VoodooHDAEngine::setPinName(UInt32 type, const char* name)
+*/
+void VoodooHDAEngine::setPinName(/*UInt32 type,*/ const char* name)
 {
 	if(mSelControl == 0) 
 		return;

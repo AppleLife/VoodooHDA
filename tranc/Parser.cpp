@@ -42,6 +42,7 @@ void VoodooHDADevice::scanCodecs()
 			codec->commands = NULL;
 			codec->numRespReceived = 0;
 			codec->numVerbsSent = 0;
+			codec->numFuncGroups = 0;
 			codec->cad = i;
 			mCodecs[i] = codec;
 			probeCodec(codec);
@@ -118,7 +119,7 @@ void VoodooHDADevice::probeFunction(Codec *codec, nid_t nid)
 	UInt32 funcGroupType;
 	UInt32 res;
 	nid_t cad = codec->cad;
-	AudioControl *control;
+//	AudioControl *control;
 
 	funcGroupType = HDA_PARAM_FCT_GRP_TYPE_NODE_TYPE(sendCommand(HDA_CMD_GET_PARAMETER(cad, nid,
 			HDA_PARAM_FCT_GRP_TYPE), cad));
@@ -209,7 +210,7 @@ void VoodooHDADevice::probeFunction(Codec *codec, nid_t nid)
 	dumpMsg("AFG commit...\n");
 	audioCommit(funcGroup);
 //	dumpMsg("HP switch init...\n");
-//	hpSwitchInit(funcGroup);
+//	switchInit(funcGroup);  //Slice - move below
 
 	static bool dmaPosMemAllocated = false; // xxx
 	if ((funcGroup->audio.quirks & HDA_QUIRK_DMAPOS) && !dmaPosMemAllocated) {
@@ -233,7 +234,7 @@ void VoodooHDADevice::probeFunction(Codec *codec, nid_t nid)
 	}
 	//Slice - move here
 	dumpMsg("HP switch init...\n");
-	hpSwitchInit(funcGroup);
+	switchInit(funcGroup);
 
 	dumpMsg("\n");
 	dumpMsg("+-------------------+\n");
@@ -242,7 +243,7 @@ void VoodooHDADevice::probeFunction(Codec *codec, nid_t nid)
 	dumpNodes(funcGroup);
 
 	dumpMsg("\n");
-	dumpMsg("+------------------------+\n");
+/*	dumpMsg("+------------------------+\n");
 	dumpMsg("| DUMPING HDA AMPLIFIERS |\n");
 	dumpMsg("+------------------------+\n");
 	dumpMsg("\n");
@@ -254,19 +255,19 @@ void VoodooHDADevice::probeFunction(Codec *codec, nid_t nid)
 			dumpMsg(" cnid %3d", control->childWidget->nid);
 		else
 			dumpMsg("         ");
-		dumpMsg(" ossmask=0x%08lx bindMask=0x%08lx\n", (long unsigned int)control->ossmask, (long unsigned int)control->widget->bindSeqMask);
+		//dumpMsg(" ossmask=0x%08lx bindMask=0x%08lx\n", (long unsigned int)control->ossmask, (long unsigned int)control->widget->bindSeqMask);
 		dumpMsg("       mute: %d step: %3d size: %3d off: %3d%s\n", control->mute, control->step,
 				control->size, control->offset, (control->enable == 0) ? " [DISABLED]" :
 				((control->ossmask == 0) ? " [UNUSED]" : ""));
 	}
-	
+*/	
 	createPrefPanelMemoryBuf(funcGroup);
 }
 
 void VoodooHDADevice::powerup(FunctionGroup *funcGroup)
 {
 	nid_t cad = funcGroup->codec->cad;
-
+	//logMsg("VoodooHDADevice::PowerUp\n");
 	sendCommand(HDA_CMD_SET_POWER_STATE(cad, funcGroup->nid, HDA_CMD_POWER_STATE_D0), cad);
 	IODelay(100);
 
@@ -899,6 +900,7 @@ void VoodooHDADevice::audioAssociationParse(FunctionGroup *funcGroup)
 		assocs[i].hpredir = -1;
 		assocs[i].chan = -1;
 		assocs[i].digital = 1;
+		assocs[i].dirty = 0;
 	}
 
 	/* Scan associations skipping as=0. */
@@ -1276,7 +1278,7 @@ nid_t VoodooHDADevice::audioTraceDac(FunctionGroup *funcGroup, int assocNum, int
 		widget->bindAssoc = assocNum;
 		widget->bindSeqMask |= (1 << seq);
 	}
-	if (!only)
+	if (!only && m)
 		dumpMsg(" %*snid %d returned %d\n", depth + 1, "", widget->nid, m);
 	return m;
 }
@@ -1421,231 +1423,6 @@ int VoodooHDADevice::audioTraceAssociationOut(FunctionGroup *funcGroup, int asso
 		min = res + 1;
 	} while (1);
 }
-#if 0
-void VoodooHDADevice::audioTraceSwitchNid(FunctionGroup *funcGroup, int assocNum)
-{
-	int firstPin = -1;
-	int secondPin = -1;
-//	int nid = -1;
-//	int cnid = -1;
-	AudioAssoc *assocs = funcGroup->audio.assocs;
-	//Slice - trace
-	
-
-	Widget *widget;
-	for (int i = funcGroup->startNode; i < funcGroup->endNode; i++) {
-		widget = widgetGet(funcGroup, i);
-		if (!widget || (widget->enable == 0))
-			continue;
-		if (widget->type != HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_AUDIO_INPUT)
-			continue;
-		if (widget->bindAssoc != assocNum)
-			continue;
-		nid = i;
-		break;
-	}
-	if (nid > 0) {
-		Widget *childWidget;
-		int n = widget->nconns;
-		int numBranches = n;
-		
-		while (numBranches == 1){
-			numBranches = 0;
-			for (int i = 0; i < n; i++) {
-				if (widget->connsenable[i] == 0)
-					continue;
-				childWidget = widgetGet(funcGroup, widget->conns[i]);
-				if (!childWidget || (childWidget->enable == 0) || (childWidget->bindAssoc != assocNum))
-					continue;
-				if(firstPin == -1) {
-					firstPin = i;
-				}else if(secondPin == -1) 
-					secondPin = i;		
-				cnid = childWidget->nid;		
-				numBranches++;
-			}
-			nid = widget->nid;
-			if(cnid <= 0){
-				errorMsg("Childs not found for nid %d assoc %d\n", nid, assocNum);
-				break;
-			}
-			widget = widgetGet(funcGroup, cnid);      
-			n = widget->nconns;
-		}
-		assocs[assocNum].nidForSwitch[0].mainNid = nid;
-		assocs[assocNum].nidForSwitch[15].mainNid = nid;
-		assocs[assocNum].nidForSwitch[0].connNum = firstPin;
-		assocs[assocNum].nidForSwitch[15].connNum = secondPin;
-		logMsg("Switch node %d conn %d and %d\n", nid, firstPin, secondPin);
-	} else {
-		assocs[assocNum].nidForSwitch[0].mainNid = 0;
-		assocs[assocNum].nidForSwitch[15].mainNid = 0;
-		assocs[assocNum].nidForSwitch[0].connNum = 0;
-		assocs[assocNum].nidForSwitch[15].connNum = 0;
-		errorMsg("Input node not found for assoc %d\n", assocNum);
-	}
-//#endif
-	//AutumnRain	
-//#if 0
-	
-	
-	Widget *widget;
-	
-	//Ищем ноду со встроенным устройством. Это будет устройство работающее по умолчанию.
-	for(int i=0; i<16; i++){
-		widget = widgetGet(funcGroup, assocs[assocNum].pins[i]);
-		if(widget == 0 || widget->enable == false) 
-			continue;		
-		int conn = (widget->pin.config & HDA_CONFIG_DEFAULTCONF_CONNECTIVITY_MASK) >> HDA_CONFIG_DEFAULTCONF_CONNECTIVITY_SHIFT;
-		if(conn == 2)  {
-			assocs[assocNum].defaultPin = i;
-			break;
-		}
-	}
-	
-	//Ищем ноду с разъемом. Это будет устройство на которое будет переключаться вход
-	for(int i=15; i>=0; i--){
-		widget = widgetGet(funcGroup, assocs[assocNum].pins[i]);
-		if(widget == 0 || widget->enable == false) 
-			continue;		
-		int conn = (widget->pin.config & HDA_CONFIG_DEFAULTCONF_CONNECTIVITY_MASK) >> HDA_CONFIG_DEFAULTCONF_CONNECTIVITY_SHIFT;
-		if(conn == 0)  {
-			assocs[assocNum].jackPin = i;
-			break;
-		}
-	}
-	
-	//Если встроенное устройство не найдено, то устройством по умолчанию делаем разъем с наименьшим seq
-	if(assocs[assocNum].defaultPin == -1) {
-		for(int i=0; i<assocs[assocNum].jackPin; i++){
-			widget = widgetGet(funcGroup, assocs[assocNum].pins[i]);
-			if(widget == 0 || widget->enable == false) 
-				continue;		
-			int conn = (widget->pin.config & HDA_CONFIG_DEFAULTCONF_CONNECTIVITY_MASK) >> HDA_CONFIG_DEFAULTCONF_CONNECTIVITY_SHIFT;
-			if(conn == 0)  {
-				assocs[assocNum].defaultPin = i;
-				break;
-			}
-		}
-	}
-	
-
-	
-	//assocs[assocNum].defaultPin = 0;
-	//assocs[assocNum].jackPin = 15;
-	firstPin = assocs[assocNum].defaultPin;
-	secondPin = assocs[assocNum].jackPin;
-	if(firstPin == -1) {
-		logMsg("audioTraceSwitchNid  defaultPin = %d\n", firstPin );
-	}else{
-		logMsg("audioTraceSwitchNid  defaultPin = %d nid = %d\n", firstPin, assocs[assocNum].pins[firstPin] );
-	}
-	
-	if(secondPin == -1) {
-		logMsg("audioTraceSwitchNid  jackPin = %d\n", secondPin );
-	}else{
-		logMsg("audioTraceSwitchNid  jackPin = %d nid = %d\n", secondPin, assocs[assocNum].pins[secondPin] );
-	}
-	
-	//Теперь ищем ADC которое получает сигнал от входных устройств выбранной группы
-	for(int adc_num=0; adc_num < 16; adc_num++) {
-		treePin[adc_num].count = 0;
-		nid_t adc_nid = assocs[assocNum].dacs[adc_num];
-		widget = widgetGet(funcGroup, adc_nid);
-		if(widget == 0 || widget->enable == false)
-			continue;
-		
-		if(widget->bindAssoc != assocNum) 
-			continue;
-		
-		logMsg("audioTraceSwitchNid  seq = %d, seqMask = 0x%x\n", adc_num, 1 << adc_num );
-		logMsg("audioTraceSwitchNid  ADC nid = %d, bindAssoc = %d, seqMask = 0x%x\n", adc_nid, widget->bindAssoc, widget->bindSeqMask );
-		
-		Widget *childWidget = widget;
-		int childNum, n;
-		do{
-			widget = childWidget;
-			n = widget->nconns;
-			
-			for(childNum = 0; childNum < n; childNum++) {
-				if(widget->connsenable[childNum] == false) 
-					continue;
-			
-				childWidget = widgetGet(funcGroup, widget->conns[childNum]);
-				if(childWidget == 0 || childWidget->enable == false) 
-					continue;
-			
-				if(childWidget->bindAssoc != assocNum)
-					continue;
-				
-				if((childWidget->bindSeqMask & (1 << adc_num)) == 0) 
-					continue;
-			
-				treePin[adc_num].nid[treePin[adc_num].count] = widget->conns[childNum];
-				treePin[adc_num].count++;
-				logMsg("audioTraceSwitchNid      nid = %d, bindAssoc = %d, seqMask = 0x%x\n", widget->conns[childNum], childWidget->bindAssoc, childWidget->bindSeqMask );
-			
-				break;
-			}
-		}while(childNum != n);
-		
-	}
-		
-	logMsg("Pins: first %d second %d\n", firstPin, secondPin);
-	if(firstPin != -1 && secondPin != -1) {
-		for(int y=0; y < MAX_TREE_LENGHT; y++) {
-			nid_t n;
-			
-			if(treePin[firstPin].count <= y || treePin[secondPin].count <= y) {
-				break;
-			}
-			
-			n = treePin[firstPin].nid[y];
-			if( n != treePin[secondPin].nid[y]) {
-				
-				if(y > 0 ) {
-					assocs[assocNum].nidForSwitch[firstPin].mainNid = treePin[firstPin].nid[y - 1];
-					assocs[assocNum].nidForSwitch[secondPin].mainNid = treePin[secondPin].nid[y - 1];
-					
-					logMsg("pin for switching %d ", assocs[assocNum].nidForSwitch[firstPin].mainNid);
-				}else{
-					assocs[assocNum].nidForSwitch[firstPin].mainNid = 0;
-					assocs[assocNum].nidForSwitch[secondPin].mainNid = 0;
-				}
-				
-				assocs[assocNum].nidForSwitch[firstPin].nextNid = treePin[firstPin].nid[y];
-				assocs[assocNum].nidForSwitch[secondPin].nextNid = treePin[secondPin].nid[y];
-				
-				if(assocs[assocNum].nidForSwitch[firstPin].mainNid != 0) {
-					
-					Widget* mainWidget = widgetGet(funcGroup, assocs[assocNum].nidForSwitch[firstPin].mainNid);
-					
-					for(int r = 0; r < mainWidget->nconns; r++) {
-						if(mainWidget->conns[r] == assocs[assocNum].nidForSwitch[firstPin].nextNid) {
-							assocs[assocNum].nidForSwitch[firstPin].connNum = r;
-							break;
-						}
-					}
-					
-					for(int r = 0; r < mainWidget->nconns; r++) {
-						if(mainWidget->conns[r] == assocs[assocNum].nidForSwitch[secondPin].nextNid) {
-							assocs[assocNum].nidForSwitch[secondPin].connNum = r;
-							break;
-						}
-					}
-				}
-				
-				logMsg(" - %d (%d) and %d(%d)\n", assocs[assocNum].nidForSwitch[firstPin].nextNid
-						, assocs[assocNum].nidForSwitch[firstPin].connNum 
-						, assocs[assocNum].nidForSwitch[secondPin].nextNid
-						, assocs[assocNum].nidForSwitch[secondPin].connNum );
-				break;
-			}
-		}
-	}
-}
-#endif	
-
 
 /*
  * Trace association path from input to ADC
@@ -1654,11 +1431,6 @@ int VoodooHDADevice::audioTraceAssociationIn(FunctionGroup *funcGroup, int assoc
 {
 	AudioAssoc *assocs = funcGroup->audio.assocs;
 	
-	//AutumnRain
-	for(int k = 0; k < 16; k++) {
-		treePin[k].count = 0;
-	}
-
 	for (int j = funcGroup->startNode; j < funcGroup->endNode; j++) {
 		Widget *widget;
 		int i;
@@ -1805,7 +1577,7 @@ void VoodooHDADevice::audioTraceAssociationExtra(FunctionGroup *funcGroup)
 }
 
 /*
- * Bind assotiations to PCM channels
+ * Bind associations to PCM channels
  */
 void VoodooHDADevice::audioBindAssociation(FunctionGroup *funcGroup)
 {
@@ -1923,6 +1695,11 @@ void VoodooHDADevice::audioAssignNames(FunctionGroup *funcGroup)
 		case HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_BEEP_WIDGET:
 			use = SOUND_MIXER_SPEAKER;
 			break;
+		//Slice		
+		case HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_AUDIO_MIXER:
+			use = SOUND_MIXER_IMIX;
+			break;
+	
 		default:
 			break;
 		}
@@ -2020,6 +1797,7 @@ int VoodooHDADevice::audioCtlSourceAmp(FunctionGroup *funcGroup, nid_t nid, int 
 		for (int j = 0; j < widget->nconns; j++)
 			if (widget->connsenable[j])
 				conns++;
+		widget->connsenabled = conns;
 	}
 
 	/* If this is not a first step - use input mixer.
@@ -3938,14 +3716,13 @@ void VoodooHDADevice::SwitchHandlerRename(FunctionGroup *funcGroup, nid_t nid, i
 			if( mChannels[channelNum].assocNum == assocsNum ) {
 				engine = lookupEngine(channelNum);
 				if(engine != NULL) {
-					logMsg("setDesc  change description %s channel %d assoc %d\n", &widget->name[4], channelNum, assocsNum);
+					logMsg("setDesc  change description %s channel %d assoc %d\n", &widget->name[5], channelNum, assocsNum);
 					engine->beginConfigurationChange();
-					engine->setPinName(widget->nid, &widget->name[4]);
-					//engine->setDescription(&widget->name[4]);
+					engine->setPinName(/*widget->nid,*/ &widget->name[5]);
 					engine->completeConfigurationChange();
 					return;
 				}
-				logMsg("setDesc  can't find engine for %s channel %d assoc %d\n", &widget->name[4], channelNum, assocsNum);
+				logMsg("setDesc  can't find engine for %s channel %d assoc %d\n", &widget->name[5], channelNum, assocsNum);
 				return;
 			}
 		}
@@ -3967,7 +3744,7 @@ void VoodooHDADevice::micSwitchHandler(FunctionGroup *funcGroup, nid_t nid, UInt
 	AudioAssoc *assocs;
 	Widget *widget;
 	//UInt32 res;
-	nid_t defaultNid, jackNid;
+	nid_t defaultNid; //, jackNid;
 	nid_t cad;
 	int assocsNum;
 	UInt32 maskJack, maskDef;
@@ -3982,7 +3759,10 @@ void VoodooHDADevice::micSwitchHandler(FunctionGroup *funcGroup, nid_t nid, UInt
 		return;
 	assocsNum = widget->bindAssoc;
 	defaultNid = assocs[assocsNum].pins[assocs[assocsNum].defaultPin];
-	//assocs[assocsNum].activeNid = defaultNid;
+	if (res) {
+		assocs[assocsNum].activeNid = nid;
+	} else
+		assocs[assocsNum].activeNid = defaultNid;
 	//jackNid = assocs[assocsNum].pins[assocs[assocsNum].jackPin];	
 	Widget *widgetDef = widgetGet(funcGroup, defaultNid);
 	maskJack = widget->bindSeqMask;
@@ -4104,7 +3884,7 @@ void VoodooHDADevice::hpSwitchHandler(FunctionGroup *funcGroup, int nid, UInt32 
 	}
 }
 
-void VoodooHDADevice::switchHandler(FunctionGroup *funcGroup)
+void VoodooHDADevice::switchHandler(FunctionGroup *funcGroup, bool first)
 {
 	AudioAssoc *assocs;
 	nid_t cad;
@@ -4118,6 +3898,9 @@ void VoodooHDADevice::switchHandler(FunctionGroup *funcGroup)
 	assocs = funcGroup->audio.assocs;
 	int assocNum;
 //Slice - new Handler common for any devices
+	for (assocNum = 0; assocNum < funcGroup->audio.numAssocs; assocNum++) {
+		assocs[assocNum].dirty = 0;
+	}
 	for (int nid = funcGroup->startNode; nid < funcGroup->endNode; nid++) {	// all widgets
 		widget = widgetGet(funcGroup, nid);
 		if (!widget || (widget->enable == 0) || (widget->type != HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX)) //find pinComplex
@@ -4133,8 +3916,9 @@ void VoodooHDADevice::switchHandler(FunctionGroup *funcGroup)
 		res = HDA_CMD_GET_PIN_SENSE_PRESENCE_DETECT(res);
 		if (funcGroup->audio.quirks & HDA_QUIRK_SENSEINV)
 			res ^= 1;
-		if(widget->sense == res) continue; // nothing changed
+		if(!first && (widget->sense == res)) continue; // nothing changed
 		widget->sense = res;
+		
 		logMsg("Pin sense: cad %d nid=%d res=%d\n", (int)cad,  (int)nid, (int)res);
 		type = widget->pin.config & HDA_CONFIG_DEFAULTCONF_DEVICE_MASK;
 		/* Get pin direction. */
@@ -4149,15 +3933,18 @@ void VoodooHDADevice::switchHandler(FunctionGroup *funcGroup)
 		}					
 		else {
 			micSwitchHandler(funcGroup, nid, res);
-		}	
-		SwitchHandlerRename(funcGroup, nid ,assocNum, res);
+		}
+		if (!assocs[assocNum].dirty) {
+			SwitchHandlerRename(funcGroup, nid ,assocNum, res);
+		}
+		assocs[assocNum].dirty |= res;
 	}
 }
 
 /*
  * Jack detection initializer.
  */
-void VoodooHDADevice::hpSwitchInit(FunctionGroup *funcGroup)
+void VoodooHDADevice::switchInit(FunctionGroup *funcGroup)
 {
 	AudioAssoc *assocs = funcGroup->audio.assocs;
 //    UInt32 id;
@@ -4167,15 +3954,10 @@ void VoodooHDADevice::hpSwitchInit(FunctionGroup *funcGroup)
 
 //	id = CODEC_ID(funcGroup->codec);
 	cad = funcGroup->codec->cad;
-//	for (int i = 0; i < funcGroup->audio.numAssocs; i++) {
 	for (int j = funcGroup->startNode; j < funcGroup->endNode; j++) {	// all widgets
 		Widget *widget;
-/*		if (assocs[i].hpredir == 0)
-			jackPin = 15;
-		else */
-		//	jackPin = assocs[i].jackPin;		
 
-		widget = widgetGet(funcGroup, j);// assocs[i].pins[jackPin]);
+		widget = widgetGet(funcGroup, j);
 		if (!widget || (widget->enable == 0) || (widget->type != HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX))
 			continue;
 		if ((HDA_PARAM_PIN_CAP_PRESENCE_DETECT_CAP(widget->pin.cap) == 0) ||
@@ -4206,16 +3988,22 @@ void VoodooHDADevice::hpSwitchInit(FunctionGroup *funcGroup)
 			(type == HDA_CONFIG_DEFAULTCONF_DEVICE_HP_OUT) ||
 			(type == HDA_CONFIG_DEFAULTCONF_DEVICE_SPDIF_OUT) ||
 			(type == HDA_CONFIG_DEFAULTCONF_DEVICE_DIGITAL_OTHER_OUT))
-			logMsg("Enabling headphone/speaker audio routing switching at node %d:\n", j);					
+			logMsg("Enabling output audio routing switching at node %d:\n", j);					
 		else {
-			logMsg("Enabling mic/monitor audio routing switching at node %d:\n", j);
-		}	
+			logMsg("Enabling input audio routing switching at node %d:\n", j);
+		}
+	/*	if (res) {
+			assocs[widget->bindAssoc].activeNid = j;
+	 //	SwitchHandlerRename(funcGroup, widget->bindAssoc, j, res);
+		}*/
 	}
-	if (enable) {
-		//switchHandler(funcGroup);
+	funcGroup->mSwitchEnable = enable;
+/*	if (enable) {
+			//switchHandler(funcGroup, true);
+		
 		if (poll)
 			errorMsg("XXX\nXXX: poll based jack detection unimplemented\nXXX\n");
-	}
+	}*/
 }
 
 //Slice

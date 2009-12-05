@@ -308,7 +308,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_GROUP = wheel;
 				INSTALL_OWNER = root;
-				MODULE_VERSION = 0.2.5;
+				MODULE_VERSION = 0.2.52;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
@@ -339,7 +339,7 @@
 					"\"$(SRCROOT)/build/Release\"",
 				);
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 0.2.51;
+				MODULE_VERSION = 0.2.52;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = VoodooHDA;
 				VALID_ARCHS = "i386 x86_64";
@@ -428,7 +428,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = "${MODULE_VERSION}";
+				CURRENT_PROJECT_VERSION = 0.2.52;
 				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -444,7 +444,7 @@
 					"\"$(SRCROOT)/build/Release\"",
 				);
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 0.2.43;
+				MODULE_VERSION = 0.2.52;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = VoodooHDA;
 				VALID_ARCHS = "i386 x86_64";
