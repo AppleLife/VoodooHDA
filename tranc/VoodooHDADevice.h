@@ -379,6 +379,9 @@ public:
 	void extDumpNodes(FunctionGroup *funcGroup);
 	void extDumpCtls(PcmDevice *pcmDevice, const char *banner, UInt32 flag);
 	void extDumpPin(Widget *widget);
+	
+	/*********************/
+	void initMixerDefaultValues(void);
 };
 
 #endif

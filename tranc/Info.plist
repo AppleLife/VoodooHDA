@@ -41,7 +41,13 @@
 			<key>VoodooHDAVerboseLevel</key>
 			<integer>1</integer>
 			<key>NodesToPatch</key>
-			<array/>
+			<array>
+			</array>
+			<key>MixerValues</key>
+			<dict>
+				<key>iMix</key>
+				<string>100</string>
+			</dict>
 		</dict>
 	</dict>
 	<key>OSBundleLibraries</key>

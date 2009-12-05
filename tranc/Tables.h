@@ -34,12 +34,20 @@ typedef struct {
 	UInt32 set, unset;
 } QuirkListItem;
 
+typedef struct {
+	const char* name;
+	UInt16* valuePtr;
+	UInt16 initValue;
+}MixerValueName;
+
+
 extern const ControllerListItem gControllerList[];
 extern const CodecListItem gCodecList[];
 extern const RateTableItem gRateTable[];
 extern const QuirkType gQuirkTypes[];
 extern const QuirkListItem gQuirkList[];
-extern const UInt16 gMixerDefaults[];
+extern UInt16 gMixerDefaults[];
+extern const MixerValueName MixerValueNamesBind[];
 
 #define HDA_GPIO_MAX			8
 /* 0 - 7 = GPIO , 8 = Flush */

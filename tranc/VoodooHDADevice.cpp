@@ -97,6 +97,41 @@ bool VoodooHDADevice::init(OSDictionary *dict)
 #define	PCI_CLASS_MULTI				0x04
 #define PCI_SUBCLASS_MULTI_HDA		0x03
 
+void VoodooHDADevice::initMixerDefaultValues(void)
+{
+	OSDictionary *MixerValues = 0;
+	OSNumber *tmpNumber = 0;
+	UInt16 tmpUI16 = 0;
+	OSString *tmpString = 0;
+//	int MixValueCount = sizeof(MixerValueNamesBind) / sizeof(MixerValueName);
+	
+	MixerValues = OSDynamicCast(OSDictionary, getProperty("MixerValues"));
+
+	for(int i=0; i<SOUND_MIXER_NRDEVICES; i++){
+						
+		tmpUI16 = MixerValueNamesBind[i].initValue;
+		
+		if(MixerValues && MixerValueNamesBind[i].name != 0 && MixerValueNamesBind[i].name[0] != 0) {
+			tmpNumber = OSDynamicCast(OSNumber, MixerValues->getObject(MixerValueNamesBind[i].name));
+			if (tmpNumber) {
+				tmpUI16 = tmpNumber->unsigned16BitValue();
+			} else {
+				tmpString = OSDynamicCast(OSString, MixerValues->getObject(MixerValueNamesBind[i].name));
+				long unsigned int jj = 0;
+				int jjj = 0;
+				if(sscanf(tmpString->getCStringNoCopy(), "0x%08lx", &jj)) {
+					tmpUI16 = jj;
+				}else if(sscanf(tmpString->getCStringNoCopy(), "%d", &jjj)){
+					tmpUI16 = jjj;
+				}
+			}
+		}
+			
+		if(MixerValueNamesBind[i].valuePtr != 0) 
+			*MixerValueNamesBind[i].valuePtr = tmpUI16;
+	}
+}
+
 IOService *VoodooHDADevice::probe(IOService *provider, SInt32 *score)
 {
 	IOService *result;
@@ -109,6 +144,9 @@ IOService *VoodooHDADevice::probe(IOService *provider, SInt32 *score)
 	//logMsg("VoodooHDADevice[%p]::probe\n", this);
 
 	result = super::probe(provider, score);
+	
+	initMixerDefaultValues();
+	
 //Slice	
 	OSDictionary *tmpDict = 0;
 	OSIterator *iter = 0;

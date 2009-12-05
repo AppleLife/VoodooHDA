@@ -311,31 +311,32 @@ const QuirkListItem gQuirkList[] = {
 	{ 0, 0, 0, 0 }
 };
 
-const UInt16 gMixerDefaults[SOUND_MIXER_NRDEVICES] = {
-	75,		// SOUND_MIXER_VOLUME
-	50,		// SOUND_MIXER_BASS
-	50,		// SOUND_MIXER_TREBLE
-	90,	// (was 75) SOUND_MIXER_SYNTH
-	90,	// (was 75) SOUND_MIXER_PCM
-	90,	// (was 75) SOUND_MIXER_SPEAKER
-	75,		// (was 75) SOUND_MIXER_LINE
-	50,		// SOUND_MIXER_MIC
-	90,	// SOUND_MIXER_CD
-	50,		// [?] SOUND_MIXER_IMIX
-	30,		// [?] SOUND_MIXER_ALTPCM
-	75,		// SOUND_MIXER_RECLEV
-	20,		// SOUND_MIXER_IGAIN
-	50,		// SOUND_MIXER_OGAIN
-	30,		// (was 75) SOUND_MIXER_LINE1
-	10,		// [?] SOUND_MIXER_LINE2
-	10,		// [?] SOUND_MIXER_LINE3
-	10,		// [?] SOUND_MIXER_DIGITAL1
-	10,		// [?] SOUND_MIXER_DIGITAL2
-	10,		// [?] SOUND_MIXER_DIGITAL3
-	0,		// [?] SOUND_MIXER_PHONEIN
-	0,		// [?] SOUND_MIXER_PHONEOUT
-	75,		// SOUND_MIXER_VIDEO
-	0,		// [?] SOUND_MIXER_RADIO
-	75		// (was 75) SOUND_MIXER_MONITOR
-};
+UInt16 gMixerDefaults[SOUND_MIXER_NRDEVICES];
+
+const MixerValueName MixerValueNamesBind[SOUND_MIXER_NRDEVICES] = {
+{"Main",	&gMixerDefaults[0], 75},		// SOUND_MIXER_VOLUME
+{"Bass",	&gMixerDefaults[1], 50},		// SOUND_MIXER_BASS
+{"Trable",	&gMixerDefaults[2], 50},		// SOUND_MIXER_TREBLE
+{"Synth",	&gMixerDefaults[3], 90},	// (was 75) SOUND_MIXER_SYNTH
+{"PCM",		&gMixerDefaults[4], 90},	// (was 75) SOUND_MIXER_PCM
+{"Speaker",	&gMixerDefaults[5], 90},	// (was 75) SOUND_MIXER_SPEAKER
+{"Line",	&gMixerDefaults[6], 75},		// (was 75) SOUND_MIXER_LINE
+{"Mic",		&gMixerDefaults[7], 50},		// SOUND_MIXER_MIC
+{"CD",		&gMixerDefaults[8], 90},	// SOUND_MIXER_CD
+{"iMix",	&gMixerDefaults[9], 50},		// [?] SOUND_MIXER_IMIX
+{"AltPCM",	&gMixerDefaults[10], 30},		// [?] SOUND_MIXER_ALTPCM
+{"Rec",		&gMixerDefaults[11], 75},		// SOUND_MIXER_RECLEV
+{"iGain",	&gMixerDefaults[12], 20},		// SOUND_MIXER_IGAIN
+{"oGain",	&gMixerDefaults[13], 50},		// SOUND_MIXER_OGAIN
+{"Line1",	&gMixerDefaults[14], 30},		// (was 75) SOUND_MIXER_LINE1
+{"Line2",	&gMixerDefaults[15], 10},		// [?] SOUND_MIXER_LINE2
+{"Line3",	&gMixerDefaults[16], 10},		// [?] SOUND_MIXER_LINE3
+{"Dig1",	&gMixerDefaults[17], 10},		// [?] SOUND_MIXER_DIGITAL1
+{"Dig2",	&gMixerDefaults[18], 10},		// [?] SOUND_MIXER_DIGITAL2
+{"Dig3",	&gMixerDefaults[19], 10},		// [?] SOUND_MIXER_DIGITAL3
+{"PhoneIn",	&gMixerDefaults[20], 0},		// [?] SOUND_MIXER_PHONEIN
+{"PhoneOut",	&gMixerDefaults[21], 0},		// [?] SOUND_MIXER_PHONEOUT
+{"Video",	&gMixerDefaults[22], 75},		// SOUND_MIXER_VIDEO
+{"Radio",	&gMixerDefaults[23], 0},		// [?] SOUND_MIXER_RADIO
+{"Monitor",	&gMixerDefaults[24], 75}};		// (was 75) SOUND_MIXER_MONITOR
 
