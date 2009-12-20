@@ -41,12 +41,11 @@
 			<key>VoodooHDAVerboseLevel</key>
 			<integer>1</integer>
 			<key>NodesToPatch</key>
-			<array>
-			</array>
+			<array/>
 			<key>MixerValues</key>
 			<dict>
 				<key>iMix</key>
-				<string>100</string>
+				<string>90</string>
 			</dict>
 		</dict>
 	</dict>
@@ -56,10 +55,6 @@
 		<string>1.1fc9</string>
 		<key>com.apple.iokit.IOPCIFamily</key>
 		<string>2.1</string>
-<!--		<key>com.apple.kernel.6.0</key>
-		<string>7.9.9</string>
-		<key>com.apple.kpi.bsd</key>
-		<string>8.0.0</string>  -->
 		<key>com.apple.kpi.iokit</key>
 		<string>9.0.0</string>
 		<key>com.apple.kpi.libkern</key>

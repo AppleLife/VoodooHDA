@@ -36,7 +36,7 @@ typedef struct {
 
 typedef struct {
 	const char* name;
-	UInt16* valuePtr;
+	int index;
 	UInt16 initValue;
 }MixerValueName;
 

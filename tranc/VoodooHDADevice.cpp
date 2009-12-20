@@ -102,6 +102,7 @@ void VoodooHDADevice::initMixerDefaultValues(void)
 	OSDictionary *MixerValues = 0;
 	OSNumber *tmpNumber = 0;
 	UInt16 tmpUI16 = 0;
+	int index;
 	OSString *tmpString = 0;
 //	int MixValueCount = sizeof(MixerValueNamesBind) / sizeof(MixerValueName);
 	
@@ -110,6 +111,7 @@ void VoodooHDADevice::initMixerDefaultValues(void)
 	for(int i=0; i<SOUND_MIXER_NRDEVICES; i++){
 						
 		tmpUI16 = MixerValueNamesBind[i].initValue;
+	
 		
 		if(MixerValues && MixerValueNamesBind[i].name != 0 && MixerValueNamesBind[i].name[0] != 0) {
 			tmpNumber = OSDynamicCast(OSNumber, MixerValues->getObject(MixerValueNamesBind[i].name));
@@ -117,18 +119,23 @@ void VoodooHDADevice::initMixerDefaultValues(void)
 				tmpUI16 = tmpNumber->unsigned16BitValue();
 			} else {
 				tmpString = OSDynamicCast(OSString, MixerValues->getObject(MixerValueNamesBind[i].name));
-				long unsigned int jj = 0;
-				int jjj = 0;
-				if(sscanf(tmpString->getCStringNoCopy(), "0x%08lx", &jj)) {
-					tmpUI16 = jj;
-				}else if(sscanf(tmpString->getCStringNoCopy(), "%d", &jjj)){
-					tmpUI16 = jjj;
+				if(tmpString) {
+					long unsigned int jj = 0;
+					int jjj = 0;
+					if(sscanf(tmpString->getCStringNoCopy(), "0x%08lx", &jj)) {
+						tmpUI16 = jj;
+					}else if(sscanf(tmpString->getCStringNoCopy(), "%d", &jjj)){
+						tmpUI16 = jjj;
+					}
 				}
 			}
 		}
-			
-		if(MixerValueNamesBind[i].valuePtr != 0) 
-			*MixerValueNamesBind[i].valuePtr = tmpUI16;
+		//logMsg("Item %d init %d, index %d\n", i , tmpUI16, MixerValueNamesBind[i].index);
+	
+		
+		index = MixerValueNamesBind[i].index;
+		if(index >= 0 && index < SOUND_MIXER_NRDEVICES) 
+			gMixerDefaults[index] = tmpUI16;
 	}
 }
 
@@ -179,12 +186,14 @@ IOService *VoodooHDADevice::probe(IOService *provider, SInt32 *score)
 								tmpUI32 = tmpNumber->unsigned32BitValue();
 							} else {
 								tmpString = OSDynamicCast(OSString, tmpArray->getObject(arrayIndex));
-								long unsigned int jj = 0;
-								int jjj = 0;
-								if(sscanf(tmpString->getCStringNoCopy(), "0x%08lx", &jj)) {
-									tmpUI32 = jj;
-								}else if(sscanf(tmpString->getCStringNoCopy(), "%d", &jjj)){
-									tmpUI32 = jjj;
+								if(tmpString) {
+									long unsigned int jj = 0;
+									int jjj = 0;
+									if(sscanf(tmpString->getCStringNoCopy(), "0x%08lx", &jj)) {
+										tmpUI32 = jj;
+									}else if(sscanf(tmpString->getCStringNoCopy(), "%d", &jjj)){
+										tmpUI32 = jjj;
+									}
 								}
 							}
 							tmpUIArray[nArrayCount]= tmpUI32;
