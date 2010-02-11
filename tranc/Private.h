@@ -151,6 +151,11 @@ typedef struct _BdlEntry {
 #define HDA_MAX_CONNS	32
 #define HDA_MAX_NAMELEN	32
 
+#define TRACE_DIR_NONE	0
+#define TRACE_DIR_IN	1
+#define TRACE_DIR_OUT	2
+#define TRACE_DIR_INOUT	3
+
 typedef struct _Widget {
 	nid_t nid;
 	int type;
@@ -167,6 +172,7 @@ typedef struct _Widget {
 	UInt8 connsenable[HDA_MAX_CONNS];
 	char name[HDA_MAX_NAMELEN];
 	FunctionGroup *funcGroup;
+	UInt8 traceDir; 
 	struct {
 		UInt32 widgetCap;
 		UInt32 outAmpCap;

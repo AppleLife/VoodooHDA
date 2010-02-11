@@ -176,8 +176,8 @@ void VoodooHDADevice::probeFunction(Codec *codec, nid_t nid)
 	funcGroup->audio.quirks |= mQuirksOn;
 	funcGroup->audio.quirks &= ~mQuirksOff;
 //Slice - move audioCtlParse after patch!!!
-	dumpMsg("Parsing Ctls...\n");
-	audioCtlParse(funcGroup);
+//	dumpMsg("Parsing Ctls...\n");
+//	audioCtlParse(funcGroup);
 //
 	dumpMsg("Disabling nonaudio...\n");
 	audioDisableNonAudio(funcGroup);
@@ -203,6 +203,8 @@ void VoodooHDADevice::probeFunction(Codec *codec, nid_t nid)
 	audioBindAssociation(funcGroup);
 	dumpMsg("Assigning names to signal sources...\n");
 	audioAssignNames(funcGroup);
+	dumpMsg("Parsing Ctls...\n");
+	audioCtlParse(funcGroup);
 	dumpMsg("Assigning mixers to the tree...\n");
 	audioAssignMixers(funcGroup);
 	dumpMsg("Preparing pin controls...\n");
@@ -319,6 +321,7 @@ void VoodooHDADevice::audioParse(FunctionGroup *funcGroup)
 			widget->pflags = 0;
 			widget->ossdev = -1;
 			widget->bindAssoc = -1;
+			widget->traceDir = TRACE_DIR_NONE;
 			widget->params.eapdBtl = HDAC_INVALID;
 			widgetParse(widget);
 		}
@@ -331,13 +334,17 @@ void VoodooHDADevice::audioCtlParse(FunctionGroup *funcGroup)
 	int max;
 
 	/* XXX This is redundant */
+	//Определяем общее число регуляторов
 	max = 0;
 	for (int i = funcGroup->startNode; i < funcGroup->endNode; i++) {
 		Widget *widget = widgetGet(funcGroup, i);
+		//Если widget отключен, то он не добавит регуляторов
 		if (!widget || (widget->enable == 0))
 			continue;
+		//Каждый выходной усилитель - это один регулятор
 		if (widget->params.outAmpCap != 0)
 			max++;
+		//Теперь считаем число входных усилителей
 		if (widget->params.inAmpCap != 0) {
 			switch (widget->type) {
 			case HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_AUDIO_SELECTOR:
@@ -398,11 +405,15 @@ void VoodooHDADevice::audioCtlParse(FunctionGroup *funcGroup)
 			controls[cnt].offset = offset;
 			controls[cnt].left = offset;
 			controls[cnt].right = offset;
-			if ((widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX) || 
-				(widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_AUDIO_MIXER) || widget->waspin) 
+			
+			//Определяем к входной или выходной цепочке принадлежит регулятор
+			if ((widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX) || //Если этот widget - разъем
+				(widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_AUDIO_MIXER) ||
+				widget->waspin) //???
 				controls[cnt].ndir = HDA_CTL_IN;
 			else 
 				controls[cnt].ndir = HDA_CTL_OUT;
+			
 			controls[cnt++].dir = HDA_CTL_OUT;
 		}
 
@@ -577,6 +588,10 @@ void VoodooHDADevice::vendorPatchParse(FunctionGroup *funcGroup)
 				//widget->enable = 2;
 			}
 		}
+		if(NodesToPatchArray[i].Enable & 0x40) {
+			widgetConnectionSelect(widget, NodesToPatchArray[i].nSel);
+			widget->selconn = NodesToPatchArray[i].nSel;
+		}
 		if (NodesToPatchArray[i].Enable & 0x20) {
 			/*
 			nid_t cad = widget->funcGroup->codec->cad;
@@ -601,6 +616,9 @@ void VoodooHDADevice::vendorPatchParse(FunctionGroup *funcGroup)
 				continue;
 			widget->connsenabled++;
 			dumpMsg(" %d=%d", j, widget->conns[j]);
+			
+			if(widget->selconn == j)
+				dumpMsg( "(select)");
 		}
 		dumpMsg("\n");
 	}
@@ -1275,6 +1293,7 @@ nid_t VoodooHDADevice::audioTraceDac(FunctionGroup *funcGroup, int assocNum, int
 		break;
 	}
 	if (m && only) {
+		widget->traceDir |= TRACE_DIR_OUT;
 		widget->bindAssoc = assocNum;
 		widget->bindSeqMask |= (1 << seq);
 	}
@@ -1337,6 +1356,7 @@ nid_t VoodooHDADevice::audioTraceAdc(FunctionGroup *funcGroup, int assocNum, int
 		break;
 	}
 	if (res) {
+		widget->traceDir |= TRACE_DIR_IN;
 		widget->bindAssoc = assocNum;
 		widget->bindSeqMask |= (1 << seq);
 	}
@@ -1784,6 +1804,12 @@ int VoodooHDADevice::audioCtlSourceAmp(FunctionGroup *funcGroup, nid_t nid, int 
 {
 	Widget *widget;
 	int conns = 0, rneed;
+	char buf[64];
+	
+	if(depth == 0 && (nid == 35 || nid == 11 || nid == 12))
+		dumpMsg("nid %d is audioCtlSourceAmp\n", nid);
+	
+	dumpMsg(" %*strace source, nid %d\n", depth + 1, " ", nid);
 	
 	if (depth > HDA_PARSE_MAXDEPTH)
 		return need;
@@ -1806,6 +1832,8 @@ int VoodooHDADevice::audioCtlSourceAmp(FunctionGroup *funcGroup, nid_t nid, int 
 			(widget->type != HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX))) {
 		AudioControl *control = audioCtlAmpGet(funcGroup, widget->nid, HDA_CTL_IN, index, 1);
 		if (control) {
+			dumpMsg(" %*sadd in ossmask %s\n", depth+1, " ", audioCtlMixerMaskToString(1 << ossdev, buf, sizeof (buf)));
+			
 			if (HDA_CTL_GIVE(control) & need)
 				control->ossmask |= (1 << ossdev);
 			else
@@ -1821,8 +1849,9 @@ int VoodooHDADevice::audioCtlSourceAmp(FunctionGroup *funcGroup, nid_t nid, int 
 
 	/* We must not traverse pin */
 	if (((widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_AUDIO_INPUT) ||
-			(widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX)) && (depth > 0))
+		 (widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX)) && (depth > 0)) {
 		return need;
+	}
 
 	/* record that this widget exports such signal, */
 	widget->ossmask |= (1 << ossdev);
@@ -1840,6 +1869,9 @@ int VoodooHDADevice::audioCtlSourceAmp(FunctionGroup *funcGroup, nid_t nid, int 
 	if (controllable) {
 		AudioControl *control = audioCtlAmpGet(funcGroup, widget->nid, HDA_CTL_OUT, -1, 1);
 		if (control) {
+			
+			dumpMsg(" %*sadd out ossmask %s\n", depth+1, " ", audioCtlMixerMaskToString(1 << ossdev, buf, sizeof (buf)));
+			
 			if (HDA_CTL_GIVE(control) & need)
 				control->ossmask |= (1 << ossdev);
 			else
@@ -1871,14 +1903,20 @@ void VoodooHDADevice::audioCtlDestAmp(FunctionGroup *funcGroup, nid_t nid, int o
 {
 	AudioAssoc *assocs = funcGroup->audio.assocs;
 	Widget *widget;
+	char buf[64];
 
+	if(depth == 0 && (nid == 35 || nid == 11 || nid == 12))
+		dumpMsg("nid %d is audioCtlDestAmp\n", nid);
+	
+	dumpMsg(" %*strace dest nid %d\n", depth + 1, " ", nid);
+	
 	if (depth > HDA_PARSE_MAXDEPTH)
 		return;
 
 	widget = widgetGet(funcGroup, nid);
 	if (!widget || (widget->enable == 0))
 		return;
-
+	
 	if (depth > 0) {
 		int consumers;
 		AudioControl *control;
@@ -1905,19 +1943,24 @@ void VoodooHDADevice::audioCtlDestAmp(FunctionGroup *funcGroup, nid_t nid, int o
 			return;
 
 		/* Else use it's output mixer. */
+		
 		control = audioCtlAmpGet(funcGroup, widget->nid, HDA_CTL_OUT, -1, 1);
 		if (control) {
+			dumpMsg(" %*sadd out ossmask %s\n", depth+1, " ", audioCtlMixerMaskToString(1 << ossdev, buf, sizeof (buf)));
 			if (HDA_CTL_GIVE(control) & need)
 				control->ossmask |= (1 << ossdev);
 			else
 				control->possmask |= (1 << ossdev);
 			need &= ~HDA_CTL_GIVE(control);
 		}
+		
 	}
 	
 	/* We must not traverse pin */
-	if ((widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX) && (depth > 0))
+	if ((widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX) && (depth > 0)) {
+		dumpMsg(" %*strace goed to pin complex\n", depth + 1, " ");
 		return;
+	}
 	
 	for (int i = 0; i < widget->nconns; i++) {
 		AudioControl *control;
@@ -1926,6 +1969,7 @@ void VoodooHDADevice::audioCtlDestAmp(FunctionGroup *funcGroup, nid_t nid, int o
 			continue;
 		control = audioCtlAmpGet(funcGroup, widget->nid, HDA_CTL_IN, i, 1);
 		if (control) {
+			dumpMsg(" %*sadd out ossmask %s\n", depth+1, " ", audioCtlMixerMaskToString(1 << ossdev, buf, sizeof (buf)));
 			if (HDA_CTL_GIVE(control) & tneed)
 				control->ossmask |= (1 << ossdev);
 			else
@@ -1956,17 +2000,17 @@ void VoodooHDADevice::audioAssignMixers(FunctionGroup *funcGroup)
 		} else if ((widget->pflags & HDA_ADC_MONITOR) != 0) {
 			if (widget->ossdev < 0)
 				continue;
-			if (audioCtlSourceAmp(funcGroup, widget->nid, -1, widget->ossdev, 1, 0, 1)) {
+			//if (audioCtlSourceAmp(funcGroup, widget->nid, -1, widget->ossdev, 1, 0, 1)) 
 				/* If we are unable to control input monitor
 				   as source - try to control it as destination. */
 				audioCtlDestAmp(funcGroup, widget->nid, widget->ossdev, 0, 1);
-			}
+			
 		} else if (widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_AUDIO_INPUT) {
 			audioCtlDestAmp(funcGroup, widget->nid, SOUND_MIXER_RECLEV, 0, 1);
 		} else if ((widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX) &&
 				(assocs[widget->bindAssoc].dir == HDA_CTL_OUT)) {
 			audioCtlDestAmp(funcGroup, widget->nid, SOUND_MIXER_VOLUME, 0, 1);
-		}
+		} 
 	}
 	/* Treat unrequired as possible. */
 	for (int i = 0; (control = audioCtlEach(funcGroup, &i)); )
@@ -2162,12 +2206,33 @@ void VoodooHDADevice::dumpCtls(PcmDevice *pcmDevice, const char *banner, UInt32 
 				dumpMsg("   |\n");
 				printed = 1;
 			}
-			dumpMsg("   +- control %2d (nid %3d %s", i, control->widget->nid, (control->ndir == HDA_CTL_IN) ?
+			dumpMsg("   +- control %2d (nid %3d %s", i, control->widget->nid, (control->dir == HDA_CTL_IN) ?
 					"in " : "out");
-			if ((control->ndir == HDA_CTL_IN) && (control->ndir == control->dir))
+			//if ((control->ndir == HDA_CTL_IN) && (control->dir == HDA_CTL_IN))
+			if (control->dir == HDA_CTL_IN)
 				dumpMsg(" %2d): ", control->index);
 			else
 				dumpMsg("):    ");
+			//Отображаем направление сигнала в widget
+			dumpMsg("dir - ");
+			switch (control->widget->traceDir) {
+				case TRACE_DIR_NONE:
+					dumpMsg("none ");
+					break;
+				case TRACE_DIR_IN:
+					dumpMsg("in ");
+					break;
+				case TRACE_DIR_OUT:
+					dumpMsg("out ");
+					break;
+				case TRACE_DIR_INOUT:
+					dumpMsg("inOut ");
+					break;
+			}
+			
+			char buf[64];
+			dumpMsg("oss: %s ", audioCtlMixerMaskToString(control->ossmask, buf, sizeof (buf)));
+			
 			if (control->step > 0) {
 				dumpMsg("%+d/%+ddB (%d steps)%s\n", (0 - control->offset) * (control->size + 1) / 4,
 						(control->step - control->offset) * (control->size + 1) / 4, control->step + 1,
@@ -4046,33 +4111,6 @@ void VoodooHDADevice::catPinName(Widget *widget)
 void VoodooHDADevice::updateExtDump(void)
 {
 	
-	/*
-	VoodooHDAEngine * engine = 0;
-	Channel* channel = 0;
-	
-	engine = lookupEngine(0);
-	if(engine == 0) {
-		//logMsg("VoodooHDADevice::updatePrefPanelMemoryBuf lookupEngine(0) return 0\n");
-		goto done;
-	}
-
-	channel = engine->mChannel;
-	if(channel == 0) {
-		//logMsg("VoodooHDADevice::updatePrefPanelMemoryBuf engine->mChannel eq 0\n");
-		goto done;
-	}
-	if(channel->pcmDevice == 0) {
-		//logMsg("VoodooHDADevice::updatePrefPanelMemoryBuf channel->pcmDevice eq 0\n");
-		goto done;
-	}
-	
-	if(channel->pcmDevice->funcGroup == 0) {
-		goto done;
-	}
-	updateExtDumpForFunctionGroup(channel->pcmDevice->funcGroup);
-	 
-	*/
-	
 	
 	lockExtMsgBuffer();
 	
@@ -4113,6 +4151,7 @@ void VoodooHDADevice::updateExtDumpForFunctionGroup(FunctionGroup *funcGroup)
 	dumpExtMsg("| DUMPING Volume Controls |\n");
 	dumpExtMsg("+-------------------------+\n");
 	
+	
 	for(int i = 0; i <  funcGroup->audio.numPcmDevices; i++) {
 		pcmDevice = &funcGroup->audio.pcmDevices[i];
 		dumpExtMsg("+-------------------------+\n");
@@ -4131,6 +4170,7 @@ void VoodooHDADevice::updateExtDumpForFunctionGroup(FunctionGroup *funcGroup)
 		extDumpCtls(pcmDevice, NULL, 0);
 		dumpExtMsg("\n");
 	}
+	
 }
 
 void VoodooHDADevice::extDumpAmp(UInt32 cap, const char *banner)

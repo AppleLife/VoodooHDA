@@ -31,6 +31,7 @@ typedef struct {
 	UInt32 Cap;
 	UInt32 Control;
 	UInt32 bEnabledWidget;
+	UInt32 nSel;
 } PatchArray;
 //
 

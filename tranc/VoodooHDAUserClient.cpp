@@ -171,8 +171,10 @@ IOReturn VoodooHDAUserClient::clientMemoryForType(UInt32 type, IOOptionBits *opt
 	IOReturn result;
 	IOBufferMemoryDescriptor *memDesc;
 	char *msgBuffer;
+	/*
 	ChannelInfo *channelInfoBuffer;
 	UInt32		channelInfoBufferSize = 0;
+	 */
 
 
 //	logMsg("VoodooHDAUserClient[%p]::clientMemoryForType(0x%lx)\n", this, type);
@@ -234,15 +236,17 @@ IOReturn VoodooHDAUserClient::clientMemoryForType(UInt32 type, IOOptionBits *opt
 		break;
 			//Разделяемая память для буфера с текущеми настройками усиления
 	case kVoodooHDAMemoryExtMessageBuffer:
-			channelInfoBuffer = mDevice->getChannelInfo();
-			if (!channelInfoBuffer)
-				return kIOReturnError;
 			
-			channelInfoBufferSize = sizeof(*channelInfoBuffer) * channelInfoBuffer->numChannels;
-			//IOLog("infoBufferSize %ld\n", channelInfoBufferSize);
-			if (!channelInfoBufferSize)
-				return kIOReturnError;
-
+		/*
+		channelInfoBuffer = mDevice->getChannelInfo();
+		if (!channelInfoBuffer)
+			return kIOReturnError;
+			
+		channelInfoBufferSize = sizeof(*channelInfoBuffer) * channelInfoBuffer->numChannels;
+		//IOLog("infoBufferSize %ld\n", channelInfoBufferSize);
+		if (!channelInfoBufferSize)
+			return kIOReturnError;
+		*/
 	
 		mDevice->lockExtMsgBuffer();
 		if (!mDevice->mExtMsgBufferSize) {
@@ -251,8 +255,9 @@ IOReturn VoodooHDAUserClient::clientMemoryForType(UInt32 type, IOOptionBits *opt
 			result = kIOReturnUnsupported;
 			break;
 		}
-		memDesc = IOBufferMemoryDescriptor::withOptions(kIOMemoryKernelUserShared,
-														mDevice->mExtMsgBufferSize);
+			
+		memDesc = IOBufferMemoryDescriptor::withOptions(kIOMemoryKernelUserShared,	mDevice->mExtMsgBufferSize);
+		//memDesc = IOBufferMemoryDescriptor::withOptions(kIOMemoryKernelUserShared,	8);
 		if (!memDesc) {
 			errorMsg("error: couldn't allocate buffer memory descriptor (size: %ld)\n",
 					 mDevice->mExtMsgBufferSize);
@@ -262,6 +267,7 @@ IOReturn VoodooHDAUserClient::clientMemoryForType(UInt32 type, IOOptionBits *opt
 		}
 		msgBuffer = (char *) memDesc->getBytesNoCopy();
 		bcopy(mDevice->mExtMsgBuffer, msgBuffer, mDevice->mExtMsgBufferSize);
+		//bcopy("test\n\0\0\0\0", msgBuffer, 8);
 		mDevice->unlockExtMsgBuffer();
 		*options |= kIOMapReadOnly;
 		*memory = memDesc; // automatically released after memory is mapped into task

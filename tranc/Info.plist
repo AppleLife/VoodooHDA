@@ -41,11 +41,42 @@
 			<key>VoodooHDAVerboseLevel</key>
 			<integer>1</integer>
 			<key>NodesToPatch</key>
-			<array/>
+			<array>
+				<dict>
+					<key>Codec</key>
+					<integer>0</integer>
+					<key>Config</key>
+					<string>0x91111113</string>
+					<key>Node</key>
+					<integer>21</integer>
+					<key>Select</key>
+					<integer>1</integer>
+				</dict>
+				<dict>
+					<key>Codec</key>
+					<integer>0</integer>
+					<key>Config</key>
+					<string>0x91111112</string>
+					<key>Node</key>
+					<integer>22</integer>
+					<key>Select</key>
+					<integer>2</integer>
+				</dict>
+				<dict>
+					<key>Codec</key>
+					<integer>0</integer>
+					<key>Config</key>
+					<string>0x91111111</string>
+					<key>Node</key>
+					<integer>23</integer>
+					<key>Select</key>
+					<integer>3</integer>
+				</dict>
+			</array>
 			<key>MixerValues</key>
 			<dict>
 				<key>iMix</key>
-				<string>90</string>
+				<string>30</string>
 			</dict>
 		</dict>
 	</dict>

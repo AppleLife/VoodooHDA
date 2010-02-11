@@ -75,7 +75,7 @@
 		"vol", "bass", "treble", "synth", "pcm", "speaker", "line", \
 		"mic", "cd", "mix", "pcm2", "rec", "igain", "ogain", \
 		"line1", "line2", "line3", "dig1", "dig2", "dig3", \
-		"phin", "phout", "video", "radio", "monitor" }
+		"phin", "phout", "video", "radio", "monitor", "out_mix" }
 
 #define AFMT_S16_LE     0x00000010      /* Little endian signed 16-bit */
 #define AFMT_AC3        0x00000400      /* Dolby Digital AC3 */

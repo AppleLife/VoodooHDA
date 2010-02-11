@@ -248,6 +248,11 @@ IOService *VoodooHDADevice::probe(IOService *provider, SInt32 *score)
 					} else if (tmpString->isEqualTo("Codec")) {
 						//Codec по умолчанию = 0
 						NodesToPatchArray[i].cad = tmpUI32;
+					} else if (tmpString->isEqualTo("Select")) {
+						//NodesToPatchArray[i].cad = tmpUI32;
+						NodesToPatchArray[i].nSel = tmpUI32;
+						NodesToPatchArray[i].Enable |= 0x40;
+						//sendCommand(HDA_CMD_SET_CONNECTION_SELECT_CONTROL(NodesToPatchArray[i].cad, NodesToPatchArray[i].Node, tmpUI32), NodesToPatchArray[i].cad);
 					}
 					
 				}
@@ -1109,6 +1114,7 @@ IOReturn VoodooHDADevice::handleAction(OSObject *owner, void *arg0, void *arg1, 
 		return result;
 	}
 	
+	
 	//Команда от моей версии getDump для обновления данных о усилении
 	if((action & 0xFF)  == 0x50) {
 
@@ -1119,6 +1125,7 @@ IOReturn VoodooHDADevice::handleAction(OSObject *owner, void *arg0, void *arg1, 
 		
 		return result;
 	}
+	
 	
 	switch (action) {
 	case kVoodooHDAActionTest:
@@ -2651,6 +2658,9 @@ void VoodooHDADevice::createPrefPanelStruct(FunctionGroup *funcGroup)
 		}
 		//logMsg("createPrefPanelStruct:         ossdev %s, pcmDev = %d\n", audioCtlMixerMaskToString(ossmask, buf, sizeof(buf)), pcmDeviceNum);
 		
+		if(ossmask & SOUND_MASK_PCM)
+			ossmask |= SOUND_MASK_IMIX;
+		
 		sliderTabs[nSliderTabsCount].pcmDevice = pcmDevice;
 		//Создаем регуляторы на текущей вкладке
 		for(int j = 0; j < 32; j++) {
@@ -2679,11 +2689,7 @@ void VoodooHDADevice::updatePrefPanelMemoryBuf(void)
 		for(int j = 1; j < 25; j++) {
 			if(sliderTabs[i].volSliders[j].enabled == 0) 
 				continue;
-			/*
-			int left, right;
-			audioCtlOssMixerGet(pcmDevice, j, &left, &right); 
-			mPrefPanelMemoryBuf[i].info[j - 1].value = left;
-			*/
+			
 			mPrefPanelMemoryBuf[i].info[j - 1].value = sliderTabs[i].pcmDevice->left[j];
 		}
 	}
@@ -2697,6 +2703,7 @@ void VoodooHDADevice::changeSliderValue(UInt8 tabNum, UInt8 sliderNum, UInt8 new
 	if(tabNum < nSliderTabsCount) {
 		
 		if(sliderTabs[tabNum].pcmDevice != 0) {		
+			
 			audioCtlOssMixerSet(sliderTabs[tabNum].pcmDevice, sliderNum, newValue, newValue);
 		
 			updatePrefPanelMemoryBuf();
@@ -2746,11 +2753,13 @@ void VoodooHDADevice::dumpExtMsg(const char *format, ...)
 	bool lockExists;
 	int length;
 	
+	/*
 	lockExists = (!isInactive() && mExtMessageLock);
 	if (lockExists)
 		lockExtMsgBuffer(); // utilize message buffer lock for console logging as well
+	*/
 	
-	ASSERT(mExtMsgBufferPos < (mExtMsgBufferSize - 1));
+	//ASSERT(mExtMsgBufferPos < (mExtMsgBufferSize - 1));
 	if (mExtMsgBufferPos != (mExtMsgBufferSize - 2)) {
 		length = vsnprintf(mExtMsgBuffer + mExtMsgBufferPos, mExtMsgBufferSize - mExtMsgBufferPos,
 						   format, args);
@@ -2760,8 +2769,10 @@ void VoodooHDADevice::dumpExtMsg(const char *format, ...)
 			IOLog("warning: vsnprintf in dumpMsg failed\n");
 	}
 	
+	/*
 	if (lockExists)
 		unlockExtMsgBuffer();
+	*/
 	
 	va_end(args);
 }
