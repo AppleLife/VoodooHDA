@@ -323,6 +323,7 @@ void VoodooHDADevice::audioParse(FunctionGroup *funcGroup)
 			widget->bindAssoc = -1;
 			widget->traceDir = TRACE_DIR_NONE;
 			widget->params.eapdBtl = HDAC_INVALID;
+			widget->favoritDAC = 0;
 			widgetParse(widget);
 		}
 	}
@@ -593,13 +594,10 @@ void VoodooHDADevice::vendorPatchParse(FunctionGroup *funcGroup)
 			widget->selconn = NodesToPatchArray[i].nSel;
 		}
 		if (NodesToPatchArray[i].Enable & 0x20) {
-			/*
-			nid_t cad = widget->funcGroup->codec->cad;
-			nid_t nid = widget->nid;
-			sendCommand(HDA_CMD_SET_PIN_WIDGET_CTRL(cad, nid, NodesToPatchArray[i].Control) , cad);
-			widget->pin.ctrl = sendCommand(HDA_CMD_GET_PIN_WIDGET_CTRL(cad, nid), cad);
-			*/
 			widget->pin.ctrl = NodesToPatchArray[i].Control;
+		}
+		if (NodesToPatchArray[i].Enable & 0x80) {
+			widget->favoritDAC = NodesToPatchArray[i].favoritDAC;
 		}
 	}
 	// log after patch	
@@ -1227,9 +1225,18 @@ nid_t VoodooHDADevice::audioTraceDac(FunctionGroup *funcGroup, int assocNum, int
 	Widget *widget;
 	int im = -1;
 	nid_t m = 0, ret;
-
+	nid_t pinNid;
+	nid_t favoritDAC = 0;
+	
 	if (depth > HDA_PARSE_MAXDEPTH)
 		return 0;
+	
+	//Получаю номер DAC к которому желательно привести данный поиск
+	pinNid = funcGroup->audio.assocs[assocNum].pins[seq];
+	widget = widgetGet(funcGroup, nid);
+	if(widget)
+		favoritDAC = widget->favoritDAC;
+	
 	widget = widgetGet(funcGroup, nid);
 	if (!widget || (widget->enable == 0))
 		return 0;
@@ -1278,8 +1285,15 @@ nid_t VoodooHDADevice::audioTraceDac(FunctionGroup *funcGroup, int assocNum, int
 				continue;
 			if ((ret = audioTraceDac(funcGroup, assocNum, seq, widget->conns[i], dupseq, min, only,
 					depth + 1)) != 0) {
-				if ((m == 0) || (ret < m)) {
+				//Если найден желаемый DAC, то прерываем поиск
+				if(favoritDAC && ret == favoritDAC) {
 					m = ret;
+					im = i;
+					break;
+				}
+				//Если до сих пор не найдено, ни одного DAC или найденный DAC имеет меньший номер, то сохраняем найденный DAC
+				if ((m == 0) || (ret < m)) {
+					m = ret;  
 					im = i;
 				}
 				if (only || (dupseq >= 0))

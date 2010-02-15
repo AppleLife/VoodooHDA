@@ -269,7 +269,6 @@
 								<string>247142CAFF3F8F9811CA285C</string>
 								<string>089C167CFE841241C02AAC07</string>
 								<string>1C37FBAC04509CD000000102</string>
-								<string>1C08E77C0454961000C914BD</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
@@ -280,7 +279,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 162}, {186, 535}}</string>
+							<string>{{0, 33}, {186, 535}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -315,7 +314,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>VoodooHDADevice.cpp</string>
+								<string>version.plist</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -323,11 +322,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>VoodooHDADevice.cpp</string>
+										<string>version.plist</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>3215F13211231F00002D2914</string>
+										<string>328F90531129C6CC006D09F8</string>
 										<key>history</key>
 										<array>
 											<string>329F879B10162BF200179871</string>
@@ -345,11 +344,11 @@
 											<string>329C10B7111DA56F001651D3</string>
 											<string>32876D18111EC36C009EC5E0</string>
 											<string>3299BED7111F0BAA00015A2B</string>
-											<string>3292862D111F1C41003CCB1A</string>
-											<string>3292862F111F1C41003CCB1A</string>
 											<string>3215F12411231DA8002D2914</string>
-											<string>3215F13011231F00002D2914</string>
-											<string>3292862E111F1C41003CCB1A</string>
+											<string>32173D041129C41100E72A53</string>
+											<string>328F90421129C63F006D09F8</string>
+											<string>328F90431129C63F006D09F8</string>
+											<string>328F90461129C63F006D09F8</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -372,8 +371,7 @@
 											<string>323763B110CABE1E007E8046</string>
 											<string>323763B510CABE1E007E8046</string>
 											<string>32A31740111DA32E0091303A</string>
-											<string>3215F12611231DA8002D2914</string>
-											<string>3215F13111231F00002D2914</string>
+											<string>32173D081129C41100E72A53</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -431,9 +429,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>3215F12811231DA8002D2914</string>
+				<string>328F90541129C6CC006D09F8</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>3215F12911231DA8002D2914</string>
+				<string>328F90551129C6CC006D09F8</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -648,7 +646,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>32C824B31011CAD400792F91</string>
-				<string>3215F13311231F00002D2914</string>
+				<string>328F90561129C6CC006D09F8</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -784,7 +782,7 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CDD528C0622207200134675</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>OssCompat.h</string>
+										<string>VoodooHDADevice.cpp</string>
 										<key>StatusBarVisibility</key>
 										<true/>
 									</dict>
@@ -842,8 +840,8 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C530D57069F1CE1000CFCEE</string>
-				<string>32928613111F1BCA003CCB1A</string>
-				<string>32928614111F1BCA003CCB1A</string>
+				<string>32173CDB1129C05C00E72A53</string>
+				<string>32173CDC1129C05C00E72A53</string>
 				<string>1CDD528C0622207200134675</string>
 				<string>1CD0528E0623707200166675</string>
 			</array>

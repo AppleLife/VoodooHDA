@@ -4,7 +4,7 @@
 		activeBuildConfigurationName = Release_Leo;
 		activeTarget = 32D94FC30562CBF700B6AF17 /* VoodooHDA */;
 		breakpoints = (
-			328C96AF101B663D00933B75 /* Parser.cpp:539 */,
+			328C96AF101B663D00933B75 /* Parser.cpp:540 */,
 			329BCBEF101C814D00B7B1F3 /* VoodooHDADevice.cpp:1384 */,
 		);
 		codeSenseManager = 32C824AC1011C9AC00792F91 /* Code sense */;
@@ -107,15 +107,13 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 287513988;
-			PBXWorkspaceStateSaveDate = 287513988;
+			PBXPerProjectTemplateStateSaveDate = 287950520;
+			PBXWorkspaceStateSaveDate = 287950520;
 		};
 		perUserProjectItems = {
 			3215F12411231DA8002D2914 /* PBXTextBookmark */ = 3215F12411231DA8002D2914 /* PBXTextBookmark */;
-			3215F12611231DA8002D2914 /* PBXTextBookmark */ = 3215F12611231DA8002D2914 /* PBXTextBookmark */;
-			3215F13011231F00002D2914 /* PBXTextBookmark */ = 3215F13011231F00002D2914 /* PBXTextBookmark */;
-			3215F13111231F00002D2914 /* PBXTextBookmark */ = 3215F13111231F00002D2914 /* PBXTextBookmark */;
-			3215F13211231F00002D2914 /* PBXTextBookmark */ = 3215F13211231F00002D2914 /* PBXTextBookmark */;
+			32173D041129C41100E72A53 /* PBXTextBookmark */ = 32173D041129C41100E72A53 /* PBXTextBookmark */;
+			32173D081129C41100E72A53 /* PBXTextBookmark */ = 32173D081129C41100E72A53 /* PBXTextBookmark */;
 			323763A710CABE1E007E8046 /* PBXTextBookmark */ = 323763A710CABE1E007E8046 /* PBXTextBookmark */;
 			323763AF10CABE1E007E8046 /* PBXTextBookmark */ = 323763AF10CABE1E007E8046 /* PBXTextBookmark */;
 			323763B110CABE1E007E8046 /* PBXTextBookmark */ = 323763B110CABE1E007E8046 /* PBXTextBookmark */;
@@ -133,11 +131,12 @@
 			328E3433104AD55E00ABCDFA /* PBXTextBookmark */ = 328E3433104AD55E00ABCDFA /* PBXTextBookmark */;
 			328E3436104AD55E00ABCDFA /* PBXTextBookmark */ = 328E3436104AD55E00ABCDFA /* PBXTextBookmark */;
 			328EF312101C510F00DFC9FE /* PBXTextBookmark */ = 328EF312101C510F00DFC9FE /* PBXTextBookmark */;
+			328F90421129C63F006D09F8 /* PBXTextBookmark */ = 328F90421129C63F006D09F8 /* PBXTextBookmark */;
+			328F90431129C63F006D09F8 /* PlistBookmark */ = 328F90431129C63F006D09F8 /* PlistBookmark */;
+			328F90461129C63F006D09F8 /* PlistBookmark */ = 328F90461129C63F006D09F8 /* PlistBookmark */;
+			328F90531129C6CC006D09F8 /* PlistBookmark */ = 328F90531129C6CC006D09F8 /* PlistBookmark */;
 			3290C704101B0D17001A8618 /* PBXTextBookmark */ = 3290C704101B0D17001A8618 /* PBXTextBookmark */;
 			329270F910DE6A69009094A0 /* PBXTextBookmark */ = 329270F910DE6A69009094A0 /* PBXTextBookmark */;
-			3292862D111F1C41003CCB1A /* PlistBookmark */ = 3292862D111F1C41003CCB1A /* PlistBookmark */;
-			3292862E111F1C41003CCB1A /* PBXTextBookmark */ = 3292862E111F1C41003CCB1A /* PBXTextBookmark */;
-			3292862F111F1C41003CCB1A /* PBXTextBookmark */ = 3292862F111F1C41003CCB1A /* PBXTextBookmark */;
 			3293C3FE10DE658100B73891 /* PBXTextBookmark */ = 3293C3FE10DE658100B73891 /* PBXTextBookmark */;
 			32979EDA1020A98A002EC865 /* PBXTextBookmark */ = 32979EDA1020A98A002EC865 /* PBXTextBookmark */;
 			32980F0D101A25F0002227B7 /* PBXTextBookmark */ = 32980F0D101A25F0002227B7 /* PBXTextBookmark */;
@@ -176,52 +175,32 @@
 		vrLen = 582;
 		vrLoc = 4440;
 	};
-	3215F12611231DA8002D2914 /* PBXTextBookmark */ = {
+	32173D041129C41100E72A53 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = CE709B4E0EFF2AA400EE77FF /* VoodooHDAUserClient.cpp */;
-		name = "VoodooHDAUserClient.cpp: 177";
-		rLen = 0;
-		rLoc = 4866;
+		fRef = 328C96AD101B663D00933B75 /* Parser.cpp */;
+		name = "Parser.cpp: 319";
+		rLen = 14;
+		rLoc = 11018;
 		rType = 0;
-		vrLen = 582;
-		vrLoc = 4440;
+		vrLen = 731;
+		vrLoc = 10546;
 	};
-	3215F13011231F00002D2914 /* PBXTextBookmark */ = {
+	32173D081129C41100E72A53 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 32D94FCF0562CBF700B6AF17 /* Info.plist */;
-		name = "Info.plist: 49";
+		name = "Info.plist: 79";
 		rLen = 0;
-		rLoc = 1504;
+		rLoc = 2186;
 		rType = 0;
-		vrLen = 545;
-		vrLoc = 1361;
-	};
-	3215F13111231F00002D2914 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 32D94FCF0562CBF700B6AF17 /* Info.plist */;
-		name = "Info.plist: 49";
-		rLen = 0;
-		rLoc = 1504;
-		rType = 0;
-		vrLen = 545;
-		vrLoc = 1361;
-	};
-	3215F13211231F00002D2914 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE6725A00EF078B100FAFBED /* VoodooHDADevice.cpp */;
-		name = "VoodooHDADevice.cpp: 2550";
-		rLen = 0;
-		rLoc = 70549;
-		rType = 0;
-		vrLen = 915;
-		vrLoc = 70136;
+		vrLen = 555;
+		vrLoc = 1702;
 	};
 	321853AE111D7A9F00729EEF /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = CE5D398A0EF4784000140715 /* Parser.cpp */;
 		name = audioCtlParse;
 		rLen = 13;
-		rLoc = 11273;
+		rLoc = 11300;
 		rType = 0;
 		vrLen = 1227;
 		vrLoc = 10848;
@@ -231,7 +210,7 @@
 		fRef = CE5D398A0EF4784000140715 /* Parser.cpp */;
 		name = dumpCtls;
 		rLen = 8;
-		rLoc = 69456;
+		rLoc = 69833;
 		rType = 0;
 		vrLen = 1592;
 		vrLoc = 67548;
@@ -313,11 +292,6 @@
 		name = VoodooHDADevice.cpp;
 		path = "/Developer/voodoohda-patching/VoodooHDADevice.cpp";
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {696, 38892}}";
-			sepNavSelRange = "{70549, 0}";
-			sepNavVisRange = "{70136, 915}";
-		};
 	};
 	328A865B1011D0DB00F2E6C9 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -404,7 +378,7 @@
 		path = "/Developer/voodoohda-patching/Parser.cpp";
 		sourceTree = "<group>";
 	};
-	328C96AF101B663D00933B75 /* Parser.cpp:539 */ = {
+	328C96AF101B663D00933B75 /* Parser.cpp:540 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -416,7 +390,7 @@
 		functionName = "VoodooHDADevice::vendorPatchParse(FunctionGroup *funcGroup)";
 		hitCount = 0;
 		ignoreCount = 0;
-		lineNumber = 539;
+		lineNumber = 540;
 		modificationTime = 270231101.105099;
 		state = 1;
 	};
@@ -498,12 +472,57 @@
 		path = "/Developer/voodoohda-patching/VoodooHDADevice.h";
 		sourceTree = "<absolute>";
 	};
+	328F90421129C63F006D09F8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 329BCBED101C814D00B7B1F3 /* VoodooHDADevice.cpp */;
+		name = "VoodooHDADevice.cpp: 252";
+		rLen = 0;
+		rLoc = 7398;
+		rType = 0;
+		vrLen = 872;
+		vrLoc = 6855;
+	};
+	328F90431129C63F006D09F8 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 32D94FCF0562CBF700B6AF17 /* Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = "/Developer/voodoohda-patching/Info.plist";
+		rLen = 0;
+		rLoc = 2147483647;
+	};
+	328F90461129C63F006D09F8 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = A54ED8370FEE91E700CA5717 /* version.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			SourceVersion,
+		);
+		name = "/Developer/voodoohda-patching/version.plist";
+		rLen = 0;
+		rLoc = 2147483647;
+	};
+	328F90531129C6CC006D09F8 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = A54ED8370FEE91E700CA5717 /* version.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			SourceVersion,
+		);
+		name = "/Developer/voodoohda-patching/version.plist";
+		rLen = 0;
+		rLoc = 2147483647;
+	};
 	3290C704101B0D17001A8618 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 328F6C0E101B094E00154BF0 /* VoodooHDADevice.h */;
 		name = "VoodooHDADevice.h: 290";
 		rLen = 31;
-		rLoc = 10862;
+		rLoc = 10882;
 		rType = 0;
 		vrLen = 610;
 		vrLoc = 8801;
@@ -517,51 +536,6 @@
 		rType = 0;
 		vrLen = 678;
 		vrLoc = 264;
-	};
-	3292861B111F1BFC003CCB1A /* VoodooHDADevice.cpp */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.cpp.cpp;
-		name = VoodooHDADevice.cpp;
-		path = "/Developer/voodoohda-patching/VoodooHDADevice.cpp";
-		sourceTree = "<absolute>";
-	};
-	32928627111F1C16003CCB1A /* Parser.cpp */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.cpp.cpp;
-		name = Parser.cpp;
-		path = "/Developer/voodoohda-patching/Parser.cpp";
-		sourceTree = "<absolute>";
-	};
-	3292862D111F1C41003CCB1A /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = A54ED8370FEE91E700CA5717 /* version.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-		);
-		name = "/Developer/voodoohda-patching/version.plist";
-		rLen = 0;
-		rLoc = 2147483647;
-	};
-	3292862E111F1C41003CCB1A /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3292861B111F1BFC003CCB1A /* VoodooHDADevice.cpp */;
-		name = "VoodooHDADevice.cpp: 2550";
-		rLen = 0;
-		rLoc = 70549;
-		rType = 0;
-		vrLen = 832;
-		vrLoc = 70186;
-	};
-	3292862F111F1C41003CCB1A /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 32928627111F1C16003CCB1A /* Parser.cpp */;
-		name = "Parser.cpp: 4297";
-		rLen = 0;
-		rLoc = 140767;
-		rType = 0;
-		vrLen = 914;
-		vrLoc = 140421;
 	};
 	3293C3FE10DE658100B73891 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -598,7 +572,7 @@
 		fRef = 328F6C0E101B094E00154BF0 /* VoodooHDADevice.h */;
 		name = "VoodooHDADevice.h: 272";
 		rLen = 35;
-		rLoc = 8006;
+		rLoc = 8026;
 		rType = 0;
 		vrLen = 1104;
 		vrLoc = 7608;
@@ -651,7 +625,7 @@
 		fRef = 328C96AD101B663D00933B75 /* Parser.cpp */;
 		name = audioAssignNames;
 		rLen = 16;
-		rLoc = 52212;
+		rLoc = 52589;
 		rType = 0;
 		vrLen = 1653;
 		vrLoc = 52185;
@@ -691,7 +665,7 @@
 		fRef = 328B28081011D6C200C2CC97 /* Parser.cpp */;
 		name = "Parser.cpp: 542";
 		rLen = 0;
-		rLoc = 18463;
+		rLoc = 18490;
 		rType = 0;
 		vrLen = 700;
 		vrLoc = 16406;
@@ -791,9 +765,9 @@
 	};
 	CE45220F0EF210FD00600B68 /* Private.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {691, 4816}}";
-			sepNavSelRange = "{876, 24}";
-			sepNavVisRange = "{418, 809}";
+			sepNavIntBoundsRect = "{{0, 0}, {691, 4620}}";
+			sepNavSelRange = "{5539, 0}";
+			sepNavVisRange = "{5218, 561}";
 			sepNavWindowFrame = "{{3, 191}, {750, 558}}";
 		};
 	};
@@ -823,9 +797,9 @@
 	};
 	CE6725A00EF078B100FAFBED /* VoodooHDADevice.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {696, 38892}}";
-			sepNavSelRange = "{70549, 0}";
-			sepNavVisRange = "{70136, 915}";
+			sepNavIntBoundsRect = "{{0, 0}, {816, 38668}}";
+			sepNavSelRange = "{7398, 0}";
+			sepNavVisRange = "{6855, 872}";
 			sepNavWindowFrame = "{{38, 194}, {750, 558}}";
 		};
 	};

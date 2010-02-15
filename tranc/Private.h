@@ -173,6 +173,7 @@ typedef struct _Widget {
 	char name[HDA_MAX_NAMELEN];
 	FunctionGroup *funcGroup;
 	UInt8 traceDir; 
+	nid_t favoritDAC;
 	struct {
 		UInt32 widgetCap;
 		UInt32 outAmpCap;

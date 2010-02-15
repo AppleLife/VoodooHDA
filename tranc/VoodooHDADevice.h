@@ -32,6 +32,7 @@ typedef struct {
 	UInt32 Control;
 	UInt32 bEnabledWidget;
 	UInt32 nSel;
+	UInt32 favoritDAC;
 } PatchArray;
 //
 

@@ -51,6 +51,8 @@
 					<integer>21</integer>
 					<key>Select</key>
 					<integer>1</integer>
+					<key>DAC</key>
+					<integer>3</integer>
 				</dict>
 				<dict>
 					<key>Codec</key>
@@ -61,6 +63,8 @@
 					<integer>22</integer>
 					<key>Select</key>
 					<integer>2</integer>
+					<key>DAC</key>
+					<integer>4</integer>
 				</dict>
 				<dict>
 					<key>Codec</key>
@@ -71,6 +75,8 @@
 					<integer>23</integer>
 					<key>Select</key>
 					<integer>3</integer>
+					<key>DAC</key>
+					<integer>5</integer>
 				</dict>
 			</array>
 			<key>MixerValues</key>

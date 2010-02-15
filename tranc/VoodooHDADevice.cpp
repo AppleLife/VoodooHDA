@@ -249,12 +249,12 @@ IOService *VoodooHDADevice::probe(IOService *provider, SInt32 *score)
 						//Codec по умолчанию = 0
 						NodesToPatchArray[i].cad = tmpUI32;
 					} else if (tmpString->isEqualTo("Select")) {
-						//NodesToPatchArray[i].cad = tmpUI32;
 						NodesToPatchArray[i].nSel = tmpUI32;
 						NodesToPatchArray[i].Enable |= 0x40;
-						//sendCommand(HDA_CMD_SET_CONNECTION_SELECT_CONTROL(NodesToPatchArray[i].cad, NodesToPatchArray[i].Node, tmpUI32), NodesToPatchArray[i].cad);
+					} else if (tmpString->isEqualTo("DAC")) {
+						NodesToPatchArray[i].favoritDAC = tmpUI32;
+						NodesToPatchArray[i].Enable |= 0x80;
 					}
-					
 				}
 			}
 		}
