@@ -113,7 +113,7 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf, void *destB
 				break;
 
 			case 32:
-				if (nativeEndianInts)
+				if (nativeEndianInts) 
 					NativeInt32ToFloat32((SInt32 *) &sourceBuf[4 * firstSample], floatDestBuf, numSamples);
 				else
 					SwapInt32ToFloat32((SInt32 *) &sourceBuf[4 * firstSample], floatDestBuf, numSamples);
@@ -125,6 +125,19 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf, void *destB
 				break;
 
 			}
+			
+			//Меняю местами значения для левого и правого канала
+			if(mDevice && mDevice->mSwitchCh && (streamFormat->fNumChannels > 1)) {
+				UInt32 i;
+				Float32 tempSamples;
+				
+				for(i = 0; i < numSamples; i+= streamFormat->fNumChannels) {
+					tempSamples = floatDestBuf[i];
+					floatDestBuf[i] = floatDestBuf[i+1];
+					floatDestBuf[i+1] = tempSamples;
+				}
+			}
+			
 		} else if (streamFormat->fNumericRepresentation == kIOAudioStreamNumericRepresentationIEEE754Float) {
 			// it is some kind of floating point format
 			if ((streamFormat->fBitWidth == 32) && (streamFormat->fBitDepth == 32) &&

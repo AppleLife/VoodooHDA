@@ -67,6 +67,8 @@ bool VoodooHDADevice::init(OSDictionary *dict)
 	mMsgBufferEnabled = false;
 	mMsgBufferSize = MSG_BUFFER_SIZE;
 	mMsgBufferPos = 0;
+	
+	mSwitchCh = false;
 
 	mMsgBuffer = (char *) allocMem(mMsgBufferSize);
 	if (!mMsgBuffer) {
@@ -254,7 +256,11 @@ IOService *VoodooHDADevice::probe(IOService *provider, SInt32 *score)
 					} else if (tmpString->isEqualTo("DAC")) {
 						NodesToPatchArray[i].favoritDAC = tmpUI32;
 						NodesToPatchArray[i].Enable |= 0x80;
+					} else if (tmpString->isEqualTo("SwitchCh")) {
+						//Меняем левый канал на правый для входных данных
+						mSwitchCh = true;
 					}
+					
 				}
 			}
 		}
@@ -2753,11 +2759,9 @@ void VoodooHDADevice::dumpExtMsg(const char *format, ...)
 	bool lockExists;
 	int length;
 	
-	/*
 	lockExists = (!isInactive() && mExtMessageLock);
 	if (lockExists)
 		lockExtMsgBuffer(); // utilize message buffer lock for console logging as well
-	*/
 	
 	//ASSERT(mExtMsgBufferPos < (mExtMsgBufferSize - 1));
 	if (mExtMsgBufferPos != (mExtMsgBufferSize - 2)) {
@@ -2769,10 +2773,8 @@ void VoodooHDADevice::dumpExtMsg(const char *format, ...)
 			IOLog("warning: vsnprintf in dumpMsg failed\n");
 	}
 	
-	/*
 	if (lockExists)
 		unlockExtMsgBuffer();
-	*/
 	
 	va_end(args);
 }

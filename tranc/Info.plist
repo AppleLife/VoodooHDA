@@ -45,6 +45,14 @@
 				<dict>
 					<key>Codec</key>
 					<integer>0</integer>
+					<key>Node</key>
+					<integer>18</integer>
+					<key>SwitchCh</key>
+					<integer>1</integer>
+				</dict>
+				<dict>
+					<key>Codec</key>
+					<integer>0</integer>
 					<key>Config</key>
 					<string>0x91111113</string>
 					<key>Node</key>

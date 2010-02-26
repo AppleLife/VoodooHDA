@@ -279,7 +279,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 33}, {186, 535}}</string>
+							<string>{{0, 52}, {186, 535}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -298,7 +298,7 @@
 							<real>186</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>125 140 965 594 0 0 1280 778 </string>
+						<string>394 184 965 594 0 0 1280 778 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -314,7 +314,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>version.plist</string>
+								<string>VoodooHDADevice.cpp</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -322,33 +322,43 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>version.plist</string>
+										<string>VoodooHDADevice.cpp</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>328F90531129C6CC006D09F8</string>
+										<string>329A597411385DA3004B22B3</string>
 										<key>history</key>
 										<array>
-											<string>329F879B10162BF200179871</string>
-											<string>328BD5C8101B6D010016CABE</string>
-											<string>328BD5C9101B6D010016CABE</string>
-											<string>328EF312101C510F00DFC9FE</string>
 											<string>328E3433104AD55E00ABCDFA</string>
 											<string>328E2EB1107B64BC0005513A</string>
 											<string>323763A710CABE1E007E8046</string>
 											<string>3293C3FE10DE658100B73891</string>
-											<string>329270F910DE6A69009094A0</string>
-											<string>32AAFD3010FBA39D0062065B</string>
-											<string>32C618581100D962001FDF70</string>
-											<string>32A3173E111DA32E0091303A</string>
-											<string>329C10B7111DA56F001651D3</string>
-											<string>32876D18111EC36C009EC5E0</string>
-											<string>3299BED7111F0BAA00015A2B</string>
-											<string>3215F12411231DA8002D2914</string>
-											<string>32173D041129C41100E72A53</string>
-											<string>328F90421129C63F006D09F8</string>
-											<string>328F90431129C63F006D09F8</string>
-											<string>328F90461129C63F006D09F8</string>
+											<string>329CBCA7112F162300272C3A</string>
+											<string>329CBCA8112F162300272C3A</string>
+											<string>329CBCAA112F162300272C3A</string>
+											<string>329CBCAC112F162300272C3A</string>
+											<string>329CBCAD112F162300272C3A</string>
+											<string>329CBCB1112F162300272C3A</string>
+											<string>329CBCB2112F162300272C3A</string>
+											<string>329CBCB3112F162300272C3A</string>
+											<string>329CBCB4112F162400272C3A</string>
+											<string>329CBCB5112F162400272C3A</string>
+											<string>329CBCB6112F162400272C3A</string>
+											<string>329CBCB8112F162400272C3A</string>
+											<string>32B8BE0111359BE3004CAD70</string>
+											<string>32B8BE0211359BE3004CAD70</string>
+											<string>32B8BE0311359BE3004CAD70</string>
+											<string>32A5EC1711384E0E00D29DCF</string>
+											<string>32A5EC1A11384E0E00D29DCF</string>
+											<string>328AB8DF1138555500C32B28</string>
+											<string>328AB8E01138555500C32B28</string>
+											<string>328AB8E11138555500C32B28</string>
+											<string>3299DEB01138573100C7D268</string>
+											<string>329F053A113858DA00746D4B</string>
+											<string>329F053B113858DA00746D4B</string>
+											<string>329A596E11385DA3004B22B3</string>
+											<string>329A596F11385DA3004B22B3</string>
+											<string>329A597011385DA3004B22B3</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -371,7 +381,20 @@
 											<string>323763B110CABE1E007E8046</string>
 											<string>323763B510CABE1E007E8046</string>
 											<string>32A31740111DA32E0091303A</string>
-											<string>32173D081129C41100E72A53</string>
+											<string>329CBCBE112F162400272C3A</string>
+											<string>329CBCC5112F162400272C3A</string>
+											<string>329CBCC6112F162400272C3A</string>
+											<string>329CBCC7112F162400272C3A</string>
+											<string>329CBCC8112F162400272C3A</string>
+											<string>329CBCCE112F162400272C3A</string>
+											<string>329CBCD1112F162400272C3A</string>
+											<string>32B0A540113449B90046AC21</string>
+											<string>32A5EC2011384E0E00D29DCF</string>
+											<string>32A5EC2411384E0E00D29DCF</string>
+											<string>328AB8F71138555500C32B28</string>
+											<string>329A597111385DA3004B22B3</string>
+											<string>329A597211385DA3004B22B3</string>
+											<string>329A597311385DA3004B22B3</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -385,7 +408,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {757, 375}}</string>
 								<key>RubberWindowFrame</key>
-								<string>125 140 965 594 0 0 1280 778 </string>
+								<string>394 184 965 594 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -405,7 +428,7 @@
 								<key>Frame</key>
 								<string>{{0, 380}, {757, 173}}</string>
 								<key>RubberWindowFrame</key>
-								<string>125 140 965 594 0 0 1280 778 </string>
+								<string>394 184 965 594 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -429,9 +452,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>328F90541129C6CC006D09F8</string>
+				<string>329A597511385DA3004B22B3</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>328F90551129C6CC006D09F8</string>
+				<string>329A597611385DA3004B22B3</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -569,7 +592,7 @@
 		<string>/Developer/voodoohda-patching/VoodooHDA.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>125 140 965 594 0 0 1280 778 </string>
+	<string>394 184 965 594 0 0 1280 778 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -646,7 +669,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>32C824B31011CAD400792F91</string>
-				<string>328F90561129C6CC006D09F8</string>
+				<string>329A597711385DA3004B22B3</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -782,7 +805,7 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CDD528C0622207200134675</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>VoodooHDADevice.cpp</string>
+										<string>AudioClip.cpp</string>
 										<key>StatusBarVisibility</key>
 										<true/>
 									</dict>
@@ -840,8 +863,8 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C530D57069F1CE1000CFCEE</string>
-				<string>32173CDB1129C05C00E72A53</string>
-				<string>32173CDC1129C05C00E72A53</string>
+				<string>32A5EC0711384A1500D29DCF</string>
+				<string>32A5EC0811384A1500D29DCF</string>
 				<string>1CDD528C0622207200134675</string>
 				<string>1CD0528E0623707200166675</string>
 			</array>

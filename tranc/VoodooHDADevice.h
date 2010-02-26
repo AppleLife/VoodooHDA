@@ -35,6 +35,7 @@ typedef struct {
 	UInt32 favoritDAC;
 } PatchArray;
 //
+//Эта глобальная переменная отвечает за замену левого канала на правый для входных данных
 
 #define MAX_AUDIO_CTLS 16
 typedef struct _volSlider{
@@ -88,6 +89,8 @@ public:
 	PatchArray NodesToPatchArray[MAX_NODES];
 	UInt16 oldConfig;
 //
+	bool mSwitchCh;
+	
 	const char *mControllerName;
 	UInt32 mDeviceId, mSubDeviceId;
 
