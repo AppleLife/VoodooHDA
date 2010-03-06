@@ -1820,10 +1820,7 @@ int VoodooHDADevice::audioCtlSourceAmp(FunctionGroup *funcGroup, nid_t nid, int 
 	int conns = 0, rneed;
 	char buf[64];
 	
-	if(depth == 0 && (nid == 35 || nid == 11 || nid == 12))
-		dumpMsg("nid %d is audioCtlSourceAmp\n", nid);
-	
-	dumpMsg(" %*strace source, nid %d\n", depth + 1, " ", nid);
+	if(mVerbose > 1) dumpMsg(" %*strace source, nid %d\n", depth + 1, " ", nid);
 	
 	if (depth > HDA_PARSE_MAXDEPTH)
 		return need;
@@ -1846,7 +1843,7 @@ int VoodooHDADevice::audioCtlSourceAmp(FunctionGroup *funcGroup, nid_t nid, int 
 			(widget->type != HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX))) {
 		AudioControl *control = audioCtlAmpGet(funcGroup, widget->nid, HDA_CTL_IN, index, 1);
 		if (control) {
-			dumpMsg(" %*sadd in ossmask %s\n", depth+1, " ", audioCtlMixerMaskToString(1 << ossdev, buf, sizeof (buf)));
+			if(mVerbose > 1) dumpMsg(" %*sadd in ossmask %s\n", depth+1, " ", audioCtlMixerMaskToString(1 << ossdev, buf, sizeof (buf)));
 			
 			if (HDA_CTL_GIVE(control) & need)
 				control->ossmask |= (1 << ossdev);
@@ -1884,7 +1881,7 @@ int VoodooHDADevice::audioCtlSourceAmp(FunctionGroup *funcGroup, nid_t nid, int 
 		AudioControl *control = audioCtlAmpGet(funcGroup, widget->nid, HDA_CTL_OUT, -1, 1);
 		if (control) {
 			
-			dumpMsg(" %*sadd out ossmask %s\n", depth+1, " ", audioCtlMixerMaskToString(1 << ossdev, buf, sizeof (buf)));
+			if(mVerbose > 1) dumpMsg(" %*sadd out ossmask %s\n", depth+1, " ", audioCtlMixerMaskToString(1 << ossdev, buf, sizeof (buf)));
 			
 			if (HDA_CTL_GIVE(control) & need)
 				control->ossmask |= (1 << ossdev);
@@ -1919,10 +1916,7 @@ void VoodooHDADevice::audioCtlDestAmp(FunctionGroup *funcGroup, nid_t nid, int o
 	Widget *widget;
 	char buf[64];
 
-	if(depth == 0 && (nid == 35 || nid == 11 || nid == 12))
-		dumpMsg("nid %d is audioCtlDestAmp\n", nid);
-	
-	dumpMsg(" %*strace dest nid %d\n", depth + 1, " ", nid);
+	if(mVerbose > 1) dumpMsg(" %*strace dest nid %d\n", depth + 1, " ", nid);
 	
 	if (depth > HDA_PARSE_MAXDEPTH)
 		return;
@@ -1960,7 +1954,7 @@ void VoodooHDADevice::audioCtlDestAmp(FunctionGroup *funcGroup, nid_t nid, int o
 		
 		control = audioCtlAmpGet(funcGroup, widget->nid, HDA_CTL_OUT, -1, 1);
 		if (control) {
-			dumpMsg(" %*sadd out ossmask %s\n", depth+1, " ", audioCtlMixerMaskToString(1 << ossdev, buf, sizeof (buf)));
+			if(mVerbose > 1) dumpMsg(" %*sadd out ossmask %s\n", depth+1, " ", audioCtlMixerMaskToString(1 << ossdev, buf, sizeof (buf)));
 			if (HDA_CTL_GIVE(control) & need)
 				control->ossmask |= (1 << ossdev);
 			else
@@ -1972,7 +1966,7 @@ void VoodooHDADevice::audioCtlDestAmp(FunctionGroup *funcGroup, nid_t nid, int o
 	
 	/* We must not traverse pin */
 	if ((widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX) && (depth > 0)) {
-		dumpMsg(" %*strace goed to pin complex\n", depth + 1, " ");
+		if(mVerbose > 1) dumpMsg(" %*strace goed to pin complex\n", depth + 1, " ");
 		return;
 	}
 	
@@ -1983,7 +1977,7 @@ void VoodooHDADevice::audioCtlDestAmp(FunctionGroup *funcGroup, nid_t nid, int o
 			continue;
 		control = audioCtlAmpGet(funcGroup, widget->nid, HDA_CTL_IN, i, 1);
 		if (control) {
-			dumpMsg(" %*sadd out ossmask %s\n", depth+1, " ", audioCtlMixerMaskToString(1 << ossdev, buf, sizeof (buf)));
+			if(mVerbose > 1) dumpMsg(" %*sadd out ossmask %s\n", depth+1, " ", audioCtlMixerMaskToString(1 << ossdev, buf, sizeof (buf)));
 			if (HDA_CTL_GIVE(control) & tneed)
 				control->ossmask |= (1 << ossdev);
 			else
@@ -2227,25 +2221,6 @@ void VoodooHDADevice::dumpCtls(PcmDevice *pcmDevice, const char *banner, UInt32 
 				dumpMsg(" %2d): ", control->index);
 			else
 				dumpMsg("):    ");
-			//Отображаем направление сигнала в widget
-			dumpMsg("dir - ");
-			switch (control->widget->traceDir) {
-				case TRACE_DIR_NONE:
-					dumpMsg("none ");
-					break;
-				case TRACE_DIR_IN:
-					dumpMsg("in ");
-					break;
-				case TRACE_DIR_OUT:
-					dumpMsg("out ");
-					break;
-				case TRACE_DIR_INOUT:
-					dumpMsg("inOut ");
-					break;
-			}
-			
-			char buf[64];
-			dumpMsg("oss: %s ", audioCtlMixerMaskToString(control->ossmask, buf, sizeof (buf)));
 			
 			if (control->step > 0) {
 				dumpMsg("%+d/%+ddB (%d steps)%s\n", (0 - control->offset) * (control->size + 1) / 4,
@@ -2532,13 +2507,16 @@ void VoodooHDADevice::dumpDstNid(PcmDevice *pcmDevice, nid_t nid, int depth)
 
 	if (depth > 0) {
 		char buf[64];
-		if (widget->ossmask == 0) {
+		//if (widget->ossmask == 0) {
+		if(widget->bindAssoc < 0 ) {
 			dumpMsg("\n");
 			return;
 		}
-		dumpMsg(" [src: %s]", audioCtlMixerMaskToString(widget->ossmask, buf, sizeof (buf)));
+		if (widget->ossmask != 0) 
+			dumpMsg(" [src: %s]", audioCtlMixerMaskToString(widget->ossmask, buf, sizeof (buf)));
 		dumpMsg(" bindSeq=%08lx", (long unsigned int)widget->bindSeqMask);
-		if (widget->ossdev >= 0) {
+		//if (widget->ossdev >= 0) {
+		if (widget->ossmask != 0) {
 			dumpMsg("\n");
 			return;
 		}
