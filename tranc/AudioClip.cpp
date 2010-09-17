@@ -1,5 +1,5 @@
 #include "License.h"
-
+#ifdef VOODOOCLIP
 #include "VoodooHDADevice.h"
 #include "VoodooHDAEngine.h"
 #include "PCMBlitterLibDispatch.h"
@@ -157,3 +157,4 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf, void *destB
 
 	return kIOReturnSuccess;
 }
+#endif
