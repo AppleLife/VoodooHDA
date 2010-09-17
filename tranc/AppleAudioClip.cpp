@@ -445,7 +445,18 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void* mixBuf, void* sampleBuf,
 			}
 			break;
 	};
-
+	/* 
+	 result = audioEngine->clipOutputSamples(mixBuffer, sampleBuffer, firstSampleFrame, numSampleFrames, &format, this);
+	 
+	 IOLog("IOAudioStream[%p]::clipOutputSamples(0x%lx, 0x%lx) - clipping function returned error: 0x%x\n", this, firstSampleFrame, numSampleFrames, result);
+	 Sep 17 21:15:52 HacBook kernel[0]: IOAudioStream[0x4aefd00]::clipOutputSamples(0x42f, 0x200) - clipping function returned error: 0xe00002c7
+	 Sep 17 21:15:52 HacBook kernel[0]: IOAudioStream[0x4aefd00]::clipOutputSamples(0x62f, 0x211) - clipping function returned error: 0xe00002c7
+	 Sep 17 21:15:52 HacBook kernel[0]: IOAudioStream[0x4aefd00]::clipOutputSamples(0x840, 0x206) - clipping function returned error: 0xe00002c7
+	 Sep 17 21:15:52 HacBook kernel[0]: IOAudioStream[0x4aefd00]::clipOutputSamples(0xa46, 0x206) - clipping function returned error: 0xe00002c7
+	 Sep 17 21:15:52 HacBook kernel[0]: IOAudioStream[0x4aefd00]::clipOutputSamples(0xc4c, 0x207) - clipping function returned error: 0xe00002c7
+	 Sep 17 21:15:52 HacBook kernel[0]: IOAudioStream[0x4aefd00]::clipOutputSamples(0xe53, 0x207) - clipping function returned error: 0xe00002c7
+	 
+ */
     return kIOReturnSuccess;
 }
 

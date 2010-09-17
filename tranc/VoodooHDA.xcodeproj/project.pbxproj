@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		120156031244377E00611BC7 /* AppleAudioClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12BDC91012440B5D00B327AE /* AppleAudioClip.cpp */; };
+		12BDC90E12440B4E00B327AE /* TigerAdditionals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12BDC90C12440B4E00B327AE /* TigerAdditionals.cpp */; };
+		12BDC90F12440B4E00B327AE /* TigerAdditionals.h in Headers */ = {isa = PBXBuildFile; fileRef = 12BDC90D12440B4E00B327AE /* TigerAdditionals.h */; };
+		12CBFE44124427CC003BB71F /* AudioClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6725AA0EF078CB00FAFBED /* AudioClip.cpp */; };
+		12CBFE511244280A003BB71F /* PCMBlitterLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C0A40EF74C2700A14C68 /* PCMBlitterLib.cpp */; };
 		32D94FC80562CBF700B6AF17 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		A54ED8380FEE91E700CA5717 /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = A54ED8370FEE91E700CA5717 /* version.plist */; };
 		CE4522120EF210FD00600B68 /* Models.h in Headers */ = {isa = PBXBuildFile; fileRef = CE45220E0EF210FD00600B68 /* Models.h */; };
@@ -31,12 +36,16 @@
 		CEF7C5190EF74DCB00A14C68 /* PCMBlitterLibDispatch.h in Headers */ = {isa = PBXBuildFile; fileRef = CEF7C0A60EF74C2700A14C68 /* PCMBlitterLibDispatch.h */; };
 		CEF7C51A0EF74DCB00A14C68 /* PCMBlitterLibX86.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C0A70EF74C2700A14C68 /* PCMBlitterLibX86.cpp */; };
 		CEF7C51B0EF74DD200A14C68 /* AudioClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6725AA0EF078CB00FAFBED /* AudioClip.cpp */; };
-		CEF7C51D0EF74DE500A14C68 /* Kernel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF7C51C0EF74DE500A14C68 /* Kernel.framework */; };
-		CEF7C5450EF74F8000A14C68 /* libFloatSupport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF7C5140EF74DAF00A14C68 /* libFloatSupport.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		12BDC90C12440B4E00B327AE /* TigerAdditionals.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TigerAdditionals.cpp; sourceTree = "<group>"; };
+		12BDC90D12440B4E00B327AE /* TigerAdditionals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TigerAdditionals.h; sourceTree = "<group>"; };
+		12BDC91012440B5D00B327AE /* AppleAudioClip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppleAudioClip.cpp; sourceTree = "<group>"; };
+		12BDC91112440B5D00B327AE /* AppleAudioClip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleAudioClip.h; sourceTree = "<group>"; };
+		12BDC91212440B5D00B327AE /* AppleAudioCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleAudioCommon.h; sourceTree = "<group>"; };
+		12F6C09B1243D9A500B39552 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = /System/Library/Frameworks/Kernel.framework; sourceTree = "<absolute>"; };
 		32D94FCF0562CBF700B6AF17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		32D94FD00562CBF700B6AF17 /* VoodooHDA.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoodooHDA.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		A54ED8370FEE91E700CA5717 /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = version.plist; sourceTree = "<group>"; };
@@ -63,7 +72,6 @@
 		CEF7C0A60EF74C2700A14C68 /* PCMBlitterLibDispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCMBlitterLibDispatch.h; sourceTree = "<group>"; };
 		CEF7C0A70EF74C2700A14C68 /* PCMBlitterLibX86.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PCMBlitterLibX86.cpp; sourceTree = "<group>"; };
 		CEF7C5140EF74DAF00A14C68 /* libFloatSupport.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFloatSupport.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		CEF7C51C0EF74DE500A14C68 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/Kernel.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,7 +79,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEF7C5450EF74F8000A14C68 /* libFloatSupport.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,7 +86,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEF7C51D0EF74DE500A14C68 /* Kernel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,7 +98,7 @@
 				247142CAFF3F8F9811CA285C /* Source */,
 				089C167CFE841241C02AAC07 /* Resources */,
 				19C28FB6FE9D52B211CA2CBB /* Products */,
-				CEF7C51C0EF74DE500A14C68 /* Kernel.framework */,
+				12F6C09B1243D9A500B39552 /* Kernel.framework */,
 			);
 			name = VoodooHDA;
 			sourceTree = "<group>";
@@ -119,6 +125,11 @@
 		247142CAFF3F8F9811CA285C /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				12BDC91012440B5D00B327AE /* AppleAudioClip.cpp */,
+				12BDC91112440B5D00B327AE /* AppleAudioClip.h */,
+				12BDC91212440B5D00B327AE /* AppleAudioCommon.h */,
+				12BDC90C12440B4E00B327AE /* TigerAdditionals.cpp */,
+				12BDC90D12440B4E00B327AE /* TigerAdditionals.h */,
 				CE4F4C380F04274500AF2B7B /* OssCompat.h */,
 				CE709B520EFF2AAF00EE77FF /* Shared.h */,
 				CE709B4E0EFF2AA400EE77FF /* VoodooHDAUserClient.cpp */,
@@ -164,6 +175,7 @@
 				CE709B510EFF2AA400EE77FF /* VoodooHDAUserClient.h in Headers */,
 				CE709B530EFF2AAF00EE77FF /* Shared.h in Headers */,
 				CE4F4C390F04274500AF2B7B /* OssCompat.h in Headers */,
+				12BDC90F12440B4E00B327AE /* TigerAdditionals.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +278,10 @@
 				CE9337FE0EF226E000776BCD /* Tables.c in Sources */,
 				CE5D398B0EF4784000140715 /* Parser.cpp in Sources */,
 				CE709B500EFF2AA400EE77FF /* VoodooHDAUserClient.cpp in Sources */,
+				12BDC90E12440B4E00B327AE /* TigerAdditionals.cpp in Sources */,
+				12CBFE44124427CC003BB71F /* AudioClip.cpp in Sources */,
+				12CBFE511244280A003BB71F /* PCMBlitterLib.cpp in Sources */,
+				120156031244377E00611BC7 /* AppleAudioClip.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,19 +312,22 @@
 		123038CD105A98AC00AA821D /* Release_Leo */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH)";
+				ARCHS = (
+					i386,
+					x86_64,
+				);
 				ENABLE_OPENMP_SUPPORT = YES;
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = 4.2;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_GROUP = wheel;
 				INSTALL_OWNER = root;
-				MODULE_VERSION = 0.2.57;
+				MODULE_VERSION = 0.2.6;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
@@ -339,7 +358,7 @@
 					"\"$(SRCROOT)/build/Release\"",
 				);
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 0.2.57;
+				MODULE_VERSION = 2.7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = VoodooHDA;
 				VALID_ARCHS = "i386 x86_64";
@@ -413,7 +432,7 @@
 					"\"$(SRCROOT)/build/Release\"",
 				);
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 0.2.57;
+				MODULE_VERSION = 0.2.6;
 				PRODUCT_NAME = VoodooHDA;
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -428,7 +447,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.2.57;
+				CURRENT_PROJECT_VERSION = "";
 				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -444,7 +463,7 @@
 					"\"$(SRCROOT)/build/Release\"",
 				);
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 0.2.57;
+				MODULE_VERSION = 2.7.0;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = VoodooHDA;
 				VALID_ARCHS = "i386 x86_64";
@@ -471,7 +490,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_GROUP = wheel;
 				INSTALL_OWNER = root;
-				MODULE_VERSION = 0.2.57;
+				MODULE_VERSION = 0.2.56;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
@@ -495,13 +514,14 @@
 				GCC_MODEL_PPC64 = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = 4.2;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_GROUP = wheel;
 				INSTALL_OWNER = root;
-				MODULE_VERSION = 0.2.57;
+				MODULE_VERSION = 2.7;
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "-DUSE_APPLE_ROUTINES";
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
 				VALID_ARCHS = "i386 x86_64";
