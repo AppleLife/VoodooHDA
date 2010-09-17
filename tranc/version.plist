@@ -5,12 +5,12 @@
 	<key>BuildVersion</key>
 	<string>5</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.2.57</string>
+	<string>2.7</string>
 	<key>CFBundleVersion</key>
-	<string>0.2.57</string>
+	<string>2.7</string>
 	<key>ProjectName</key>
 	<string>VoodooHDA</string>
 	<key>SourceVersion</key>
-	<string>0257000</string>
+	<string>0270000</string>
 </dict>
 </plist>

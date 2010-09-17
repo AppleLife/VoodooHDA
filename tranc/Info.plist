@@ -38,59 +38,22 @@
 			<string>IOPCIDevice</string>
 			<key>IOUserClientClass</key>
 			<string>VoodooHDAUserClient</string>
+			<key>VoodooHDAEnableVolumeChangeFix</key>
+			<false/>
+			<key>VoodooHDAEnableHalfVolumeFix</key>
+			<false/>
+			<key>InhibitCache</key>
+			<true/>
 			<key>VoodooHDAVerboseLevel</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>NodesToPatch</key>
-			<array>
-				<dict>
-					<key>Codec</key>
-					<integer>0</integer>
-					<key>Node</key>
-					<integer>18</integer>
-					<key>SwitchCh</key>
-					<integer>1</integer>
-				</dict>
-				<dict>
-					<key>Codec</key>
-					<integer>0</integer>
-					<key>Config</key>
-					<string>0x91111113</string>
-					<key>Node</key>
-					<integer>21</integer>
-					<key>Select</key>
-					<integer>1</integer>
-					<key>DAC</key>
-					<integer>3</integer>
-				</dict>
-				<dict>
-					<key>Codec</key>
-					<integer>0</integer>
-					<key>Config</key>
-					<string>0x91111112</string>
-					<key>Node</key>
-					<integer>22</integer>
-					<key>Select</key>
-					<integer>2</integer>
-					<key>DAC</key>
-					<integer>4</integer>
-				</dict>
-				<dict>
-					<key>Codec</key>
-					<integer>0</integer>
-					<key>Config</key>
-					<string>0x91111111</string>
-					<key>Node</key>
-					<integer>23</integer>
-					<key>Select</key>
-					<integer>3</integer>
-					<key>DAC</key>
-					<integer>5</integer>
-				</dict>
-			</array>
+			<array/>
 			<key>MixerValues</key>
 			<dict>
 				<key>iMix</key>
-				<string>30</string>
+				<string>0</string>
+				<key>iGain</key>
+				<string>90</string>
 			</dict>
 		</dict>
 	</dict>

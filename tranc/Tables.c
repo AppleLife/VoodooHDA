@@ -10,7 +10,8 @@ const ControllerListItem gControllerList[] = {
 	{ HDA_INTEL_82801G,			"Intel 82801G" },
 	{ HDA_INTEL_82801H,			"Intel 82801H" },
 	{ HDA_INTEL_82801I,			"Intel 82801I" },
-	{ HDA_INTEL_82801J,			"Intel 82801J" },
+	{ HDA_INTEL_82801JI,		"Intel 82801J" },
+	{ HDA_INTEL_82801JD,		"Intel 82801JD"},
 	{ HDA_INTEL_PCH,			"Intel PCH" },
 	{ HDA_INTEL_SCH,			"Intel SCH" },
 	{ HDA_NVIDIA_MCP51,			"NVidia MCP51" },
@@ -31,6 +32,10 @@ const ControllerListItem gControllerList[] = {
 	{ HDA_NVIDIA_MCP79_2,		"NVidia MCP79" },
 	{ HDA_NVIDIA_MCP79_3,		"NVidia MCP79" },
 	{ HDA_NVIDIA_MCP79_4,		"NVidia MCP79" },
+	{ HDA_NVIDIA_MCP89_1,		"NVidia MCP89"},
+	{ HDA_NVIDIA_MCP89_2,		"NVidia MCP89"},
+	{ HDA_NVIDIA_MCP89_3,		"NVidia MCP89"},
+	{ HDA_NVIDIA_MCP89_4,		"NVidia MCP89"},
 	{ HDA_ATI_SB450,			"ATI SB450" },
 	{ HDA_ATI_SB600,			"ATI SB600" },
 	{ HDA_ATI_RS600,			"ATI RS600" },
@@ -59,23 +64,31 @@ const ControllerListItem gControllerList[] = {
 };
 
 const CodecListItem gCodecList[] = {
+	{ HDA_CODEC_CS4206,			"Cirrus Logic CS4206" },
+	{ HDA_CODEC_CS4207,			"Cirrus Logic CS4207" },
 	{ HDA_CODEC_ALC260,			"Realtek ALC260" },
 	{ HDA_CODEC_ALC262,			"Realtek ALC262" },
 	{ HDA_CODEC_ALC267,			"Realtek ALC267" },
 	{ HDA_CODEC_ALC268,			"Realtek ALC268" },
 	{ HDA_CODEC_ALC269,			"Realtek ALC269" },
+	{ HDA_CODEC_ALC270,			"Realtek ALC270" },
 	{ HDA_CODEC_ALC272,			"Realtek ALC272" },
+	{ HDA_CODEC_ALC273,			"Realtek ALC273" },
+	{ HDA_CODEC_ALC275,			"Realtek ALC275" },
 	{ HDA_CODEC_ALC660,			"Realtek ALC660" },
 	{ HDA_CODEC_ALC662,			"Realtek ALC662" },
 	{ HDA_CODEC_ALC663,			"Realtek ALC663" },
+	{ HDA_CODEC_ALC665,			"Realtek ALC665" },
 	{ HDA_CODEC_ALC861,			"Realtek ALC861" },
 	{ HDA_CODEC_ALC861VD,		"Realtek ALC861-VD" },
 	{ HDA_CODEC_ALC880,			"Realtek ALC880" },
 	{ HDA_CODEC_ALC882,			"Realtek ALC882" },
 	{ HDA_CODEC_ALC883,			"Realtek ALC883" },
 	{ HDA_CODEC_ALC885,			"Realtek ALC885" },
+	{ HDA_CODEC_ALC887,			"Realtek ALC887" },
 	{ HDA_CODEC_ALC888,			"Realtek ALC888" },
 	{ HDA_CODEC_ALC889,			"Realtek ALC889" },
+	{ HDA_CODEC_ALC892,			"Realtek ALC892" },
 	{ HDA_CODEC_AD1882,			"Analog Devices AD1882" },
 	{ HDA_CODEC_AD1882A,		"Analog Devices AD1882A" },
 	{ HDA_CODEC_AD1883,			"Analog Devices AD1883" },
@@ -91,6 +104,8 @@ const CodecListItem gCodecList[] = {
 	{ HDA_CODEC_AD1988,			"Analog Devices AD1988A" },
 	{ HDA_CODEC_AD1988B,		"Analog Devices AD1988B" },
 	{ HDA_CODEC_CMI9880,		"CMedia CMI9880" },
+	{ HDA_CODEC_CXD9872RDK,		"Sigmatel CXD9872RD/K" },
+	{ HDA_CODEC_CXD9872AKD,		"Sigmatel CXD9872AKD" },
 	{ HDA_CODEC_STAC9200D,		"Sigmatel STAC9200D" },
 	{ HDA_CODEC_STAC9204X,		"Sigmatel STAC9204X" },
 	{ HDA_CODEC_STAC9204D,		"Sigmatel STAC9204D" },
@@ -145,6 +160,8 @@ const CodecListItem gCodecList[] = {
 	{ HDA_CODEC_CX20549,		"Conexant CX20549 (Venice)" },
 	{ HDA_CODEC_CX20551,		"Conexant CX20551 (Waikiki)" },
 	{ HDA_CODEC_CX20561,		"Conexant CX20561 (Hermosa)" },
+	{ HDA_CODEC_CX20582,		"Conexant CX20582 (Pebble)" },
+	{ HDA_CODEC_CX20583,		"Conexant CX20583 (Pebble HSF)" },
 	{ HDA_CODEC_VT1708_8,		"VIA VT1708_8" },
 	{ HDA_CODEC_VT1708_9,		"VIA VT1708_9" },
 	{ HDA_CODEC_VT1708_A,		"VIA VT1708_A" },
@@ -181,6 +198,16 @@ const CodecListItem gCodecList[] = {
 	{ HDA_CODEC_VT1702_5,		"VIA VT1702_5" },
 	{ HDA_CODEC_VT1702_6,		"VIA VT1702_6" },
 	{ HDA_CODEC_VT1702_7,		"VIA VT1702_7" },
+	{ HDA_CODEC_VT1716S_0,		"VIA VT1716S_0" },
+	{ HDA_CODEC_VT1716S_1,		"VIA VT1716S_1" },
+	{ HDA_CODEC_VT1718S_0,		"VIA VT1718S_0" },
+	{ HDA_CODEC_VT1718S_1,		"VIA VT1718S_1" },
+	{ HDA_CODEC_VT1812,			"VIA VT1812" },
+	{ HDA_CODEC_VT1818S,		"VIA VT1818S" },
+	{ HDA_CODEC_VT1828S,		"VIA VT1828S" },
+	{ HDA_CODEC_VT2002P_0,		"VIA VT2002P_0" },
+	{ HDA_CODEC_VT2002P_1,		"VIA VT2002P_1" },
+	{ HDA_CODEC_VT2020,			"VIA VT2020" },
 	{ HDA_CODEC_ATIRS600_1,		"ATI RS600 HDMI" },
 	{ HDA_CODEC_ATIRS600_2,		"ATI RS600 HDMI" },
 	{ HDA_CODEC_ATIRS690,		"ATI RS690/780 HDMI" },
@@ -194,11 +221,14 @@ const CodecListItem gCodecList[] = {
 	{ HDA_CODEC_INTELG45_2,		"Intel G45 HDMI" },
 	{ HDA_CODEC_INTELG45_3,		"Intel G45 HDMI" },
 	{ HDA_CODEC_INTELG45_4,		"Intel G45 HDMI" },
+	{ HDA_CODEC_INTELG45_5,		"Intel G45 HDMI" },
+	{ HDA_CODEC_INTELQ57,		"Intel Q57 HDMI" },
 	{ HDA_CODEC_SII1390,		"Silicon Image SiI1390 HDMI" },
 	{ HDA_CODEC_SII1392,		"Silicon Image SiI1392 HDMI" },
 	/* Unknown codec */
 	{ HDA_CODEC_ALCXXXX,		"Realtek (Unknown)" },
 	{ HDA_CODEC_ADXXXX,			"Analog Devices (Unknown)" },
+	{ HDA_CODEC_CSXXXX,			"Cirrus Logic (Unknown)" },
 	{ HDA_CODEC_CMIXXXX,		"CMedia (Unknown)" },
 	{ HDA_CODEC_STACXXXX,		"Sigmatel (Unknown)" },
 	{ HDA_CODEC_SIIXXXX,		"Silicon Image (Unknown)" },
@@ -302,6 +332,7 @@ const QuirkListItem gQuirkList[] = {
 	{ SAMSUNG_Q1_SUBVENDOR, HDA_CODEC_AD1986A, HDA_QUIRK_EAPDINV, 0 },
 	{ APPLE_MB3_SUBVENDOR, HDA_CODEC_ALC885, HDA_QUIRK_GPIO0 | HDA_QUIRK_OVREF50, 0},
 	{ APPLE_INTEL_MAC, HDA_CODEC_STAC9221, HDA_QUIRK_GPIO0 | HDA_QUIRK_GPIO1, 0 },
+	{ APPLE_MACBOOKPRO55, HDA_CODEC_CS4206, HDA_QUIRK_GPIO1 | HDA_QUIRK_GPIO3, 0 },	
 	{ DELL_D630_SUBVENDOR, HDA_CODEC_STAC9205X, HDA_QUIRK_GPIO0, 0 },
 	{ DELL_V1400_SUBVENDOR, HDA_CODEC_STAC9228X, HDA_QUIRK_GPIO2, 0 },
 	{ DELL_V1500_SUBVENDOR, HDA_CODEC_STAC9205X, HDA_QUIRK_GPIO0, 0 },
@@ -323,10 +354,10 @@ const MixerValueName MixerValueNamesBind[SOUND_MIXER_NRDEVICES] = {
 {"Line",	SOUND_MIXER_LINE, 75},		// (was 75) SOUND_MIXER_LINE
 {"Mic",		SOUND_MIXER_MIC, 50},		// SOUND_MIXER_MIC
 {"CD",		SOUND_MIXER_CD, 90},	// SOUND_MIXER_CD
-{"iMix",	SOUND_MIXER_IMIX, 50},		// [?] SOUND_MIXER_IMIX
+{"iMix",	SOUND_MIXER_IMIX, 70},		// [?] SOUND_MIXER_IMIX
 {"AltPCM",	SOUND_MIXER_ALTPCM, 30},		// [?] SOUND_MIXER_ALTPCM
 {"Rec",		SOUND_MIXER_RECLEV, 75},		// SOUND_MIXER_RECLEV
-{"iGain",	SOUND_MIXER_IGAIN, 20},		// SOUND_MIXER_IGAIN
+{"iGain",	SOUND_MIXER_IGAIN, 80},		// SOUND_MIXER_IGAIN
 {"oGain",	SOUND_MIXER_OGAIN, 50},		// SOUND_MIXER_OGAIN
 {"Line1",	SOUND_MIXER_LINE1, 30},		// (was 75) SOUND_MIXER_LINE1
 {"Line2",	SOUND_MIXER_LINE2, 10},		// [?] SOUND_MIXER_LINE2
