@@ -211,6 +211,7 @@ typedef struct _AudioAssoc {
 	UInt8 index;
 	UInt8 dir;
 	UInt8 pincnt;
+	UInt8 pinset;
 	UInt8 fakeredir;
 	UInt8 digital;
 	nid_t hpredir;

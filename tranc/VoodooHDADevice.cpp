@@ -17,7 +17,11 @@
 
 #include <kern/locks.h>
 
-#define HDAC_REVISION "20090401_0132"
+#ifdef TIGER
+#include "TigerAdditionals.h"
+#endif
+
+#define HDAC_REVISION "20100226_0142"
 
 #define LOCK()		lock(__FUNCTION__)
 #define UNLOCK()	unlock(__FUNCTION__)
@@ -33,9 +37,14 @@ OSDefineMetaClassAndStructors(VoodooHDADevice, IOAudioDevice)
 
 #define kVoodooHDAVerboseLevelKey "VoodooHDAVerboseLevel"
 
+// cue8chalk: added to allow for the volume change fix to be controlled from the plist
+#define kVoodooHDAEnableVolumeChangeFixKey "VoodooHDAEnableVolumeChangeFix"
+#define kVoodooHDAEnableHalfVolumeFixKey "VoodooHDAEnableHalfVolumeFix"
+
 bool VoodooHDADevice::init(OSDictionary *dict)
 {
-	OSNumber *verboseLevelNum; 
+	OSNumber *verboseLevelNum;
+	OSBoolean *osBool;
 	extern kmod_info_t kmod_info;
 
 	dumpMsg("Loading VoodooHDA %s (based on hdac version " HDAC_REVISION ")\n", kmod_info.version);
@@ -53,6 +62,33 @@ bool VoodooHDADevice::init(OSDictionary *dict)
 
 	if (!super::init(dict))
 		return false;
+
+	// cue8chalk: read flag for volume change fix
+	// TODO - when VoodooHDA properly supports multiple devices (at least on my system - lol)
+	// make this a per-device setting (tied to vid/did)
+	osBool = OSDynamicCast(OSBoolean, dict->getObject(kVoodooHDAEnableVolumeChangeFixKey));
+	if (osBool) {
+		mEnableVolumeChangeFix = (bool)osBool->getValue();
+	} else {
+		mEnableVolumeChangeFix = false;
+	}
+	
+	// Half volume slider fix
+	osBool = OSDynamicCast(OSBoolean, dict->getObject(kVoodooHDAEnableHalfVolumeFixKey));
+	if (osBool) {
+		mEnableHalfVolumeFix = (bool)osBool->getValue();
+	} else {
+		mEnableHalfVolumeFix = false;
+	}
+
+//Slice - some chipsets needed Inhibit Cache
+	osBool = OSDynamicCast(OSBoolean, dict->getObject("InhibitCache"));
+	if (osBool) {
+		mInhibitCache = (bool)osBool->getValue();
+	} else {
+		mInhibitCache = false;
+	}
+
 
 	mLock = IOLockAlloc();
 
@@ -334,7 +370,7 @@ done:
 bool VoodooHDADevice::initHardware(IOService *provider)
 {
 	bool result = false;
-	UInt16 config, vendorId;
+	UInt16 config, vendorId, snoop;
 
 	//logMsg("VoodooHDADevice[%p]::initHardware\n", this);
 
@@ -379,6 +415,12 @@ bool VoodooHDADevice::initHardware(IOService *provider)
 		mPciNub->configWrite8(0x44, value & 0xf8);
 //		logMsg("TCSEL: %02x -> %02x\n", value, mPciNub->configRead8(0x44));
 	}
+	/* Defines for Intel SCH HDA snoop control */
+	snoop = mPciNub->configRead16( INTEL_SCH_HDA_DEVC );
+	if (snoop & INTEL_SCH_HDA_DEVC_NOSNOOP) {
+		mPciNub->configWrite16( INTEL_SCH_HDA_DEVC,	snoop & (~INTEL_SCH_HDA_DEVC_NOSNOOP));
+	}
+	
 
 	if (!getCapabilities()) {
 		errorMsg("error: getCapabilities failed\n");
@@ -610,6 +652,9 @@ bool VoodooHDADevice::createAudioEngine(Channel *channel)
 		errorMsg("error: VoodooHDAEngine::init failed\n");
 		goto done;
 	}
+	
+	// cue8chalk: set volume change fix on the engine
+	audioEngine->mEnableVolumeChangeFix = mEnableVolumeChangeFix;
 
 	// Active the audio engine - this will cause the audio engine to have start() and
 	// initHardware() called on it. After this function returns, that audio engine should
@@ -725,6 +770,11 @@ bool VoodooHDADevice::resume()
 		mPciNub->configWrite8(0x44, value & 0xf8);
 			//		logMsg("TCSEL: %02x -> %02x\n", value, mPciNub->configRead8(0x44));
 	}
+	UInt16 snoop = mPciNub->configRead16( INTEL_SCH_HDA_DEVC );
+	if (snoop & INTEL_SCH_HDA_DEVC_NOSNOOP) {
+		mPciNub->configWrite16( INTEL_SCH_HDA_DEVC,	snoop & (~INTEL_SCH_HDA_DEVC_NOSNOOP));
+	}
+	
 	
 	logMsg("Resetting controller...\n");
 	if (!resetController(true)) {
@@ -898,6 +948,7 @@ bool VoodooHDADevice::getCapabilities()
 	mInStreamsSup = HDAC_GCAP_ISS(globalCap);
 	mOutStreamsSup = HDAC_GCAP_OSS(globalCap);
 	mBiStreamsSup = HDAC_GCAP_BSS(globalCap);
+	mSDO = HDAC_GCAP_NSDO(globalCap);
 
 	mSupports64Bit = HDA_FLAG_MATCH(globalCap, HDAC_GCAP_64OK);
 
@@ -1390,9 +1441,13 @@ DmaMemory *VoodooHDADevice::allocateDmaMemory(mach_vm_size_t size, const char *d
 		outSegFunc = kIODMACommandOutputHost32;
 		physMask = ~((UInt32) HDAC_DMA_ALIGNMENT - 1);
 	}
-
-	memDesc = IOBufferMemoryDescriptor::inTaskWithPhysicalMask(kernel_task,
+	if (mInhibitCache) {
+		memDesc = IOBufferMemoryDescriptor::inTaskWithPhysicalMask(kernel_task,
+		   kIOMemoryPhysicallyContiguous | kIOMapInhibitCache, size, physMask);
+	} else
+		memDesc = IOBufferMemoryDescriptor::inTaskWithPhysicalMask(kernel_task,
 			kIOMemoryPhysicallyContiguous, size, physMask);
+	
 	if (!memDesc) {
 		errorMsg("error: IOBufferMemoryDescriptor::inTaskWithPhysicalMask failed\n");
 		goto failed;
@@ -1550,7 +1605,7 @@ void VoodooHDADevice::sendCommands(CommandList *commands, nid_t cad)
 			writeData16(HDAC_CORBWP, mCorbWritePtr);
 		}
 
-		timeout = 1000;
+		timeout = 200;
 		while ((rirbFlush() == 0) && --timeout)
 			IODelay(10);
 	} while (((codec->numVerbsSent != commands->numCommands) ||
@@ -1701,7 +1756,7 @@ int VoodooHDADevice::rirbFlush()
 
 	rirbBase = (RirbResponse *) mRirbMem->virtAddr;
 	rirbWritePtr = readData8(HDAC_RIRBWP);
-	mRirbMem->command->synchronize(kIODirectionIn); // xxx
+		//mRirbMem->command->synchronize(kIODirectionIn); // xxx
 
 	ret = 0;
 	while (mRirbReadPtr != rirbWritePtr) {
@@ -1728,7 +1783,12 @@ int VoodooHDADevice::rirbFlush()
 			commands->responses[codec->numRespReceived++] = resp;
 		ret++;
 	}
-
+		//Slice
+	UInt32 rirbCtl;
+	rirbCtl = readData8(HDAC_GCTL);
+	rirbCtl |= HDAC_GCTL_FCNTRL;
+	writeData8(HDAC_GCTL, rirbCtl);
+	
 	return ret;
 }
 
@@ -2081,16 +2141,28 @@ int VoodooHDADevice::audioCtlOssMixerSet(PcmDevice *pcmDevice, UInt32 dev, UInt3
 				rvol = rvol * pcmDevice->right[j] / 100;
 			}
 		}
-		mute = (left == 0) ? HDA_AMP_MUTE_LEFT : 0;
-		mute |= (right == 0) ? HDA_AMP_MUTE_RIGHT : 0;
-		lvol = (lvol * control->step + 50) / 100;
-		rvol = (rvol * control->step + 50) / 100;
+		mute = (lvol == 0) ? HDA_AMP_MUTE_LEFT : 0;
+		mute |= (rvol == 0) ? HDA_AMP_MUTE_RIGHT : 0;
+
+		if (mEnableHalfVolumeFix) {
+			// cue8chalk: lerp the volume between the midpoint and the end to get the true value
+			lvol = ilerp(control->offset >> 1, control->offset, ((lvol * control->step + 50) / 100) / (control->offset != 0 ? (float)control->offset : 1));
+			rvol = ilerp(control->offset >> 1, control->offset, ((rvol * control->step + 50) / 100) / (control->offset != 0 ? (float)control->offset : 1));
+		} else {
+			lvol = (lvol * control->step + 50) / 100;
+			rvol = (rvol * control->step + 50) / 100;
+		}
+		
 		audioCtlAmpSet(control, mute, lvol, rvol);
 	}
 
 	UNLOCK();
 
 	return (left | (right << 8));
+}
+
+int VoodooHDADevice::ilerp(int a, int b, float t) {
+	return a + (t * (float)(b - a));
 }
 
 UInt32 VoodooHDADevice::audioCtlOssMixerSetRecSrc(PcmDevice *pcmDevice, UInt32 src)
@@ -2332,6 +2404,17 @@ void VoodooHDADevice::streamSetup(Channel *channel)
 	int totalchn;
 	nid_t cad = channel->funcGroup->codec->cad;
 	UInt16 format, digFormat;
+	//	UInt16 chmap[2][5] = {{ 0x0010, 0x0001, 0x0201, 0x0231, 0x0231 }, /* 5.1 */
+	//		{ 0x0010, 0x0001, 0x2001, 0x2031, 0x2431 }};/* 7.1 */
+	int map = -1;
+	
+	//	totalchn = AFMT_CHANNEL(channel->format);
+	if (channel->format & (AFMT_STEREO | AFMT_AC3)) {
+		totalchn = 2;
+	} else
+		totalchn = 1;
+	
+
 	if(mVerbose >= 2)
 		logMsg("PCMDIR_%s: Stream setup format=%08lx speed=%ld\n", (channel->direction == PCMDIR_PLAY) ?
 			"PLAY" : "REC", (long unsigned int)channel->format, (long int)channel->speed);
@@ -2352,11 +2435,14 @@ void VoodooHDADevice::streamSetup(Channel *channel)
 		}
 	}
 
-	if (channel->format & (AFMT_STEREO | AFMT_AC3)) {
-		format |= 1;
-		totalchn = 2;
-	} else
-		totalchn = 1;
+	format |= (totalchn - 1);
+	//Slice - from BSD
+	/* Set channel mapping for known speaker setups. */
+	if (assoc->pinset == 0x0007 || assoc->pinset == 0x0013) // Standard 5.1 
+		map = 0;
+	 else if (assoc->pinset == 0x0017) // Standard 7.1 
+		map = 1;
+	
 
 	writeData16(channel->off + HDAC_SDFMT, format);
 		
@@ -2522,8 +2608,12 @@ int VoodooHDADevice::pcmAttach(PcmDevice *pcmDevice)
 
 	char buf[256];
 	snprintf(buf, sizeof (buf), "HDA %s PCM #%d %s at cad %d nid %d",
-			findCodecName(pcmDevice->funcGroup->codec), pcmDevice->index, pcmDevice->digital ?
-			"Digital" : "Analog", pcmDevice->funcGroup->codec->cad, pcmDevice->funcGroup->nid);
+			findCodecName(pcmDevice->funcGroup->codec), pcmDevice->index,
+	//			 pcmDevice->digital ?"Digital" : "Analog",
+			 (pcmDevice->digital == 3)?"DisplayPort":
+			 ((pcmDevice->digital == 2)?"HDMI":
+			  ((pcmDevice->digital)?"Digital":"Analog")),
+			 pcmDevice->funcGroup->codec->cad, pcmDevice->funcGroup->nid);
 	dumpMsg("pcmAttach: %s\n", buf);
 
 	pcmDevice->chanSize = HDA_BUFSZ_DEFAULT;
@@ -2553,6 +2643,7 @@ int VoodooHDADevice::pcmAttach(PcmDevice *pcmDevice)
 	dumpCtls(pcmDevice, "Speaker/Beep Volume", SOUND_MASK_SPEAKER);
 	dumpCtls(pcmDevice, "Recording Level", SOUND_MASK_RECLEV);
 	dumpCtls(pcmDevice, "Input Mix Level", SOUND_MASK_IMIX);
+	dumpCtls(pcmDevice, "Input Monitoring Level", SOUND_MASK_IGAIN);
 	dumpCtls(pcmDevice, NULL, 0);
 	dumpMsg("\n");
 

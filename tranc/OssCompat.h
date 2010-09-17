@@ -83,4 +83,48 @@
 #define AFMT_S24_LE     0x00010000      /* [unused] Little endian signed 24-bit */
 #define AFMT_STEREO     0x10000000      /* can do/want stereo   */
 
+/*
+ * We're simply using unused, contiguous bits from various AFMT_ definitions.
+ * ~(0xb00ff7ff)
+ */
+#define AFMT_ENCODING_MASK      0xf00fffff
+#define AFMT_CHANNEL_MASK       0x01f00000
+#define AFMT_CHANNEL_SHIFT      20
+#define AFMT_EXTCHANNEL_MASK    0x0e000000
+#define AFMT_EXTCHANNEL_SHIFT   25
+
+#define AFMT_ENCODING(v)        ((v) & AFMT_ENCODING_MASK)
+
+#define AFMT_EXTCHANNEL(v)      (((v) & AFMT_EXTCHANNEL_MASK) >>        \
+	AFMT_EXTCHANNEL_SHIFT)
+
+#define AFMT_CHANNEL(v)         (((v) & AFMT_CHANNEL_MASK) >>           \
+	AFMT_CHANNEL_SHIFT)
+
+
+#define SND_FORMAT(f, c, m)     (AFMT_ENCODING(f) |             \
+	(((c) << AFMT_CHANNEL_SHIFT) &          \
+	AFMT_CHANNEL_MASK) |                    \
+	(((m) << AFMT_EXTCHANNEL_SHIFT) &       \
+	AFMT_EXTCHANNEL_MASK))
+
+#define AFMT_ALIGN(v)           (AFMT_BPS(v) * AFMT_CHANNEL(v))
+
+#define AFMT_U8_NE      AFMT_U8
+#define AFMT_S8_NE      AFMT_S8
+
+#undef AFMT_S16_NE
+
+#define AFMT_S16_NE     AFMT_S16_LE
+#define AFMT_S24_NE     AFMT_S24_LE
+#define AFMT_S32_NE     AFMT_S32_LE
+#define AFMT_U16_NE     AFMT_U16_LE
+#define AFMT_U24_NE     AFMT_U24_LE
+#define AFMT_U32_NE     AFMT_U32_LE
+#define AFMT_S16_OE     AFMT_S16_BE
+#define AFMT_S24_OE     AFMT_S24_BE
+#define AFMT_S32_OE     AFMT_S32_BE
+#define AFMT_U16_OE     AFMT_U16_BE
+#define AFMT_U24_OE     AFMT_U24_BE
+#define AFMT_U32_OE     AFMT_U32_BE
 #endif
