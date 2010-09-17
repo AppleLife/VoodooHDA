@@ -2604,8 +2604,8 @@ void VoodooHDADevice::dumpDstNid(PcmDevice *pcmDevice, nid_t nid, int depth)
 
 	if (depth > 0) {
 		char buf[64];
-		//if (widget->ossmask == 0) {
-		if(widget->bindAssoc < 0 ) {
+		if (widget->ossmask == 0) {
+		//if(widget->bindAssoc < 0 ) {
 			dumpMsg("\n");
 			return;
 		}

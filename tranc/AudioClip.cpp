@@ -1,5 +1,5 @@
 #include "License.h"
-#ifdef VOODOOCLIP
+#ifndef USE_APPLE_ROUTINES
 #include "VoodooHDADevice.h"
 #include "VoodooHDAEngine.h"
 #include "PCMBlitterLibDispatch.h"
