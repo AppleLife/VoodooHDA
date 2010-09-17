@@ -46,6 +46,9 @@ public:
 	UInt32					oldOutVolumeRight;
 	UInt32					oldInputGain;
 
+	// cue8chalk: flag for volume change fix
+	bool mEnableVolumeChangeFix;
+	
 	void messageHandler(UInt32 type, const char *format, ...) __attribute__ ((format (printf, 3, 4)));
 
 	void setPinName(/*UInt32 type, */const char* name);

@@ -13,6 +13,10 @@
 #include <IOKit/audio/IOAudioLevelControl.h>
 #include <IOKit/audio/IOAudioToggleControl.h>
 
+#ifdef TIGER
+#include "TigerAdditionals.h"
+#endif
+
 #define super IOAudioEngine
 OSDefineMetaClassAndStructors(VoodooHDAEngine, IOAudioEngine)
 
@@ -829,11 +833,13 @@ IOReturn VoodooHDAEngine::volumeChanged(IOAudioControl *volumeControl, SInt32 ol
 				if(volumeControl->getChannelID() == 1) {
 					oldOutVolumeLeft = newValue;
 					mDevice->audioCtlOssMixerSet(pcmDevice, ossDev, newValue, pcmDevice->right[0]);
+					mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_PCM, newValue, pcmDevice->right[0]);
 				}
 				/* Right channel */
 				else if(volumeControl->getChannelID() == 2) {
 					oldOutVolumeRight = newValue;
 					mDevice->audioCtlOssMixerSet(pcmDevice, ossDev, pcmDevice->left[0], newValue);
+					mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_PCM, pcmDevice->left[0], newValue);
 				}
 				
 				break;
@@ -843,6 +849,12 @@ IOReturn VoodooHDAEngine::volumeChanged(IOAudioControl *volumeControl, SInt32 ol
 				break;
 			default:
 				break;
+		}
+		// cue8chalk: this seems to be needed when pin configs aren't set properly
+		if (mEnableVolumeChangeFix) {
+			for (int n = 0; n < SOUND_MIXER_NRDEVICES; n++){
+				mDevice->audioCtlOssMixerSet(pcmDevice, n, newValue, newValue);
+			}
 		}
 	}
 	

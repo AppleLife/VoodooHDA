@@ -1,3 +1,11 @@
+0.2.6 release note
+The original driver hdac.c from FreeBSD is changed so we applied its correction to our driver
+* added support for new chipsets and new codecs
+* added HDMI support
+* added input monitor support
+* Multichannel? It is already present because of Apple's audio system. You must choose between autodetect and multichannel. Either one or the other.
+Compared to 0.2.5x driver in this version some bugs 
+
 VoodooHDA 0.2.52 release notes
 It made by Slice&AutumnRain from Russia based on voodoohda 0.2.2 while original authors dropped the project as is
 with numerous mistakes.
