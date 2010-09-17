@@ -399,10 +399,11 @@ bool VoodooHDADevice::initHardware(IOService *provider)
 		goto done;
 	}
 	mPciNub->setMemoryEnable(true);
-
-	setDeviceName("Voodoo HDA Device");
-	setDeviceShortName("VoodooHDA");
-	setManufacturerName("Voodoo");
+	char string[20];
+	strncpy(string, "Voodoo HDA Device", sizeof(string));
+	setDeviceName(string);
+	setDeviceShortName("VoodooHDA ");
+	setManufacturerName("Voodoo ");
 	// todo: setDeviceModelName
 	setDeviceTransportType(kIOAudioDeviceTransportTypeOther);
 
