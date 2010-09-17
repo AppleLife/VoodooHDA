@@ -103,6 +103,7 @@ public:
 	int mInStreamsSup; // ISS
 	int mOutStreamsSup; // OSS
 	int mBiStreamsSup; // BSS
+	int mSDO; //SDO ?
 
 	int mCorbSize;
 	int mCorbWritePtr; // WP
@@ -147,7 +148,12 @@ public:
 	IOLock *mMessageLock;
 	
 	bool mSwitchEnable;
+	bool mInhibitCache;
 
+	// cue8chalk: flag to enable/disable volume fix (loaded from plist)
+	bool mEnableVolumeChangeFix;
+	bool mEnableHalfVolumeFix;
+	
 	/**************/
 
 	bool resetController(bool wakeup);
@@ -254,9 +260,9 @@ public:
 
 	UInt32 audioCtlRecSelComm(PcmDevice *pcmDevice, UInt32 src, nid_t nid, int depth);
 
-	int audioCtlSourceAmp(FunctionGroup *funcGroup, nid_t nid, int index, int ossdev, int ctlable, int depth,
-			int need);
-	void audioCtlDestAmp(FunctionGroup *funcGroup, nid_t nid, int ossdev, int depth, int need);
+	int audioCtlSourceAmp(FunctionGroup *funcGroup, nid_t nid, int index, int ossdev, int ctlable, int depth, int need);
+	void audioCtlDestAmp(FunctionGroup *funcGroup, nid_t nid, int index, int ossdev,
+						 int depth, int need);
 
 	void widgetConnectionParse(Widget *widget);
 	UInt32 widgetPinPatch(UInt32 config, const char *str);
@@ -314,6 +320,7 @@ public:
 
 	int audioCtlOssMixerInit(PcmDevice *pcmDevice);
 	int audioCtlOssMixerSet(PcmDevice *pcmDevice, UInt32 dev, UInt32 left, UInt32 right);
+	int ilerp(int a, int b, float t);	// cue8chalk
 	UInt32 audioCtlOssMixerSetRecSrc(PcmDevice *pcmDevice, UInt32 src);
 	int audioCtlOssMixerGet(PcmDevice *pcmDevice, UInt32 dev, UInt32* left, UInt32* right);
 	void mixerSetDefaults(PcmDevice *pcmDevice);
