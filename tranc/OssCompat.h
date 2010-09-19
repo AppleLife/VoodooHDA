@@ -23,7 +23,7 @@
 									 * recording sources while recording */
 #define SOUND_MIXER_ALTPCM		10	/* [unused] Volume of the alternative codec device */
 #define SOUND_MIXER_RECLEV		11	/* Global recording level */
-#define SOUND_MIXER_IGAIN		12	/* [unused] Input gain */
+#define SOUND_MIXER_IGAIN		12	/* Input gain */
 #define SOUND_MIXER_OGAIN		13	/* Output gain */
 /* The AD1848 codec and compatibles have three line level inputs
  * (line, aux1 and aux2). Since each card manufacturer have assigned
