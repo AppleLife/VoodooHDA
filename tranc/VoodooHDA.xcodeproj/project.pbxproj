@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		120156031244377E00611BC7 /* AppleAudioClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12BDC91012440B5D00B327AE /* AppleAudioClip.cpp */; };
+		12B21EFD12464E06002948CA /* emmintrin.h in Headers */ = {isa = PBXBuildFile; fileRef = 12B21EF712464E06002948CA /* emmintrin.h */; };
+		12B21EFE12464E06002948CA /* float.h in Headers */ = {isa = PBXBuildFile; fileRef = 12B21EF812464E06002948CA /* float.h */; };
+		12B21EFF12464E06002948CA /* mm_malloc.h in Headers */ = {isa = PBXBuildFile; fileRef = 12B21EF912464E06002948CA /* mm_malloc.h */; };
+		12B21F0012464E06002948CA /* mm3dnow.h in Headers */ = {isa = PBXBuildFile; fileRef = 12B21EFA12464E06002948CA /* mm3dnow.h */; };
+		12B21F0112464E06002948CA /* mmintrin.h in Headers */ = {isa = PBXBuildFile; fileRef = 12B21EFB12464E06002948CA /* mmintrin.h */; };
+		12B21F0212464E06002948CA /* xmmintrin.h in Headers */ = {isa = PBXBuildFile; fileRef = 12B21EFC12464E06002948CA /* xmmintrin.h */; };
 		12BDC90E12440B4E00B327AE /* TigerAdditionals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12BDC90C12440B4E00B327AE /* TigerAdditionals.cpp */; };
 		12BDC90F12440B4E00B327AE /* TigerAdditionals.h in Headers */ = {isa = PBXBuildFile; fileRef = 12BDC90D12440B4E00B327AE /* TigerAdditionals.h */; };
 		12CBFE44124427CC003BB71F /* AudioClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6725AA0EF078CB00FAFBED /* AudioClip.cpp */; };
@@ -40,6 +46,12 @@
 
 /* Begin PBXFileReference section */
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		12B21EF712464E06002948CA /* emmintrin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = emmintrin.h; path = "../../../voodoohda-270/emmintrin.h"; sourceTree = SOURCE_ROOT; };
+		12B21EF812464E06002948CA /* float.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = float.h; path = "../../../voodoohda-270/float.h"; sourceTree = SOURCE_ROOT; };
+		12B21EF912464E06002948CA /* mm_malloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mm_malloc.h; path = "../../../voodoohda-270/mm_malloc.h"; sourceTree = SOURCE_ROOT; };
+		12B21EFA12464E06002948CA /* mm3dnow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mm3dnow.h; path = "../../../voodoohda-270/mm3dnow.h"; sourceTree = SOURCE_ROOT; };
+		12B21EFB12464E06002948CA /* mmintrin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mmintrin.h; path = "../../../voodoohda-270/mmintrin.h"; sourceTree = SOURCE_ROOT; };
+		12B21EFC12464E06002948CA /* xmmintrin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = xmmintrin.h; path = "../../../voodoohda-270/xmmintrin.h"; sourceTree = SOURCE_ROOT; };
 		12BDC90C12440B4E00B327AE /* TigerAdditionals.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TigerAdditionals.cpp; sourceTree = "<group>"; };
 		12BDC90D12440B4E00B327AE /* TigerAdditionals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TigerAdditionals.h; sourceTree = "<group>"; };
 		12BDC91012440B5D00B327AE /* AppleAudioClip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppleAudioClip.cpp; sourceTree = "<group>"; };
@@ -125,6 +137,12 @@
 		247142CAFF3F8F9811CA285C /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				12B21EF712464E06002948CA /* emmintrin.h */,
+				12B21EF812464E06002948CA /* float.h */,
+				12B21EF912464E06002948CA /* mm_malloc.h */,
+				12B21EFA12464E06002948CA /* mm3dnow.h */,
+				12B21EFB12464E06002948CA /* mmintrin.h */,
+				12B21EFC12464E06002948CA /* xmmintrin.h */,
 				12BDC91012440B5D00B327AE /* AppleAudioClip.cpp */,
 				12BDC91112440B5D00B327AE /* AppleAudioClip.h */,
 				12BDC91212440B5D00B327AE /* AppleAudioCommon.h */,
@@ -176,6 +194,12 @@
 				CE709B530EFF2AAF00EE77FF /* Shared.h in Headers */,
 				CE4F4C390F04274500AF2B7B /* OssCompat.h in Headers */,
 				12BDC90F12440B4E00B327AE /* TigerAdditionals.h in Headers */,
+				12B21EFD12464E06002948CA /* emmintrin.h in Headers */,
+				12B21EFE12464E06002948CA /* float.h in Headers */,
+				12B21EFF12464E06002948CA /* mm_malloc.h in Headers */,
+				12B21F0012464E06002948CA /* mm3dnow.h in Headers */,
+				12B21F0112464E06002948CA /* mmintrin.h in Headers */,
+				12B21F0212464E06002948CA /* xmmintrin.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
