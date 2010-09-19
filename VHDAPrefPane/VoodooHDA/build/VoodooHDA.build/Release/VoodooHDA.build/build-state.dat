@@ -1,0 +1,303 @@
+TVoodooHDA
+v7
+r0
+t306595154.424158
+cCheck dependencies
+cProcessInfoPlistFile /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Info.plist Info.plist
+cCopyStringsFile /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings
+cCopyTiffFile /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Resources/VoodooHDAPref.tiff VoodooHDAPref.tiff
+cCompileXIB /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib
+cProcessPCH /var/folders/uq/uqnL49TlF5ujae+GwGIx2k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/VoodooHDA_Prefix-gcnibwlmzgtjfxgjkywrqyyxsnjv/VoodooHDA_Prefix.pch.gch VoodooHDA_Prefix.pch normal i386 objective-c com.apple.compilers.gcc.4_2
+cProcessPCH /var/folders/uq/uqnL49TlF5ujae+GwGIx2k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/VoodooHDA_Prefix-ayfrsrvexithrhchfyrwmdzkfvuk/VoodooHDA_Prefix.pch.gch VoodooHDA_Prefix.pch normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDAPref.o /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.m normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDAPref.o /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+cLd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDA normal i386
+cLd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDA normal x86_64
+cCreateUniversalBinary /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/MacOS/VoodooHDA normal "i386 x86_64"
+cTouch /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane
+
+N/Developer/SDKs/MacOSX10.6.sdk
+c000000004A769DAB00000000000000EE
+t1249287595
+s238
+
+N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h
+c000000004A67D2A800000000000017ED
+t1248318120
+s6125
+
+N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h
+c000000004A5D68380000000000000AF4
+t1247635512
+s2804
+
+N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h
+c000000004A600B8400000000000013E6
+t1247808388
+s5094
+
+N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/IOKit.framework/Headers/IOCFPlugIn.h
+c000000004A4D520900000000000008FD
+t1246581257
+s2301
+
+N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/IOKit.framework/Headers/IOKitLib.h
+c000000004A4D52090000000000012048
+t1246581257
+s73800
+
+N/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/PreferencePanes.framework/Headers/PreferencePanes.h
+c000000004A49A2AC0000000000000098
+t1246339756
+s152
+
+N/System/Library/Frameworks/Cocoa.framework/Cocoa
+c000000004A1F2D63000000000000A5E0
+t1243557219
+s42464
+
+N/System/Library/Frameworks/IOKit.framework/IOKit
+c000000004BBD310E0000000000172A20
+t1270690062
+s1518112
+
+N/System/Library/Frameworks/PreferencePanes.framework/PreferencePanes
+c000000004BBD495900000000000B8DC0
+t1270696281
+s757184
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/InfoPlist.strings
+c0000000049E62F6200000000000000E6
+t1239822178
+s230
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib
+c000000004C6BEC8D00000000000251EA
+t1282141325
+s152042
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.h
+c0000000049EC4B37000000000000087A
+t1240222519
+s2170
+i<PreferencePanes/PreferencePanes.h>
+i<IOKit/IOKitLib.h>
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.m
+c000000004C6BEC980000000000003128
+t1282141336
+s12584
+i"VoodooHDAPref.h"
+i<CoreFoundation/CoreFoundation.h>
+i<IOKit/IOCFPlugIn.h>
+i<IOKit/IOKitLib.h>
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.tiff
+c0000000049E62F62000000000000075E
+t1239822178
+s1886
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDA_Prefix.pch
+c0000000049E62F6200000000000000BE
+t1239822178
+s190
+i<Foundation/Foundation.h>
+i<AppKit/AppKit.h>
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane
+t1284902354
+s102
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Info.plist
+t1284902347
+s969
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/MacOS/VoodooHDA
+t1284902354
+s49904
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Resources/English.lproj/InfoPlist.strings
+t1284902348
+s230
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Resources/English.lproj/VoodooHDAPref.nib
+t1284902348
+s28630
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Resources/VoodooHDAPref.tiff
+t1284902348
+s1886
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDA
+t1284902354
+s22648
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDA.LinkFileList
+c000000004C960DCB000000000000009B
+t1284902347
+s155
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDAPref.o
+t1284902353
+s16692
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDA
+t1284902354
+s21232
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDA.LinkFileList
+c000000004C960DCB000000000000009D
+t1284902347
+s157
+
+N/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDAPref.o
+t1284902353
+s23892
+
+N/var/folders/uq/uqnL49TlF5ujae+GwGIx2k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/VoodooHDA_Prefix-ayfrsrvexithrhchfyrwmdzkfvuk/VoodooHDA_Prefix.pch.gch
+t1284902351
+s38532144
+
+N/var/folders/uq/uqnL49TlF5ujae+GwGIx2k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/VoodooHDA_Prefix-gcnibwlmzgtjfxgjkywrqyyxsnjv/VoodooHDA_Prefix.pch.gch
+t1284902352
+s40207440
+
+NInfo.plist
+c0000000049E62F620000000000000419
+t1239822178
+s1049
+
+CCheck dependencies
+r0
+lSLF07#2@18"Check dependencies306595147#306595147#0(0"0(0#1#0"8607338688#0"0#
+
+CCompileC build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDAPref.o /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.m normal i386 objective-c com.apple.compilers.gcc.4_2
+s306595152.853473
+e306595153.358349
+r1
+xCompileC
+xbuild/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDAPref.o
+x/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@96"Compile /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.m306595152#306595153#0(0"0(0#0#88"/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.m8601630976#1400"    cd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fobjc-gc -ftree-vectorize -mmacosx-version-min=10.6 -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/VoodooHDA.hmap -F/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/include -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/DerivedSources/i386 -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/DerivedSources -include /var/folders/uq/uqnL49TlF5ujae+GwGIx2k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/VoodooHDA_Prefix-gcnibwlmzgtjfxgjkywrqyyxsnjv/VoodooHDA_Prefix.pch -c /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.m -o /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDAPref.o0#
+
+CCompileC build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDAPref.o /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.m normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s306595152.870998
+e306595153.373300
+r1
+xCompileC
+xbuild/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDAPref.o
+x/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.m
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@96"Compile /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.m306595152#306595153#0(0"0(0#0#88"/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.m8606522336#1406"    cd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c -arch x86_64 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fobjc-gc -ftree-vectorize -mmacosx-version-min=10.6 -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/VoodooHDA.hmap -F/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/include -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/DerivedSources/x86_64 -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/DerivedSources -include /var/folders/uq/uqnL49TlF5ujae+GwGIx2k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/VoodooHDA_Prefix-ayfrsrvexithrhchfyrwmdzkfvuk/VoodooHDA_Prefix.pch -c /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.m -o /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDAPref.o0#
+
+CCompileXIB /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib
+s306595148.032869
+e306595148.382941
+r1
+xCompileXIB
+x/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib
+o/* com.apple.ibtool.document.notices */
+o/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib:108: note: This view is clipping its content.
+o/* com.apple.ibtool.document.warnings */
+o/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib:12: warning: This window's content rectangle does not lie entirely on the screen with the menu bar and may not be completely visible for all screen resolutions and configurations.
+o/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib:99: warning: The '_window' outlet of 'VoodooHDA Pref' is connected to 'Content View' but 'NSView' is not a kind of 'NSWindow' as specified by the outlet type.
+lSLF07#2@42"CompileXIB English.lproj/VoodooHDAPref.xib306595148#306595148#0(781"/* com.apple.ibtool.document.notices *//Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib:108: note: This view is clipping its content./* com.apple.ibtool.document.warnings *//Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib:12: warning: This window's content rectangle does not lie entirely on the screen with the menu bar and may not be completely visible for all screen resolutions and configurations./Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib:99: warning: The '_window' outlet of 'VoodooHDA Pref' is connected to 'Content View' but 'NSView' is not a kind of 'NSWindow' as specified by the outlet type.3(13@34"This view is clipping its content.306595148#18446744073709551615#0#0(6@104"/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib303834125#108#0#108#0#0"0(22@166"This window's content rectangle does not lie entirely on the screen with the menu bar and may not be completely visible for all screen resolutions and configurations.306595148#18446744073709551615#0#0(6@104"/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib303834125#12#0#12#0#0"0(22@145"The '_window' outlet of 'VoodooHDA Pref' is connected to 'Content View' but 'NSView' is not a kind of 'NSWindow' as specified by the outlet type.306595148#18446744073709551615#0#0(6@104"/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib303834125#99#0#99#0#0"0(0#0#104"/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib8608339168#485"    cd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Resources/English.lproj/VoodooHDAPref.nib /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/VoodooHDAPref.xib --sdk /Developer/SDKs/MacOSX10.6.sdk0#
+
+CCopyStringsFile /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings
+s306595147.662640
+e306595148.032727
+r1
+xCopyStringsFile
+x/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Resources/English.lproj/InfoPlist.strings
+xEnglish.lproj/InfoPlist.strings
+lSLF07#2@36"Copy English.lproj/InfoPlist.strings306595147#306595148#0(0"0(0#0#104"/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/English.lproj/InfoPlist.strings8607850144#443"    cd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA    setenv ICONV /usr/bin/iconv    /Developer/Library/Xcode/Plug-ins/CoreBuildTasks.xcplugin/Contents/Resources/copystrings --validate --inputencoding utf-16 --outputencoding UTF-16 English.lproj/InfoPlist.strings --outdir /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Resources/English.lproj0#
+
+CCopyTiffFile /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Resources/VoodooHDAPref.tiff VoodooHDAPref.tiff
+s306595147.663492
+e306595148.056860
+r1
+xCopyTiffFile
+x/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Resources/VoodooHDAPref.tiff
+xVoodooHDAPref.tiff
+lSLF07#2@23"Copy VoodooHDAPref.tiff306595147#306595148#0(0"0(0#0#91"/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDAPref.tiff8607610464#323"    cd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA    /Developer/Library/Xcode/Plug-ins/CoreBuildTasks.xcplugin/Contents/Resources/copytiff VoodooHDAPref.tiff --outdir /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Resources0#
+
+CCreateUniversalBinary /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/MacOS/VoodooHDA normal "i386 x86_64"
+s306595154.418229
+e306595154.421350
+r1
+xCreateUniversalBinary
+x/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/MacOS/VoodooHDA
+xnormal
+xi386 x86_64
+lSLF07#2@100"CreateUniversalBinary build/Release/VoodooHDA.prefPane/Contents/MacOS/VoodooHDA normal "i386 x86_64"306595154#306595154#0(0"0(0#0#84"/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/i386 x86_648601550208#545"    cd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA    /usr/bin/lipo -create /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDA /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDA -output /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/MacOS/VoodooHDA0#
+
+CLd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDA normal i386
+s306595153.358443
+e306595154.418157
+r1
+xLd
+x/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDA
+xnormal
+xi386
+lSLF07#2@153"Link /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDA306595153#306595154#0(0"0(0#0#0"8608103520#801"    cd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Developer/usr/bin/gcc-4.2 -arch i386 -bundle -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release -F/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release -filelist /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDA.LinkFileList -mmacosx-version-min=10.6 -framework Cocoa -framework PreferencePanes -framework IOKit -o /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/i386/VoodooHDA0#
+
+CLd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDA normal x86_64
+s306595153.373396
+e306595154.417744
+r1
+xLd
+x/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDA
+xnormal
+xx86_64
+lSLF07#2@155"Link /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDA306595153#306595154#0(0"0(0#0#0"8607519168#807"    cd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Developer/usr/bin/gcc-4.2 -arch x86_64 -bundle -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release -F/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release -filelist /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDA.LinkFileList -mmacosx-version-min=10.6 -framework Cocoa -framework PreferencePanes -framework IOKit -o /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/Objects-normal/x86_64/VoodooHDA0#
+
+CProcessInfoPlistFile /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Info.plist Info.plist
+s306595147.643709
+e306595147.662549
+r1
+xProcessInfoPlistFile
+x/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Info.plist
+xInfo.plist
+lSLF07#2@18"Process Info.plist306595147#306595147#0(0"0(0#0#83"/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/Info.plist13229757704634464#287"    cd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA    builtin-infoPlistUtility Info.plist -expandbuildsettings -platform macosx -o /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane/Contents/Info.plist0#
+
+CProcessPCH /var/folders/uq/uqnL49TlF5ujae+GwGIx2k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/VoodooHDA_Prefix-ayfrsrvexithrhchfyrwmdzkfvuk/VoodooHDA_Prefix.pch.gch VoodooHDA_Prefix.pch normal x86_64 objective-c com.apple.compilers.gcc.4_2
+s306595148.384397
+e306595152.010647
+r1
+xProcessPCH
+x/var/folders/uq/uqnL49TlF5ujae+GwGIx2k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/VoodooHDA_Prefix-ayfrsrvexithrhchfyrwmdzkfvuk/VoodooHDA_Prefix.pch.gch
+xVoodooHDA_Prefix.pch
+xnormal
+xx86_64
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@31"Precompile VoodooHDA_Prefix.pch306595148#306595152#0(0"0(0#0#93"/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDA_Prefix.pch8606822144#1256"    cd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c-header -arch x86_64 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fobjc-gc -ftree-vectorize -mmacosx-version-min=10.6 -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/VoodooHDA.hmap -F/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/include -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/DerivedSources/x86_64 -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/DerivedSources -c /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDA_Prefix.pch -o /var/folders/uq/uqnL49TlF5ujae+GwGIx2k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/VoodooHDA_Prefix-ayfrsrvexithrhchfyrwmdzkfvuk/VoodooHDA_Prefix.pch.gch0#
+
+CProcessPCH /var/folders/uq/uqnL49TlF5ujae+GwGIx2k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/VoodooHDA_Prefix-gcnibwlmzgtjfxgjkywrqyyxsnjv/VoodooHDA_Prefix.pch.gch VoodooHDA_Prefix.pch normal i386 objective-c com.apple.compilers.gcc.4_2
+s306595148.383124
+e306595152.853233
+r1
+xProcessPCH
+x/var/folders/uq/uqnL49TlF5ujae+GwGIx2k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/VoodooHDA_Prefix-gcnibwlmzgtjfxgjkywrqyyxsnjv/VoodooHDA_Prefix.pch.gch
+xVoodooHDA_Prefix.pch
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@31"Precompile VoodooHDA_Prefix.pch306595148#306595152#0(0"0(0#0#93"/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDA_Prefix.pch8607297472#1252"    cd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x objective-c-header -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fobjc-gc -ftree-vectorize -mmacosx-version-min=10.6 -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/VoodooHDA.hmap -F/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/include -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/DerivedSources/i386 -I/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/VoodooHDA.build/Release/VoodooHDA.build/DerivedSources -c /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/VoodooHDA_Prefix.pch -o /var/folders/uq/uqnL49TlF5ujae+GwGIx2k+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/VoodooHDA_Prefix-gcnibwlmzgtjfxgjkywrqyyxsnjv/VoodooHDA_Prefix.pch.gch0#
+
+CTouch /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane
+s306595154.421432
+e306595154.424115
+r1
+xTouch
+x/Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane
+lSLF07#2@111"Touch /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane306595154#306595154#0(0"0(0#0#0"8605948512#208"    cd /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA    /usr/bin/touch -c /Volumes/LeoHD/Projects/VoodooHDA/VHDA_w_prefpane/VHDAPrefPane/VoodooHDA/build/Release/VoodooHDA.prefPane0#
+

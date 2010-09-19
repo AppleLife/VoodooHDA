@@ -1,0 +1,214 @@
+// !$*UTF8*$!
+{
+	089C1669FE841209C02AAC07 /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeTarget = 8D202CE80486D31800D8A456 /* VoodooHDA */;
+		addToTargets = (
+			8D202CE80486D31800D8A456 /* VoodooHDA */,
+		);
+		codeSenseManager = F413B3180F9666E600FE446E /* Code sense */;
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					341,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 262011819;
+			PBXWorkspaceStateSaveDate = 262011819;
+		};
+		perUserProjectItems = {
+			F413B34B0F968FEF00FE446E /* PBXTextBookmark */ = F413B34B0F968FEF00FE446E /* PBXTextBookmark */;
+			F413B34C0F968FEF00FE446E /* PBXTextBookmark */ = F413B34C0F968FEF00FE446E /* PBXTextBookmark */;
+			F4585BEF0F9DFC7900C3FCA3 /* PBXTextBookmark */ = F4585BEF0F9DFC7900C3FCA3 /* PBXTextBookmark */;
+			F4585BF00F9DFC7900C3FCA3 /* PBXTextBookmark */ = F4585BF00F9DFC7900C3FCA3 /* PBXTextBookmark */;
+			F46370C70F9C948C00099341 /* PBXTextBookmark */ = F46370C70F9C948C00099341 /* PBXTextBookmark */;
+			F46370CA0F9C948C00099341 /* PBXTextBookmark */ = F46370CA0F9C948C00099341 /* PBXTextBookmark */;
+			F47090240F9B83C600CC84B4 /* PBXTextBookmark */ = F47090240F9B83C600CC84B4 /* PBXTextBookmark */;
+			F47090290F9B83C600CC84B4 /* PBXTextBookmark */ = F47090290F9B83C600CC84B4 /* PBXTextBookmark */;
+			F4CD2B090F9C7B3500F9AC0B /* PBXTextBookmark */ = F4CD2B090F9C7B3500F9AC0B /* PBXTextBookmark */;
+			F4CD2B0B0F9C7B3500F9AC0B /* PBXTextBookmark */ = F4CD2B0B0F9C7B3500F9AC0B /* PBXTextBookmark */;
+			F4CD2B210F9C7C1600F9AC0B /* PBXTextBookmark */ = F4CD2B210F9C7C1600F9AC0B /* PBXTextBookmark */;
+		};
+		sourceControlManager = F413B3170F9666E600FE446E /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	8D202CE80486D31800D8A456 /* VoodooHDA */ = {
+		activeExec = 0;
+	};
+	F413B3170F9666E600FE446E /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+		};
+	};
+	F413B3180F9666E600FE446E /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	F413B34B0F968FEF00FE446E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F506C03D013D9D7901CA16C8 /* VoodooHDAPref.m */;
+		name = "VoodooHDAPref.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 225;
+		vrLoc = 0;
+	};
+	F413B34C0F968FEF00FE446E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F506C03C013D9D7901CA16C8 /* VoodooHDAPref.h */;
+		name = "VoodooHDAPref.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 369;
+		vrLoc = 0;
+	};
+	F4585BEF0F9DFC7900C3FCA3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F506C03C013D9D7901CA16C8 /* VoodooHDAPref.h */;
+		name = "VoodooHDAPref.h: 87";
+		rLen = 0;
+		rLoc = 1909;
+		rType = 0;
+		vrLen = 314;
+		vrLoc = 187;
+	};
+	F4585BF00F9DFC7900C3FCA3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F506C03C013D9D7901CA16C8 /* VoodooHDAPref.h */;
+		name = "VoodooHDAPref.h: 81";
+		rLen = 0;
+		rLoc = 1812;
+		rType = 0;
+		vrLen = 1398;
+		vrLoc = 772;
+	};
+	F46370C70F9C948C00099341 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F506C03C013D9D7901CA16C8 /* VoodooHDAPref.h */;
+		name = "VoodooHDAPref.h: 87";
+		rLen = 0;
+		rLoc = 1909;
+		rType = 0;
+		vrLen = 314;
+		vrLoc = 187;
+	};
+	F46370CA0F9C948C00099341 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F506C03C013D9D7901CA16C8 /* VoodooHDAPref.h */;
+		name = "VoodooHDAPref.h: 81";
+		rLen = 0;
+		rLoc = 1812;
+		rType = 0;
+		vrLen = 1398;
+		vrLoc = 772;
+	};
+	F47090240F9B83C600CC84B4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F47090250F9B83C600CC84B4 /* voodoohdahelper.c */;
+		name = "voodoohdahelper.c: 166";
+		rLen = 0;
+		rLoc = 3883;
+		rType = 0;
+		vrLen = 439;
+		vrLoc = 3468;
+	};
+	F47090250F9B83C600CC84B4 /* voodoohdahelper.c */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.c;
+		name = voodoohdahelper.c;
+		path = /Users/fassl/Documents/Source/Checkouts/VoodooHDA/trunk/voodoohdahelper.c;
+		sourceTree = "<absolute>";
+	};
+	F47090290F9B83C600CC84B4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F470902A0F9B83C600CC84B4 /* voodoohdahelper.c */;
+		name = "voodoohdahelper.c: 166";
+		rLen = 0;
+		rLoc = 3883;
+		rType = 0;
+		vrLen = 439;
+		vrLoc = 3468;
+	};
+	F470902A0F9B83C600CC84B4 /* voodoohdahelper.c */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.c;
+		name = voodoohdahelper.c;
+		path = /Users/fassl/Documents/Source/Checkouts/VoodooHDA/trunk/voodoohdahelper.c;
+		sourceTree = "<absolute>";
+	};
+	F4CD2B090F9C7B3500F9AC0B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F4F1FBCF0F9B9414005DFE1D /* Parser.cpp */;
+		name = "Parser.cpp: 2839";
+		rLen = 0;
+		rLoc = 91346;
+		rType = 0;
+		vrLen = 299;
+		vrLoc = 91329;
+	};
+	F4CD2B0B0F9C7B3500F9AC0B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F4F1FBCF0F9B9414005DFE1D /* Parser.cpp */;
+		name = "Parser.cpp: 2839";
+		rLen = 0;
+		rLoc = 91346;
+		rType = 0;
+		vrLen = 299;
+		vrLoc = 91329;
+	};
+	F4CD2B210F9C7C1600F9AC0B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = F506C03D013D9D7901CA16C8 /* VoodooHDAPref.m */;
+		name = "VoodooHDAPref.m: 22";
+		rLen = 0;
+		rLoc = 1610;
+		rType = 0;
+		vrLen = 603;
+		vrLoc = 268;
+	};
+	F4F1FBCF0F9B9414005DFE1D /* Parser.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = Parser.cpp;
+		path = /Users/fassl/Documents/Source/Checkouts/VoodooHDA/trunk/Parser.cpp;
+		sourceTree = "<absolute>";
+	};
+	F506C03C013D9D7901CA16C8 /* VoodooHDAPref.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1000, 1372}}";
+			sepNavSelRange = "{1812, 0}";
+			sepNavVisRange = "{772, 1398}";
+			sepNavWindowFrame = "{{415, 0}, {1059, 778}}";
+		};
+	};
+	F506C03D013D9D7901CA16C8 /* VoodooHDAPref.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1000, 6202}}";
+			sepNavSelRange = "{8132, 10}";
+			sepNavVisRange = "{8501, 1258}";
+			sepNavWindowFrame = "{{467, 0}, {1059, 778}}";
+		};
+	};
+}
