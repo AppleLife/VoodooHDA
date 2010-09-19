@@ -723,6 +723,18 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf,
 			break;
 	}
 
+	//AutumnRain - swap channels
+	if(mDevice && mDevice->mSwitchCh && (streamFormat->fNumChannels > 1)) {
+		UInt32 i;
+		Float32 tempSamples;
+		
+		for(i = 0; i < numSamples; i+= streamFormat->fNumChannels) {
+			tempSamples = floatDestBuf[i];
+			floatDestBuf[i] = floatDestBuf[i+1];
+			floatDestBuf[i+1] = tempSamples;
+		}
+	}
+	
     return kIOReturnSuccess;
 }
 #if FLOATLIB
@@ -737,12 +749,12 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf,
 */
 void CoeffsFilterOrder2 (Float32 *Coeff, Float32 CutOffFreq, Float32 AttAtCutOffFreq , Float64 SamplingRate)
 {
-	Float32	k, nu0, pi=3.14159, Att, norm;
+	Float32	k, nu0, pi=3.14159265358979, Att, norm;
 
 	nu0 = (Float32) (CutOffFreq / SamplingRate);
-	Att = 1 / AttAtCutOffFreq;
-	k = 1/(tan(pi*nu0));
-	norm = k*(k+Att)+1;
+	Att = 1.0 / AttAtCutOffFreq;
+	k = 1.0 / (tan(pi*nu0));
+	norm = k*(k+Att)+1.0;
 
 	/*
 	the first 3 coefficients are Num[0], Num[1] & Num[2] in that order
@@ -3006,7 +3018,7 @@ void Float32ToSwapInt16( float *src, signed short *dst, unsigned int count )
 	}
 }
 
-
+//PPC
 void Float32ToNativeInt24( float *src, signed long *dst, unsigned int count )
 {
 	register double		scale = 2147483648.0;

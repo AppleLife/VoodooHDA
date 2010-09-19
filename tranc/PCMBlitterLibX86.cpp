@@ -3,7 +3,7 @@
 #include <TargetConditionals.h>
 
 #define _MM_MALLOC_H_INCLUDED 1	// we don't want this header
-#include <xmmintrin.h>
+#include "xmmintrin.h"
 #include "PCMBlitterLib.h"
 #include <libkern/OSByteOrder.h>
 
