@@ -43,7 +43,7 @@ typedef struct _volSlider{
 	bool enabled; //активен ли регулятор
 	UInt32 ossdev; //к какому ossdev пренадлежит этот регулятор (но влияет он только на AudioControl перечисленные в audioCtls;
 	UInt8 pcmDev; //к какому устройству PCM принадлежит регулятор
-	AudioControl *audioCtls[MAX_AUDIO_CTLS]; //Здесь перечисленны какие AudioControl'ы затрагивает этот регулятор
+	AudioControl *audioCtls[MAX_AUDIO_CTLS]; //Здесь перечислены какие AudioControl'ы затрагивает этот регулятор
 	UInt8 nAudioCtlsCount; //Здесь храниться число AudioControl в массиве audioCtls
 	
 	_volSlider() { //Конструктор по умолчанию
@@ -58,9 +58,11 @@ typedef struct _sliderTab{
 	char name[MAX_SLIDER_TAB_NAME_LENGTH]; //Имя вкладки с регуляторами
 	PcmDevice *pcmDevice; //Указатель на устройство PCM к которому принадлежат OSS Dev регуляторов на данной вкладке
 	volSlider volSliders[25]; //Регуляторы на вкладке
+	ChannelInfo *sliderChan;
 	
 	_sliderTab() {
 		pcmDevice = 0;
+		sliderChan = NULL;
 		bzero(name, sizeof(name));
 	}
 }sliderTab;
@@ -74,7 +76,8 @@ class IOTimerEventSource;
 
 class VoodooHDADevice : public IOAudioDevice
 {
-	friend class AppleHDAEngine;
+//	friend class AppleHDAEngine;
+	friend class VoodooHDAEngine;
 
 	OSDeclareDefaultStructors(VoodooHDADevice)
 
@@ -140,6 +143,12 @@ public:
 	UInt64 mTotalChanInt;
 
 	UInt32 mVerbose;
+	//Temporary for init driver
+	bool vectorize;
+	int noiseLevel;
+	bool useStereo;
+	int StereoBase;
+	//
 
 	bool mMsgBufferEnabled;
 	char *mMsgBuffer;
@@ -345,10 +354,10 @@ public:
 //AutumnRain	
 /***************/
 	
-	sliderTab sliderTabs[16];
+	sliderTab sliderTabs[25];
 	UInt8 nSliderTabsCount;
 	
-	sliders *mPrefPanelMemoryBuf;
+	ChannelInfo *mPrefPanelMemoryBuf;
 	bool mPrefPanelMemoryBufEnabled;
 	size_t mPrefPanelMemoryBufSize;
 	IOLock *mPrefPanelMemoryBufLock;
@@ -358,6 +367,7 @@ public:
 	void catPinName(Widget *widget); //UInt32 config, char *buf, size_t size);
 	
 	void changeSliderValue(UInt8 tabNum, UInt8 sliderNum, UInt8 newValue);
+	void setMath(UInt8 tabNum, UInt8 sliderNum, UInt8 newValue);
 	
 	//Создаем разделяемую область памяти, откуда будет брать информацию PrefPanel
 	void createPrefPanelMemoryBuf(FunctionGroup *funcGroup);

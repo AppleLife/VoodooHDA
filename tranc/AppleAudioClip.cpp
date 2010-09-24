@@ -21,7 +21,7 @@
  * @APPLE_LICENSE_HEADER_END@
  */
 
-#ifdef USE_APPLE_ROUTINES
+//#ifdef USE_APPLE_ROUTINES
 
 #include <libkern/OSTypes.h>
 #include <IOKit/IOReturn.h>
@@ -378,92 +378,10 @@ static void	ClipFloat32ToSInt32LE_4(const Float32* inInputBuffer, SInt32* outOut
 	}
 }
 #endif
-
-IOReturn VoodooHDAEngine::clipOutputSamples(const void* mixBuf, void* sampleBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, __unused IOAudioStream *audioStream)
-{
-    if(!streamFormat)
-	{
-        return kIOReturnBadArgument;
-    }
-	
-	UInt32		theNumberSamples	= numSampleFrames * streamFormat->fNumChannels;
-	UInt32		theFirstSample		= firstSampleFrame * streamFormat->fNumChannels;
-	Float32*	theMixBuffer		= ((Float32*)mixBuf) + theFirstSample;
-
-	// aml, added optimized routines [3034710]
-	switch(streamFormat->fBitWidth)
-	{
-		case 8:
-			{
-				SInt8* theOutputBufferSInt8 = ((SInt8*)sampleBuf) + theFirstSample;
-				#if	defined(__ppc__)
-					Float32ToInt8(theMixBuffer, theOutputBufferSInt8, theNumberSamples);
-				#elif defined (__i386__) || defined(__x86_64__)
-					ClipFloat32ToSInt8_4(theMixBuffer, theOutputBufferSInt8, theNumberSamples);
-				#endif	
-				//ClipFloat32ToSInt8_4(theMixBuffer, theOutputBufferSInt8, theNumberSamples);
-			}
-			break;
-
-		case 16:
-			{
-				SInt16* theOutputBufferSInt16 = ((SInt16*)sampleBuf) + theFirstSample;
-
-				#if	defined(__ppc__)
-					Float32ToSwapInt16(theMixBuffer, theOutputBufferSInt16, theNumberSamples);
-				#elif defined(__i386__) || defined(__x86_64__)
-					ClipFloat32ToSInt16LE_4(theMixBuffer, theOutputBufferSInt16, theNumberSamples);
-				#endif	
-				//ClipFloat32ToSInt16LE_4(theMixBuffer, theOutputBufferSInt16, theNumberSamples);
-			}
-			break;
-
-		case 20:
-		case 24:
-			{
-				SInt32* theOutputBufferSInt24 = (SInt32*)(((UInt8*)sampleBuf) + (theFirstSample * 3));
-
-				#if	defined(__ppc__)
-					Float32ToSwapInt24(theMixBuffer, theOutputBufferSInt24, theNumberSamples);
-				#elif defined(__i386__) || defined(__x86_64__)
-					ClipFloat32ToSInt24LE_4(theMixBuffer, theOutputBufferSInt24, theNumberSamples);
-				#endif	
-				//ClipFloat32ToSInt24LE_4(theMixBuffer, theOutputBufferSInt24, theNumberSamples);
-			}
-			break;
-
-		case 32:
-			{
-				SInt32* theOutputBufferSInt32 = ((SInt32*)sampleBuf) + theFirstSample;
-
-				#if	defined(__ppc__)
-					Float32ToSwapInt32(theMixBuffer, theOutputBufferSInt32, theNumberSamples);
-				#elif defined(__i386__) || defined(__x86_64__)
-					ClipFloat32ToSInt32LE_4(theMixBuffer, theOutputBufferSInt32, theNumberSamples);
-				#endif	
-				//ClipFloat32ToSInt32LE_4(theMixBuffer, theOutputBufferSInt32, theNumberSamples);
-			}
-			break;
-	};
-	/* 
-	 result = audioEngine->clipOutputSamples(mixBuffer, sampleBuffer, firstSampleFrame, numSampleFrames, &format, this);
-	 
-	 IOLog("IOAudioStream[%p]::clipOutputSamples(0x%lx, 0x%lx) - clipping function returned error: 0x%x\n", this, firstSampleFrame, numSampleFrames, result);
-	 Sep 17 21:15:52 HacBook kernel[0]: IOAudioStream[0x4aefd00]::clipOutputSamples(0x42f, 0x200) - clipping function returned error: 0xe00002c7
-	 Sep 17 21:15:52 HacBook kernel[0]: IOAudioStream[0x4aefd00]::clipOutputSamples(0x62f, 0x211) - clipping function returned error: 0xe00002c7
-	 Sep 17 21:15:52 HacBook kernel[0]: IOAudioStream[0x4aefd00]::clipOutputSamples(0x840, 0x206) - clipping function returned error: 0xe00002c7
-	 Sep 17 21:15:52 HacBook kernel[0]: IOAudioStream[0x4aefd00]::clipOutputSamples(0xa46, 0x206) - clipping function returned error: 0xe00002c7
-	 Sep 17 21:15:52 HacBook kernel[0]: IOAudioStream[0x4aefd00]::clipOutputSamples(0xc4c, 0x207) - clipping function returned error: 0xe00002c7
-	 Sep 17 21:15:52 HacBook kernel[0]: IOAudioStream[0x4aefd00]::clipOutputSamples(0xe53, 0x207) - clipping function returned error: 0xe00002c7
-	 
- */
-    return kIOReturnSuccess;
-}
-
 // aml 2.21.02 added second filter state for 4th order filter
 // aml 2.21.02 added more filter state for phase compensator
 // aml 3.4.02 added srcPhase
-IOReturn clipAppleUSBAudioToOutputStreamiSub (const void *mixBuf, void *sampleBuf, __unused PreviousValues * filterState, __unused PreviousValues * filterState2, __unused PreviousValues * phaseCompState, Float32 *low, Float32 *high, UInt32 firstSampleFrame, UInt32 numSampleFrames, UInt32 sampleRate, const IOAudioStreamFormat *streamFormat, SInt16 *iSubBufferMemory, UInt32 *loopCount, SInt32 *iSubBufferOffset, UInt32 iSubBufferLen, iSubAudioFormatType* iSubFormat, float* srcPhase, float* srcState)
+IOReturn clipAppleAudioToOutputStreamiSub (const void *mixBuf, void *sampleBuf, __unused PreviousValues * filterState, __unused PreviousValues * filterState2, __unused PreviousValues * phaseCompState, Float32 *low, Float32 *high, UInt32 firstSampleFrame, UInt32 numSampleFrames, UInt32 sampleRate, const IOAudioStreamFormat *streamFormat, SInt16 *iSubBufferMemory, UInt32 *loopCount, SInt32 *iSubBufferOffset, UInt32 iSubBufferLen, iSubAudioFormatType* iSubFormat, float* srcPhase, float* srcState)
 {
     UInt32	sampleIndex, maxSampleIndex;
     float 	*floatMixBuf;
@@ -632,111 +550,7 @@ const float kOneOverMaxSInt16Value = 1.0/32768.0f;
 // const float kOneOverMaxSInt24Value = 1.0/8388608.0f;
 const float kOneOverMaxSInt24Value = 0.00000011920928955078125f;
 const float kOneOverMaxSInt32Value = 1.0/2147483648.0f;
-
-IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf,
-												void *destBuf,
-												UInt32 firstSampleFrame,
-												UInt32 numSampleFrames,
-												const IOAudioStreamFormat *streamFormat,
-											    __unused IOAudioStream *audioStream) {
-	UInt32	numSamplesLeft;
-	float 	*floatDestBuf;
-
-    floatDestBuf = (float *)destBuf;
-	numSamplesLeft = numSampleFrames * streamFormat->fNumChannels;
-
-	//	debugIOLog ("destBuf = %p, firstSampleFrame = %ld, numSampleFrames = %ld", destBuf, firstSampleFrame, numSampleFrames);
-
-	switch (streamFormat->fBitWidth) 
-	{
-		case 8:
-			SInt8 *inputBuf8;
-
-			inputBuf8 = &(((SInt8 *)sampleBuf)[firstSampleFrame * streamFormat->fNumChannels]);
-			#if defined(__ppc__)
-				Int8ToFloat32(inputBuf8, floatDestBuf, numSamplesLeft);
-			#elif defined(__i386__) || defined(__x86_64__)
-				while (numSamplesLeft-- > 0) 
-				{	
-					*(floatDestBuf++) = (float)(*(inputBuf8++)) * kOneOverMaxSInt8Value;
-				}
-			#endif
-
-			break;
-		case 16:
-			SInt16 *inputBuf16;
-			
-			inputBuf16 = &(((SInt16 *)sampleBuf)[firstSampleFrame * streamFormat->fNumChannels]);
-
-			#if defined(__ppc__)
-				SwapInt16ToFloat32(inputBuf16, floatDestBuf, numSamplesLeft, 16);
-			#elif defined(__i386__) || defined(__x86_64__)
-				while (numSamplesLeft-- > 0) 
-				{	
-					*(floatDestBuf++) = (float)(*(inputBuf16++)) * kOneOverMaxSInt16Value;
-				}
-			#endif
-
-			break;
-		case 20:
-		case 24:
-			register SInt8 *inputBuf24;
-
-			// Multiply by 3 because 20 and 24 bit samples are packed into only three bytes, so we have to index bytes, not shorts or longs
-			inputBuf24 = &(((SInt8 *)sampleBuf)[firstSampleFrame * streamFormat->fNumChannels * 3]);
-
-			#if defined(__ppc__)
-				SwapInt24ToFloat32((long *)inputBuf24, floatDestBuf, numSamplesLeft, 24);
-			#elif defined(__i386__) || defined(__x86_64__)
-				register SInt32 inputSample;
-				
-				// [rdar://4311684] - Fixed 24-bit input convert routine. /thw
-				while (numSamplesLeft-- > 1) 
-				{	
-					inputSample = (* (UInt32 *)inputBuf24) & 0x00FFFFFF;
-					// Sign extend if necessary
-					if (inputSample > 0x7FFFFF)
-					{
-						inputSample |= 0xFF000000;
-					}
-					inputBuf24 += 3;
-					*(floatDestBuf++) = (float)inputSample * kOneOverMaxSInt24Value;
-				}
-				// Convert last sample. The following line does the same work as above without going over the edge of the buffer.
-				inputSample = SInt32 ((UInt32 (*(UInt16 *) inputBuf24) & 0x0000FFFF) | (SInt32 (*(inputBuf24 + 2)) << 16));
-				*(floatDestBuf++) = (float)inputSample * kOneOverMaxSInt24Value;
-			#endif
-
-			break;
-		case 32:
-			register SInt32 *inputBuf32;
-			inputBuf32 = &(((SInt32 *)sampleBuf)[firstSampleFrame * streamFormat->fNumChannels]);
-
-			#if defined(__ppc__)
-				SwapInt32ToFloat32(inputBuf32, floatDestBuf, numSamplesLeft, 32);
-			#elif defined(__i386__) || defined(__x86_64__)
-				while (numSamplesLeft-- > 0) {	
-					*(floatDestBuf++) = (float)(*(inputBuf32++)) * kOneOverMaxSInt32Value;
-				}
-			#endif
-
-			break;
-	}
-
-	//AutumnRain - swap channels
-	if(mDevice && mDevice->mSwitchCh && (streamFormat->fNumChannels > 1)) {
-		UInt32 i;
-		Float32 tempSamples;
-		
-		for(i = 0; i < numSamples; i+= streamFormat->fNumChannels) {
-			tempSamples = floatDestBuf[i];
-			floatDestBuf[i] = floatDestBuf[i+1];
-			floatDestBuf[i+1] = tempSamples;
-		}
-	}
 	
-    return kIOReturnSuccess;
-}
 #if FLOATLIB
 /*
 	***CoeffsFilterOrder2***
@@ -1332,7 +1146,7 @@ void StereoFilter4thOrderPhaseComp (Float32 *in, Float32 *low, Float32 *high, UI
 }
 
 // aml new routines [3034710]
-#pragma mark ��� New clipping routines
+#pragma mark ••• New clipping routines
 #if	defined(__ppc__)
 
 // this behaves incorrectly in Float32ToSwapInt24 if not declared volatile
@@ -3845,4 +3659,244 @@ void Float32ToNativeInt32( float *src, signed long *dst, unsigned int count )
 
 #endif
 
-#endif
+IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, UInt32 firstSampleFrame,
+											UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat,
+											__unused IOAudioStream *audioStream)
+{
+	if(!streamFormat)
+	{
+        return kIOReturnBadArgument;
+    }
+	UInt32 firstSample = firstSampleFrame * streamFormat->fNumChannels;
+	UInt32 numSamples = numSampleFrames * streamFormat->fNumChannels;
+	Float32 *floatMixBuf = ((Float32*)mixBuf) + firstSample;
+	SInt16 *theOutputBufferSInt16;
+	SInt8  *theOutputBufferSInt8;
+	UInt8* theOutputBufferSInt24;
+	SInt32* theOutputBufferSInt32;
+	bool SSE2 = mChannel->vectorize;
+	
+	UInt8 *sourceBuf = (UInt8 *) sampleBuf;
+	
+	// figure out what sort of blit we need to do
+	if ((streamFormat->fSampleFormat == kIOAudioStreamSampleFormatLinearPCM) && streamFormat->fIsMixable) {
+		// it's mixable linear PCM, which means we will be calling a blitter, which works in samples
+		// not frames
+		
+		if (streamFormat->fNumericRepresentation == kIOAudioStreamNumericRepresentationSignedInt) {
+			// it's some kind of signed integer, which we handle as some kind of even byte length
+			bool nativeEndianInts;
+			nativeEndianInts = (streamFormat->fByteOrder == kIOAudioStreamByteOrderLittleEndian);
+			
+			switch (streamFormat->fBitWidth) {
+				case 8:
+					theOutputBufferSInt8 = ((SInt8*)sampleBuf) + firstSample;				
+						ClipFloat32ToSInt8_4(floatMixBuf, theOutputBufferSInt8, numSamples);
+					break;
+					
+				case 16:
+					theOutputBufferSInt16 = ((SInt16*)sampleBuf) + firstSample;
+					if (nativeEndianInts) {
+						if (SSE2) {
+							Float32ToNativeInt16(floatMixBuf, theOutputBufferSInt16, numSamples);
+						} else {
+							ClipFloat32ToSInt16LE_4(floatMixBuf, theOutputBufferSInt16, numSamples);
+						}
+					}
+					else
+						Float32ToSwapInt16(floatMixBuf, theOutputBufferSInt16, numSamples);
+					break;
+					
+				case 20:
+				case 24:
+					theOutputBufferSInt24 = ((UInt8*)sampleBuf) + (firstSample * 3);
+					if (nativeEndianInts) {
+						if (SSE2) {
+							Float32ToNativeInt24(floatMixBuf, theOutputBufferSInt24, numSamples);
+						} else {
+							ClipFloat32ToSInt24LE_4(floatMixBuf, (SInt32*)theOutputBufferSInt24, numSamples);						
+						}
+					}
+					else
+						Float32ToSwapInt24(floatMixBuf, theOutputBufferSInt24, numSamples);
+					break;
+					
+				case 32:
+					theOutputBufferSInt32 = ((SInt32*)sampleBuf) + firstSample;
+					if (nativeEndianInts) {
+						if (SSE2) {
+							Float32ToNativeInt32(floatMixBuf, theOutputBufferSInt32, numSamples);
+						} else {					
+							ClipFloat32ToSInt32LE_4(floatMixBuf, theOutputBufferSInt32, numSamples);
+						}
+					}
+					else
+						Float32ToSwapInt32(floatMixBuf, (SInt32 *) &sourceBuf[4 * firstSample],
+										   numSamples);
+					break;
+					
+				default:
+					IOLog("clipOutputSamples: can't handle signed integers with a bit width of %d",
+							 streamFormat->fBitWidth);
+					break;
+					
+			}
+		} else if (streamFormat->fNumericRepresentation == kIOAudioStreamNumericRepresentationIEEE754Float) {
+			// it is some kind of floating point format
+			if ((streamFormat->fBitWidth == 32) && (streamFormat->fBitDepth == 32) &&
+				(streamFormat->fByteOrder == kIOAudioStreamByteOrderLittleEndian)) {
+				// it's Float32, so we are just going to copy the data
+				memcpy(&((Float32 *) sampleBuf)[firstSample], &floatMixBuf[firstSample],
+					   numSamples * sizeof (Float32));
+			} else
+				IOLog("clipOutputSamples: can't handle floats with a bit width of %d, bit depth of %d, "
+						 "and/or the given byte order", streamFormat->fBitWidth, streamFormat->fBitDepth);
+		}
+	} else {
+		// it's not linear PCM or it's not mixable, so just copy the data into the target buffer
+		UInt32 offset = firstSampleFrame * (streamFormat->fBitWidth / 8) * streamFormat->fNumChannels;
+		UInt32 size = numSampleFrames * (streamFormat->fBitWidth / 8) * streamFormat->fNumChannels;
+		memcpy(&((SInt8 *) sampleBuf)[offset], &((SInt8 *) mixBuf)[offset], size);
+	}
+	
+	return kIOReturnSuccess;
+}
+
+IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf, void *destBuf,
+											  UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat,
+											  __unused IOAudioStream *audioStream)
+{
+	UInt32	numSamplesLeft, numSamples;
+	float 	*floatDestBuf;
+	
+    floatDestBuf = (float *)destBuf;
+	UInt32 firstSample = firstSampleFrame * streamFormat->fNumChannels;
+	numSamples = numSamplesLeft = numSampleFrames * streamFormat->fNumChannels;
+	long int noiseMask = ~((1 << mChannel->noiseLevel) - 1);
+	
+	UInt8 *sourceBuf = (UInt8 *) sampleBuf; 
+	SInt8 *inputBuf8;
+	SInt16 *inputBuf16;
+	const UInt8 *inputBuf24;
+	SInt32 *inputBuf32;
+	bool SSE2 = mChannel->vectorize;
+	
+	
+	// figure out what sort of blit we need to do
+	if ((streamFormat->fSampleFormat == kIOAudioStreamSampleFormatLinearPCM) && streamFormat->fIsMixable) {
+		// it's linear PCM, which means the target is Float32 and we will be calling a blitter, which
+		// works in samples not frames
+		Float32 *floatDestBuf = (Float32 *) destBuf;
+		
+		if (streamFormat->fNumericRepresentation == kIOAudioStreamNumericRepresentationSignedInt) {
+			// it's some kind of signed integer, which we handle as some kind of even byte length
+			bool nativeEndianInts;
+			nativeEndianInts = (streamFormat->fByteOrder == kIOAudioStreamByteOrderLittleEndian);
+			
+			switch (streamFormat->fBitWidth) {
+				case 8:
+					inputBuf8  = &(((SInt8 *)sampleBuf)[firstSample]);
+					while (numSamplesLeft-- > 0) 
+					{	
+						*(floatDestBuf++) = (float)(*(inputBuf8++) &= (SInt8)noiseMask) * kOneOverMaxSInt8Value;
+					}
+					break;
+				case 16:
+					inputBuf16 = &(((SInt16 *)sampleBuf)[firstSample]);
+					if (nativeEndianInts) {
+						if (SSE2) {
+							NativeInt16ToFloat32(inputBuf16, floatDestBuf, numSamples);
+						} else {
+							while (numSamplesLeft-- > 0) 
+							{	
+								*(floatDestBuf++) = (float)(*(inputBuf16++) &= (SInt16)noiseMask) * kOneOverMaxSInt16Value;
+							}
+						}
+					} else
+						SwapInt16ToFloat32(inputBuf16, floatDestBuf, numSamples);
+					break;
+					
+				case 20:
+				case 24:
+					inputBuf24 = &(((UInt8 *)sampleBuf)[firstSample * 3]);
+					if (nativeEndianInts){
+						if (SSE2) {
+							NativeInt24ToFloat32(inputBuf24, floatDestBuf, numSamples);
+						} else {
+							// Multiply by 3 because 20 and 24 bit samples are packed into only three bytes, so we have to index bytes, not shorts or longs
+							register SInt32 inputSample;
+							
+							// [rdar://4311684] - Fixed 24-bit input convert routine. /thw
+							while (numSamplesLeft-- > 1) 
+							{	
+								inputSample = (* (UInt32 *)inputBuf24) & 0x00FFFFFF & noiseMask;
+								// Sign extend if necessary
+								if (inputSample > 0x7FFFFF)
+								{
+									inputSample |= 0xFF000000;
+								}
+								inputBuf24 += 3;
+								*(floatDestBuf++) = (float)inputSample * kOneOverMaxSInt24Value;
+							}
+							// Convert last sample. The following line does the same work as above without going over the edge of the buffer.
+							inputSample = SInt32 ((UInt32 (*(UInt16 *) inputBuf24) & 0x0000FFFF & noiseMask)
+												  | (SInt32 (*(inputBuf24 + 2)) << 16));
+							*(floatDestBuf++) = (float)inputSample * kOneOverMaxSInt24Value;
+						}
+					} else
+						SwapInt24ToFloat32(inputBuf24, floatDestBuf, numSamples);
+					break;
+					
+				case 32:
+					inputBuf32 = &(((SInt32 *)sampleBuf)[firstSample]);
+					if (nativeEndianInts) {
+						if (SSE2) {
+							NativeInt32ToFloat32(inputBuf32, floatDestBuf, numSamples);
+						} else {
+							while (numSamplesLeft-- > 0) {	
+								*(floatDestBuf++) = (float)(*(inputBuf32++) & noiseMask) * kOneOverMaxSInt32Value;
+							}
+						}
+					}
+					else
+						SwapInt32ToFloat32(inputBuf32, floatDestBuf, numSamples);
+					break;
+					
+				default:
+					IOLog("convertInputSamples: can't handle signed integers with a bit width of %d",
+							 streamFormat->fBitWidth);
+					break;
+					
+			}
+			
+			//Меняю местами значения для левого и правого канала
+			if(mDevice && mDevice->mSwitchCh && (streamFormat->fNumChannels > 1)) {
+				UInt32 i;
+				Float32 tempSamples;
+				
+				for(i = 0; i < numSamples; i+= streamFormat->fNumChannels) {
+					tempSamples = floatDestBuf[i];
+					floatDestBuf[i] = floatDestBuf[i+1];
+					floatDestBuf[i+1] = tempSamples;
+				}
+			}
+			
+		} else if (streamFormat->fNumericRepresentation == kIOAudioStreamNumericRepresentationIEEE754Float) {
+			// it is some kind of floating point format
+			if ((streamFormat->fBitWidth == 32) && (streamFormat->fBitDepth == 32) &&
+				(streamFormat->fByteOrder == kIOAudioStreamByteOrderLittleEndian)) {
+				// it's Float32, so we are just going to copy the data
+				memcpy(floatDestBuf, &((Float32 *) sampleBuf)[firstSample], numSamples * sizeof (Float32));
+			} else
+				IOLog("convertInputSamples: can't handle floats with a bit width of %d, bit depth of %d, "
+						 "and/or the given byte order", streamFormat->fBitWidth, streamFormat->fBitDepth);
+		}
+	} else {
+		// it's not linear PCM or it's not mixable, so just copy the data into the target buffer
+		UInt32 offset = firstSampleFrame * (streamFormat->fBitWidth / 8) * streamFormat->fNumChannels;
+		UInt32 size = numSampleFrames * (streamFormat->fBitWidth / 8) * streamFormat->fNumChannels;
+		memcpy(destBuf, &sourceBuf[offset], size);
+	}
+	
+	return kIOReturnSuccess;
+}

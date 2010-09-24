@@ -279,13 +279,12 @@ bool VoodooHDAEngine::initHardware(IOService *provider)
 		errorMsg("error: IOAudioEngine::initHardware failed\n");
 		goto done;
 	}
-
+	IOSleep(50);
 	mDevice = OSDynamicCast(VoodooHDADevice, provider);
 	ASSERT(mDevice);
 	mDevice->retain();
 
 	mVerbose = mDevice->mVerbose;
-
 	identifyPaths();
 	getPortName();
 
@@ -338,7 +337,11 @@ bool VoodooHDAEngine::initHardware(IOService *provider)
 		errorMsg("error: createAudioControls failed\n");
 		goto done;
 	}
-
+	mChannel->vectorize = mDevice->vectorize;
+	 mChannel->noiseLevel = mDevice->noiseLevel;
+	 mChannel->useStereo = mDevice->useStereo;
+	 mChannel->StereoBase = mDevice->StereoBase;
+	
 	result = true;
 done:
 	if (!result)
@@ -579,18 +582,21 @@ IOReturn VoodooHDAEngine::performFormatChange(IOAudioStream *audioStream, const 
 		ASSERT(newFormat->fIsMixable);
 
 		switch (newFormat->fBitDepth) {
-		case 16:
-			ASSERT(newFormat->fBitWidth == 16);
-			ossFormat |= AFMT_S16_LE;
-			break;
-		case 24: // xxx: make clear distinction between 24/32-bit
-		case 32:
-			ASSERT(newFormat->fBitWidth == 32);
-			ossFormat |= AFMT_S32_LE;
-			break;
-		default:
-			BUG("unsupported bit depth");
-			goto done;
+			case 16:
+				ASSERT(newFormat->fBitWidth == 16);
+				ossFormat |= AFMT_S16_LE;
+				break;
+			case 20:		
+			case 24: // xxx: make clear distinction between 24/32-bit
+				ossFormat |= AFMT_S24_LE;
+				break;
+			case 32:
+				ASSERT(newFormat->fBitWidth == 32); 
+				ossFormat |= AFMT_S32_LE;
+				break;
+			default:
+				BUG("unsupported bit depth");
+				goto done;
 		}
 
 		setResult = mDevice->channelSetFormat(mChannel, ossFormat);
@@ -779,15 +785,7 @@ bool VoodooHDAEngine::createAudioControls()
 Done:
 	return result;
 }
-/*
-void VoodooHDAEngine::enumiratePinNames(void)
-{
-	if(mSelControl == 0) 
-		return;
-	
-	
-}
-*/
+
 void VoodooHDAEngine::setPinName(/*UInt32 type,*/ const char* name)
 {
 	if(mSelControl == 0) 

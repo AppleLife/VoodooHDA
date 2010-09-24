@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>BuildVersion</key>
-	<string>5</string>
+	<string>1</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.7</string>
+	<string>$(MODULE_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>2.7</string>
+	<string>$(MODULE_VERSION)</string>
 	<key>ProjectName</key>
 	<string>VoodooHDA</string>
 	<key>SourceVersion</key>

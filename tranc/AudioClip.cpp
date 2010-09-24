@@ -1,5 +1,7 @@
 #include "License.h"
-#ifndef USE_APPLE_ROUTINES
+//#ifndef USE_APPLE_ROUTINES
+//#include "AppleAudioClip.h"
+//#include "AppleAudioCommon.h"
 #include "VoodooHDADevice.h"
 #include "VoodooHDAEngine.h"
 #include "PCMBlitterLibDispatch.h"
@@ -10,15 +12,20 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 		UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat,
 		__unused IOAudioStream *audioStream)
 {
+	if(!streamFormat)
+	{
+        return kIOReturnBadArgument;
+    }
+	UInt32 firstSample = firstSampleFrame * streamFormat->fNumChannels;
+	UInt32 numSamples = numSampleFrames * streamFormat->fNumChannels;
+	Float32 *floatMixBuf = ((Float32*)mixBuf) + firstSample;
+	
 	UInt8 *sourceBuf = (UInt8 *) sampleBuf;
 
 	// figure out what sort of blit we need to do
 	if ((streamFormat->fSampleFormat == kIOAudioStreamSampleFormatLinearPCM) && streamFormat->fIsMixable) {
 		// it's mixable linear PCM, which means we will be calling a blitter, which works in samples
 		// not frames
-		Float32 *floatMixBuf = (Float32 *) mixBuf;
-		UInt32 firstSample = firstSampleFrame * streamFormat->fNumChannels;
-		UInt32 numSamples = numSampleFrames * streamFormat->fNumChannels;
 
 		if (streamFormat->fNumericRepresentation == kIOAudioStreamNumericRepresentationSignedInt) {
 			// it's some kind of signed integer, which we handle as some kind of even byte length
@@ -26,28 +33,54 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 			nativeEndianInts = (streamFormat->fByteOrder == kIOAudioStreamByteOrderLittleEndian);
 
 			switch (streamFormat->fBitWidth) {
-			case 16:
+			case 8:
 				if (nativeEndianInts)
-					Float32ToNativeInt16(&floatMixBuf[firstSample], (SInt16 *) &sourceBuf[2 * firstSample],
-							numSamples);
+				{
+					SInt8* theOutputBufferSInt8 = ((SInt8*)sampleBuf) + firstSample;
+					ClipFloat32ToSInt8_4(floatMixBuf, theOutputBufferSInt8, numSamples);
+				} else
+					Float32ToInt8(theMixBuffer, theOutputBufferSInt8, theNumberSamples);
+					break;
+					
+			case 16:
+				SInt16* theOutputBufferSInt16 = ((SInt16*)sampleBuf) + firstSample;
+				if (nativeEndianInts) {
+					if (vectorize) {
+						Float32ToNativeInt16(floatMixBuf, theOutputBufferSInt16, numSamples);
+					} else {
+						ClipFloat32ToSInt16LE_4(floatMixBuf, theOutputBufferSInt16, numSamples);
+					}
+				}
 				else
-					Float32ToSwapInt16(&floatMixBuf[firstSample], (SInt16 *) &sourceBuf[2 * firstSample],
+					Float32ToSwapInt16(floatMixBuf, (SInt16 *) &sourceBuf[2 * firstSample],
 							numSamples);
 				break;
-
+					
+			case 20:
 			case 24:
-				if (nativeEndianInts)
-					Float32ToNativeInt24(&floatMixBuf[firstSample], &sourceBuf[3 * firstSample], numSamples);
+				SInt32* theOutputBufferSInt24 = (SInt32*)(((UInt8*)sampleBuf) + (firstSample * 3));
+				if (nativeEndianInts) {
+					if (vectorize) {
+						Float32ToNativeInt24(floatMixBuf, theOutputBufferSInt24, numSamples);
+					} else {
+						ClipFloat32ToSInt24LE_4(floatMixBuf, theOutputBufferSInt24, numSamples);						
+					}
+				}
 				else
-					Float32ToSwapInt24(&floatMixBuf[firstSample], &sourceBuf[3 * firstSample], numSamples);
+					Float32ToSwapInt24(floatMixBuf, &sourceBuf[3 * firstSample], numSamples);
 				break;
 
 			case 32:
-				if (nativeEndianInts)
-					Float32ToNativeInt32(&floatMixBuf[firstSample], (SInt32 *) &sourceBuf[4 * firstSample],
-							numSamples);
+				SInt32* theOutputBufferSInt32 = ((SInt32*)sampleBuf) + firstSample;
+				if (nativeEndianInts) {
+					if (vectorize) {
+						Float32ToNativeInt32(floatMixBuf, theOutputBufferSInt32, numSamples);
+					} else {					
+						ClipFloat32ToSInt32LE_4(floatMixBuf, theOutputBufferSInt32, theNumberSamples);
+					}
+				}
 				else
-					Float32ToSwapInt32(&floatMixBuf[firstSample], (SInt32 *) &sourceBuf[4 * firstSample],
+					Float32ToSwapInt32(floatMixBuf, (SInt32 *) &sourceBuf[4 * firstSample],
 							numSamples);
 				break;
 
@@ -82,15 +115,21 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf, void *destB
 		UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat,
 		__unused IOAudioStream *audioStream)
 {
-	UInt8 *sourceBuf = (UInt8 *) sampleBuf;
+	UInt32	numSamplesLeft, numSamples;
+	float 	*floatDestBuf;
+	
+    floatDestBuf = (float *)destBuf;
+	UInt32 firstSample = firstSampleFrame * streamFormat->fNumChannels;
+	numSamples = numSamplesLeft = numSampleFrames * streamFormat->fNumChannels;
+	long int noiseMask = ~((1 << noiseLevel) - 1);
+	
+	UInt8 *sourceBuf = (UInt8 *) sampleBuf; 
 
 	// figure out what sort of blit we need to do
 	if ((streamFormat->fSampleFormat == kIOAudioStreamSampleFormatLinearPCM) && streamFormat->fIsMixable) {
 		// it's linear PCM, which means the target is Float32 and we will be calling a blitter, which
 		// works in samples not frames
 		Float32 *floatDestBuf = (Float32 *) destBuf;
-		UInt32 firstSample = firstSampleFrame * streamFormat->fNumChannels;
-		UInt32 numSamples = numSampleFrames * streamFormat->fNumChannels;
 
 		if (streamFormat->fNumericRepresentation == kIOAudioStreamNumericRepresentationSignedInt) {
 			// it's some kind of signed integer, which we handle as some kind of even byte length
@@ -98,23 +137,102 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf, void *destB
 			nativeEndianInts = (streamFormat->fByteOrder == kIOAudioStreamByteOrderLittleEndian);
 
 			switch (streamFormat->fBitWidth) {
-			case 16:
+				case 8:
+					SInt8 *inputBuf8;
+					
+					inputBuf8 = &(((SInt8 *)sampleBuf)[firstSample]);
+#if defined(__ppc__)
+					Int8ToFloat32(inputBuf8, floatDestBuf, numSamplesLeft);
+#elif defined(__i386__)
+					while (numSamplesLeft-- > 0) 
+					{	
+						*(floatDestBuf++) = (float)(*(inputBuf8++) &= (SInt8)noiseMask) * kOneOverMaxSInt8Value;
+					}
+#endif
+					
+					break;
+				case 16:
 				if (nativeEndianInts)
-					NativeInt16ToFloat32((SInt16 *) &sourceBuf[2 * firstSample], floatDestBuf, numSamples);
+					if (vectorize) {
+						NativeInt16ToFloat32((SInt16 *) &sampleBuf[2 * firstSample], floatDestBuf, numSamples);
+					} else {
+						SInt16 *inputBuf16;
+						
+						inputBuf16 = &(((SInt16 *)sampleBuf)[firstSample]);						
+#if defined(__ppc__)
+						SwapInt16ToFloat32(inputBuf16, floatDestBuf, numSamplesLeft, 16);
+#elif defined(__i386__)
+						while (numSamplesLeft-- > 0) 
+						{	
+							*(floatDestBuf++) = (float)(*(inputBuf16++) &= (SInt16)noiseMask) * kOneOverMaxSInt16Value;
+						}
+#endif
+					}
+
+					
 				else
-					SwapInt16ToFloat32((SInt16 *) &sourceBuf[2 * firstSample], floatDestBuf, numSamples);
+					SwapInt16ToFloat32((SInt16 *) &sampleBuf[2 * firstSample], floatDestBuf, numSamples);
 				break;
 
+			case 20:
 			case 24:
 				if (nativeEndianInts)
-					NativeInt24ToFloat32(&sourceBuf[3 * firstSample], floatDestBuf, numSamples);
+					if (vectorize) {
+						NativeInt24ToFloat32(&sourceBuf[3 * firstSample], floatDestBuf, numSamples);
+					} else {
+						register SInt8 *inputBuf24;
+						
+						// Multiply by 3 because 20 and 24 bit samples are packed into only three bytes, so we have to index bytes, not shorts or longs
+						inputBuf24 = &(((SInt8 *)sampleBuf)[firstSample * 3]);
+						
+#if defined(__ppc__)
+						SwapInt24ToFloat32((long *)inputBuf24, floatDestBuf, numSamplesLeft, 24);
+#elif defined(__i386__)
+						register SInt32 inputSample;
+						
+						// [rdar://4311684] - Fixed 24-bit input convert routine. /thw
+						while (numSamplesLeft-- > 1) 
+						{	
+							inputSample = (* (UInt32 *)inputBuf24) & 0x00FFFFFF & noiseMask;
+							// Sign extend if necessary
+							if (inputSample > 0x7FFFFF)
+							{
+								inputSample |= 0xFF000000;
+							}
+							inputBuf24 += 3;
+							*(floatDestBuf++) = (float)inputSample * kOneOverMaxSInt24Value;
+						}
+						// Convert last sample. The following line does the same work as above without going over the edge of the buffer.
+						inputSample = SInt32 ((UInt32 (*(UInt16 *) inputBuf24) & 0x0000FFFF & noiseMask)
+											  | (SInt32 (*(inputBuf24 + 2)) << 16));
+						*(floatDestBuf++) = (float)inputSample * kOneOverMaxSInt24Value;
+#endif
+						
+					}
+
+					
 				else
 					SwapInt24ToFloat32(&sourceBuf[3 * firstSample], floatDestBuf, numSamples);
 				break;
 
 			case 32:
-				if (nativeEndianInts) 
-					NativeInt32ToFloat32((SInt32 *) &sourceBuf[4 * firstSample], floatDestBuf, numSamples);
+				if (nativeEndianInts) {
+					if (vectorize) {
+						NativeInt32ToFloat32((SInt32 *) &sourceBuf[4 * firstSample], floatDestBuf, numSamples);
+					} else {
+						register SInt32 *inputBuf32;
+						inputBuf32 = &(((SInt32 *)sampleBuf)[firstSample]);
+						
+#if defined(__ppc__)
+						SwapInt32ToFloat32(inputBuf32, floatDestBuf, numSamplesLeft, 32);
+#elif defined(__i386__)
+						while (numSamplesLeft-- > 0) {	
+							*(floatDestBuf++) = (float)(*(inputBuf32++) & noiseMask) * kOneOverMaxSInt32Value;
+						}
+#endif
+						
+					}
+				}
 				else
 					SwapInt32ToFloat32((SInt32 *) &sourceBuf[4 * firstSample], floatDestBuf, numSamples);
 				break;
@@ -157,4 +275,4 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf, void *destB
 
 	return kIOReturnSuccess;
 }
-#endif
+//#endif

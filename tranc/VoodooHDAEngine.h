@@ -26,12 +26,17 @@ public:
 	UInt32 mBufferSize;
 	UInt32 mSampleSize;
 	UInt32 mNumSampleFrames;
+/*	bool vectorize;
+	int noiseLevel;
+	bool useStereo;
+	int StereoBase;*/
 
 	Channel *mChannel;
 	VoodooHDADevice *mDevice;
 	IOAudioStream *mStream;
 
 	const char *mPortName;
+	const char *mName;
 	IOAudioPort *mPort;
 
 	const char *mDescription;

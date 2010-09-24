@@ -44,6 +44,10 @@
 			<false/>
 			<key>InhibitCache</key>
 			<true/>
+			<key>Vectorize</key>
+			<true/>
+			<key>Noise</key>
+			<integer>2</integer>
 			<key>VoodooHDAVerboseLevel</key>
 			<integer>0</integer>
 			<key>NodesToPatch</key>
