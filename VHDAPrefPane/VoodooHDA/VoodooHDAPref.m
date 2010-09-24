@@ -3,8 +3,9 @@
 //  VoodooHDA
 //
 //  Created by fassl on 15.04.09.
-//  Copyright (c) 2009 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2009 Voodoo Team. All rights reserved.
 //
+// Modded by Slice 2010
 
 #import "VoodooHDAPref.h"
 #include <CoreFoundation/CoreFoundation.h>
@@ -50,7 +51,7 @@ io_service_t getService() {
 failure:
 	return service;
 }	
-
+//get channel info from driver
 ChannelInfo *updateChannelInfo() {
 	io_service_t service = getService();
 	if(!service)
@@ -106,7 +107,7 @@ failure:
 
 - (bool) updateSliders {
 	
-	if (!(self->chInfo = updateChannelInfo()))
+	if (!(self->chInfo = updateChannelInfo()))  //from driver
 		goto failure;
 
 	ChannelInfo *info = (ChannelInfo*)self->chInfo;
@@ -257,24 +258,121 @@ failure:
 		[sliderMonitor setEnabled:TRUE];
 	[sliderMonitor setIntValue:info[currentChannel].mixerValues[23].value];
 	
+/*	if(!(info[currentChannel].mixerValues[24].enabled))
+		[sliderVolume setEnabled:FALSE];
+	else */
+		[sliderVolume setEnabled:TRUE];
+	[sliderVolume setIntValue:info[currentChannel].mixerValues[24].value];
+    
+    [sliderNoise setIntValue:info[currentChannel].noiseLevel];
+	[sliderStereo setIntValue:info[currentChannel].StereoBase];
+	
+	[soundVector setState:info[currentChannel].vectorize?NSOnState:NSOffState];
+	[stereoEnhance setState:info[currentChannel].useStereo?NSOnState:NSOffState];
+	
 	return true;
 failure:
 	return false;	
+}
+
+- (bool) updateMath{
+	//if (!(self->chInfo = updateChannelInfo()))  //from driver
+	//	goto failure;
+
+	service = getService();
+	if(!service)
+		goto failure;
+	kern_return_t ret;
+	connect = 0;
+	ret = IOServiceOpen(service, mach_task_self(), 0, &connect);
+	if (ret != KERN_SUCCESS) {
+		NSRunCriticalAlertPanel( 
+								NSLocalizedString( @"Error", "MsgBox"), 
+								NSLocalizedString( @"Can't open IO Service", "MsgBoxBody" ), nil, nil, nil );		
+		goto failure;
+	}
+	//to driver
+	actionInfo in, out;
+	UInt8 ch = currentChannel;
+	in.value = 0;
+	in.info.action = (UInt8)kVoodooHDAActionSetMath;
+	in.info.channel = currentChannel;
+	in.info.device = (self->chInfo[ch].vectorize?1:0) | (self->chInfo[ch].useStereo?2:0);
+	in.info.val = (self->chInfo[ch].noiseLevel & 0x0f) | ((self->chInfo[ch].StereoBase & 0x0f) << 4); 
+//	[versionText setStringValue:[NSString stringWithFormat:@"Device=%d Val=0x%04x Volume=%d",
+//								 in.info.device, in.info.val, self->chInfo[ch].mixerValues[24].value]];
+	size_t outsize = sizeof(UInt32);
+	//*outsize = sizeof(UInt32);
+	ret = IOConnectCallStructMethod(connect,
+									kVoodooHDAActionMethod,
+									&in,
+									sizeof(in),
+									&out,
+									&outsize
+									);
+	if (ret != KERN_SUCCESS) {
+		NSRunCriticalAlertPanel( 
+								NSLocalizedString( @"Error", "MsgBox"), 
+								NSLocalizedString( @"Can't connect to StructMethod to send commands", "MsgBoxBody" ), nil, nil, nil );		
+		goto failure;  //anyway
+	}
+	
+//failure:
+	
+	if(connect) {
+		ret = IOServiceClose(connect);
+		if (ret != KERN_SUCCESS) {
+			NSRunCriticalAlertPanel( 
+									NSLocalizedString( @"Error", "MsgBox"), 
+									NSLocalizedString( @"IOServiceClose failed", "MsgBoxBody" ), nil, nil, nil );		
+		}
+	}
+	
+	if(service)
+		IOObjectRelease(service);
+	
+	return TRUE;
+failure:
+	if(service)
+		IOObjectRelease(service);
+	
+	return false;	
+
 }
 
 - (void) awakeFromNib
 {
 	if(![self updateSliders])
 		goto failure;
+
+	ChannelInfo *info = (ChannelInfo*)self->chInfo;
+	if (!info)
+		goto failure;
 	
 	[versionText setStringValue:@"Loaded"];
+	
 	
 	[selector removeAllItems];
 	
 	int i=0;
-	for (; i < self->chInfo[0].numChannels; i++)
-		[selector addItemWithTitle:[NSString stringWithFormat:@"%d: %s", i+1, chInfo[i].name]];
+	int N = info[0].numChannels;
+	if (N<=0 || N>24) {
+		N=3;
+		NSRunCriticalAlertPanel( 
+									NSLocalizedString( @"Error", "MsgBox"), 
+									NSLocalizedString( @"Wrong Channels Number 0..24", "MsgBoxBody" ), nil, nil, nil );		
+		
+	}
 	
+	for (; i < N; i++){
+	//	if (sizeof(self->chInfo[i].name)) {
+			[selector addItemWithTitle:[NSString stringWithFormat:@"%d: %s", i+1, info[i].name]];
+	//	} else { 
+	//		[selector addItemWithTitle:[NSString stringWithFormat:@"%d: Empty", i+1]];
+	//	}
+
+		
+	}
 	currentChannel = 0;
 	
 	return;
@@ -283,13 +381,12 @@ failure:
 	[versionText setStringValue:@"ERROR"];	
 }
 
-bool sendAction(UInt8 ch, UInt8 dev, UInt8 val) {
+bool sendAction(UInt8 ch, UInt8 dev, UInt8 val) {  //value of slider to driver
 	io_service_t service = getService();
 	if(!service)
 		goto failure;
 	kern_return_t ret;
 	io_connect_t connect = 0;
-	
 	ret = IOServiceOpen(service, mach_task_self(), 0, &connect);
 	if (ret != KERN_SUCCESS) {
 		NSRunCriticalAlertPanel( 
@@ -300,7 +397,7 @@ bool sendAction(UInt8 ch, UInt8 dev, UInt8 val) {
 	
 	actionInfo in, out;
 	in.value = 0;
-	in.info.action = kVoodooHDAActionSetMixer;
+	in.info.action = (UInt8)kVoodooHDAActionSetMixer;
 	in.info.channel = ch;
 	in.info.device = dev;
 	in.info.val = val;
@@ -318,7 +415,7 @@ bool sendAction(UInt8 ch, UInt8 dev, UInt8 val) {
 		NSRunCriticalAlertPanel( 
 								NSLocalizedString( @"Error", "MsgBox"), 
 								NSLocalizedString( @"Can't connect to StructMethod to send commands", "MsgBoxBody" ), nil, nil, nil );		
-		goto failure;
+//		goto failure;  //anyway
 	}
 	
 failure:
@@ -340,6 +437,19 @@ failure:
 
 - (IBAction)sliderMoved:(NSSlider *)sender {
 	UInt8 device = 0;
+	if (sender == sliderNoise){
+		self->chInfo[currentChannel].noiseLevel = [sender intValue];
+		[self updateMath];
+	//	sendAction(currentChannel, 0, [sender intValue]);
+		return;
+	}
+	if (sender == sliderStereo) {
+		self->chInfo[currentChannel].StereoBase = [sender intValue] + 7;
+		[self updateMath];
+		//	sendAction(currentChannel, 0, [sender intValue]);
+		return;		
+	}
+	
 	if(sender == sliderBass)			device=1;
 	else if(sender == sliderTreble)		device=2;
 	else if(sender == sliderSynth)		device=3;
@@ -364,6 +474,7 @@ failure:
 	else if(sender == sliderVideo)		device=22;
 	else if(sender == sliderRadio)		device=23;
 	else if(sender == sliderMonitor)	device=24;
+	else if(sender == sliderVolume)		device=0;
 	
 	sendAction(currentChannel, device, [sender intValue]);
 }
@@ -406,12 +517,13 @@ failure:
 	
 	return res;
 }
-
-- (void) changeVersionText
+//Just a sample
+/*- (void) changeVersionText
 {
 	[versionText setStringValue:@"Bla"];
 }
-
+*/
+/*
 - (IBAction)enableAllSLiders:(NSButton *)sender {
 	[sliderBass setEnabled:TRUE];
 	[sliderTreble setEnabled:TRUE];
@@ -437,6 +549,24 @@ failure:
 	[sliderVideo setEnabled:TRUE];
 	[sliderRadio setEnabled:TRUE];
 	[sliderMonitor setEnabled:TRUE];	
+	
+//	[sliderVolume setEnabled:TRUE];
+//	[sliderNoise setEnabled:TRUE];
+	
+}
+*/
+- (IBAction)useStereoEnhance:(NSButton *)sender{
+	bool useStereo;
+	useStereo = ([stereoEnhance state]==NSOnState);
+	self->chInfo[currentChannel].useStereo = useStereo;
+	[self updateMath];
+}
+
+- (IBAction)SSEChanged:(NSButton *)sender{
+	bool vector;
+	vector = ([soundVector state]==NSOnState);
+	self->chInfo[currentChannel].vectorize = vector;	
+	[self updateMath];		
 }
 
 @end
