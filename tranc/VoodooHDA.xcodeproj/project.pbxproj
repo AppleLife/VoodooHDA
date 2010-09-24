@@ -302,7 +302,7 @@
 				INSTALL_OWNER = root;
 				MODULE_VERSION = 0.2.6;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-DUSE_APPLE_ROUTINES";
+				OTHER_CFLAGS = "";
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
 				VALID_ARCHS = i386;
@@ -405,6 +405,68 @@
 				WRAPPER_EXTENSION = kext;
 			};
 			name = "Release Multichannel";
+		};
+		12CB5F6D124D49ED007D5C3F /* Release_Leo Multi */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					x86_64,
+				);
+				ENABLE_OPENMP_SUPPORT = YES;
+				GCC_AUTO_VECTORIZATION = YES;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_GROUP = wheel;
+				INSTALL_OWNER = root;
+				MODULE_VERSION = 0.2.6;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DMULTICHANNEL";
+				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+				VALID_ARCHS = i386;
+			};
+			name = "Release_Leo Multi";
+		};
+		12CB5F6E124D49ED007D5C3F /* Release_Leo Multi */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					i386,
+					x86_64,
+				);
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = "${MODULE_VERSION}";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = s;
+				GENERATE_PKGINFO_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_PREPROCESS = YES;
+				INSTALL_PATH = "$(SYSTEM_LIBRARY_DIR)/Extensions";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/build/Release\"",
+				);
+				MODULE_NAME = org.voodoo.driver.VoodooHDA;
+				MODULE_VERSION = 2.7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = VoodooHDA;
+				VALID_ARCHS = "i386 x86_64";
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
+				WRAPPER_EXTENSION = kext;
+			};
+			name = "Release_Leo Multi";
 		};
 		1DEB91DA08733DB10010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -532,6 +594,7 @@
 				1DEB91DB08733DB10010E9CD /* Release */,
 				12B35AAE124D41AD00C0B57F /* Release Multichannel */,
 				123038CE105A98AC00AA821D /* Release_Leo */,
+				12CB5F6E124D49ED007D5C3F /* Release_Leo Multi */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -543,6 +606,7 @@
 				1DEB91DF08733DB10010E9CD /* Release */,
 				12B35AAD124D41AD00C0B57F /* Release Multichannel */,
 				123038CD105A98AC00AA821D /* Release_Leo */,
+				12CB5F6D124D49ED007D5C3F /* Release_Leo Multi */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
