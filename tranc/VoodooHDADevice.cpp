@@ -89,6 +89,19 @@ bool VoodooHDADevice::init(OSDictionary *dict)
 		mInhibitCache = false;
 	}
 
+	osBool = OSDynamicCast(OSBoolean, dict->getObject("Vectorize"));
+	if (osBool) {
+		vectorize = (bool)osBool->getValue();
+	} else {
+		vectorize = false;
+	}
+
+	verboseLevelNum = OSDynamicCast(OSNumber, dict->getObject("Noise"));
+	if (verboseLevelNum)
+		noiseLevel = verboseLevelNum->unsigned32BitValue();
+	else
+		noiseLevel = 0;
+	
 
 	mLock = IOLockAlloc();
 
@@ -187,6 +200,7 @@ IOService *VoodooHDADevice::probe(IOService *provider, SInt32 *score)
 	int n;
 
 	//logMsg("VoodooHDADevice[%p]::probe\n", this);
+//	IOLog("HDA: MixerInfoSize=%d ChannelInfoSize=%d\n", (int)sizeof(mixerDeviceInfo), (int)sizeof(ChannelInfo));
 
 	result = super::probe(provider, score);
 	
@@ -1154,11 +1168,11 @@ IOReturn VoodooHDADevice::handleAction(OSObject *owner, void *arg0, void *arg1, 
 	
 	//device->logMsg("VoodooHDADevice[%p]::handleAction(0x%lx, %p, %p)\n", owner, action, outSize, outData);
 
-	if((action & 0xFF)  == 0x40) {
+	if((action & 0xFF)  == kVoodooHDAActionSetMixer) {
 		 //Команда от PrefPanel
-		UInt8 value;
-		UInt8 sliderNum;
-		UInt8 tabNum;
+		UInt8 value;  // slide value
+		UInt8 sliderNum;  //OSS device
+		UInt8 tabNum; //Channel number
 		
 		tabNum = ((action >> 8) & 0xFF);
 		sliderNum = ((action >> 16) & 0xFF);
@@ -1172,9 +1186,36 @@ IOReturn VoodooHDADevice::handleAction(OSObject *owner, void *arg0, void *arg1, 
 		return result;
 	}
 	
+	if((action & 0x60)  == kVoodooHDAActionSetMath) {
+		UInt8 ch, opt, val;
+		ch = ((action >> 8) & 0xFF);
+		opt = ((action >> 16) & 0xFF);
+		val = ((action >> 24) & 0xFF);
+		IOLog("HDA: Channel=%02x Options=%02x Value=%02x\n", ch, opt, val);
+			  //device->vectorize?"Yes":"No", device->noiseLevel,
+			  //device->useStereo?"Yes":"No", device->StereoBase);
+		
+		
+		device->mPrefPanelMemoryBuf[ch].vectorize = ((opt & 0x1) == 1);
+		device->mPrefPanelMemoryBuf[ch].noiseLevel = (val & 0x0F);
+		device->mPrefPanelMemoryBuf[ch].useStereo = ((opt & 0x2) == 2);
+		device->mPrefPanelMemoryBuf[ch].StereoBase = (val & 0xF0) >> 4;
+		
+		device->setMath(ch, opt, val);
+/*		
+		device->vectorize = ((opt & 0x1) == 1);
+		device->noiseLevel = (val & 0x0F);
+		device->useStereo = ((opt & 0x2) == 2);
+		device->StereoBase = (val & 0xF0) >> 4;
+*/
+		*outSize = 0;
+		*outData = NULL;
+		
+		return result;		
+		}
 	
 	//Команда от моей версии getDump для обновления данных о усилении
-	if((action & 0xFF)  == 0x50) {
+	if((action & 0xFF)  == kVoodooHDAActionGetMixers) {
 
 		device->updateExtDump();
 		
@@ -1220,7 +1261,8 @@ ChannelInfo *VoodooHDADevice::getChannelInfo() {
 		for(ossDev = 1 ; ossDev < SOUND_MIXER_NRDEVICES ; ossDev++) {
 			const char *name;
 			UInt32 ossMask;
-			name = engine->getOssDevName(ossDev);
+			//name = engine->getOssDevName(ossDev);
+			name = engine->mName;
 			
 			if (engine->getEngineDirection() == kIOAudioStreamDirectionOutput)
 				ossMask = engine->mChannel->pcmDevice->devMask;
@@ -1236,6 +1278,13 @@ ChannelInfo *VoodooHDADevice::getChannelInfo() {
 			info[i].mixerValues[ossDev-1].value = engine->mChannel->pcmDevice->left[ossDev];// gMixerDefaults[ossDev];
 			snprintf(info[i].mixerValues[ossDev-1].name, strlen(name)+1, "%s", name);
 		}
+		info[i].mixerValues[24].mixId = 0;
+		info[i].mixerValues[24].enabled = true;
+		info[i].mixerValues[24].value = engine->mChannel->pcmDevice->left[0];// gMixerDefaults[ossDev];
+		info[i].vectorize = engine->mChannel->vectorize;
+		info[i].noiseLevel = engine->mChannel->noiseLevel;
+		info[i].useStereo = engine->mChannel->useStereo;
+		info[i].StereoBase = engine->mChannel->StereoBase;
 	}
 	
 	return info;
@@ -2684,8 +2733,8 @@ void VoodooHDADevice::createPrefPanelMemoryBuf(FunctionGroup *funcGroup)
 	if(mPrefPanelMemoryBuf == 0) {
 		//logMsg("VoodooHDADevice::createPrefPanelMemoryBuf allocate memory\n");
 		//mPrefPanelMemoryBufSize = nSliderTabsCount*sizeof(sliders);
-		mPrefPanelMemoryBufSize = 15*sizeof(sliders);
-		mPrefPanelMemoryBuf = (sliders*)allocMem(mPrefPanelMemoryBufSize);
+		mPrefPanelMemoryBufSize = 24*sizeof(ChannelInfo);
+		mPrefPanelMemoryBuf = (ChannelInfo*)allocMem(mPrefPanelMemoryBufSize);
 		bzero(mPrefPanelMemoryBuf, mPrefPanelMemoryBufSize); 
 	
 		mPrefPanelMemoryBufLock = IOLockAlloc();
@@ -2693,17 +2742,18 @@ void VoodooHDADevice::createPrefPanelMemoryBuf(FunctionGroup *funcGroup)
 	}
 	
 	for(int i = 0; i < nSliderTabsCount; i++) {
-		strlcpy(mPrefPanelMemoryBuf[i].tabName, sliderTabs[i].name, MAX_SLIDER_TAB_NAME_LENGTH);
-		mPrefPanelMemoryBuf[i].size = nSliderTabsCount;
+		strlcpy(mPrefPanelMemoryBuf[i].name, sliderTabs[i].name, MAX_SLIDER_TAB_NAME_LENGTH);
+		mPrefPanelMemoryBuf[i].numChannels = nSliderTabsCount;
 		for(int j = 1; j < 25; j++) {
 			if(sliderTabs[i].volSliders[j].enabled == 0) 
 				continue;
 				
-			mPrefPanelMemoryBuf[i].info[j - 1].num = j;
-			strlcpy(mPrefPanelMemoryBuf[i].info[j - 1].sliderName, sliderTabs[i].volSliders[j].name, 32);
-			mPrefPanelMemoryBuf[i].info[j - 1].enabled = 1;
-			mPrefPanelMemoryBuf[i].info[j - 1].value = 20;
+			mPrefPanelMemoryBuf[i].mixerValues[j - 1].mixId = j;
+			strlcpy(mPrefPanelMemoryBuf[i].mixerValues[j - 1].name, sliderTabs[i].volSliders[j].name, 32);
+			mPrefPanelMemoryBuf[i].mixerValues[j - 1].enabled = 1;
+			mPrefPanelMemoryBuf[i].mixerValues[j - 1].value = 20;
 		}
+		
 	}
 		
 }
@@ -2750,8 +2800,10 @@ void VoodooHDADevice::createPrefPanelStruct(FunctionGroup *funcGroup)
 			//Ищем PCM устройство к которому принадлежит OSS устройство
 			for(int pcmDeviceIndex = 0; pcmDeviceIndex < funcGroup->audio.numPcmDevices; pcmDeviceIndex++) {
 				curPCMDevice = &funcGroup->audio.pcmDevices[pcmDeviceIndex];
-				if(curPCMDevice->playChanId >= 0 && mChannels[curPCMDevice->playChanId].assocNum == i) pcmDevice = curPCMDevice;
-				if(curPCMDevice->recChanId >= 0 && mChannels[curPCMDevice->recChanId].assocNum == i) pcmDevice = curPCMDevice;
+				if(curPCMDevice->playChanId >= 0 && mChannels[curPCMDevice->playChanId].assocNum == i)
+					pcmDevice = curPCMDevice;
+				if(curPCMDevice->recChanId >= 0 && mChannels[curPCMDevice->recChanId].assocNum == i)
+					pcmDevice = curPCMDevice;
 			}
 		}
 		//logMsg("createPrefPanelStruct:         ossdev %s, pcmDev = %d\n", audioCtlMixerMaskToString(ossmask, buf, sizeof(buf)), pcmDeviceNum);
@@ -2788,7 +2840,7 @@ void VoodooHDADevice::updatePrefPanelMemoryBuf(void)
 			if(sliderTabs[i].volSliders[j].enabled == 0) 
 				continue;
 			
-			mPrefPanelMemoryBuf[i].info[j - 1].value = sliderTabs[i].pcmDevice->left[j];
+			mPrefPanelMemoryBuf[i].mixerValues[j - 1].value = sliderTabs[i].pcmDevice->left[j];
 		}
 	}
 }
@@ -2807,6 +2859,23 @@ void VoodooHDADevice::changeSliderValue(UInt8 tabNum, UInt8 sliderNum, UInt8 new
 			updatePrefPanelMemoryBuf();
 		}
 	}
+	
+}
+
+void VoodooHDADevice::setMath(UInt8 tabNum, UInt8 sliderNum, UInt8 newValue)
+{
+	VoodooHDAEngine *engine;
+	engine = lookupEngine(tabNum);
+	if (!engine) return;
+	UInt8 n, b;
+	bool v = ((sliderNum & 1) == 1);
+	bool s = ((sliderNum & 2) == 2);
+	n = newValue & 0x0f;
+	b = (newValue & 0xf0) >> 4;
+	engine->mChannel->vectorize = v;
+	engine->mChannel->useStereo = s;
+	engine->mChannel->noiseLevel = n;
+	engine->mChannel->StereoBase = b;
 	
 }
 
