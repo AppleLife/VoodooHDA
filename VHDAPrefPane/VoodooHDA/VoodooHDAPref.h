@@ -3,7 +3,7 @@
 //  VoodooHDA
 //
 //  Created by fassl on 15.04.09.
-//  Copyright (c) 2009 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2009 Voodoo. All rights reserved.
 //
 
 
@@ -11,6 +11,8 @@
 
 #include <IOKit/IOKitLib.h>
 #define kVoodooHDAClassName	"VoodooHDADevice"
+#define MAX_SLIDER_TAB_NAME_LENGTH 32
+#define SOUND_MIXER_NRDEVICES 25
 
 typedef union {
 	struct {
@@ -25,14 +27,20 @@ typedef union {
 typedef struct _mixerDeviceInfo {
 	UInt8 mixId;
 	UInt8 value;
-	char name[32];
+	char name[MAX_SLIDER_TAB_NAME_LENGTH];
 	bool enabled;
+	UInt8 non[5]; //align to 8 bytes
 } mixerDeviceInfo;
 
 typedef struct _ChannelInfo {
-	char name[32];
-	mixerDeviceInfo mixerValues[24];
-	int numChannels;
+	char name[MAX_SLIDER_TAB_NAME_LENGTH];
+	mixerDeviceInfo mixerValues[SOUND_MIXER_NRDEVICES];
+	UInt8 numChannels;
+	bool vectorize;
+	bool useStereo;
+    UInt8 noiseLevel;	
+	UInt8 StereoBase;
+	UInt8 empty[3];
 } ChannelInfo;
 
 enum {
@@ -45,7 +53,9 @@ enum {
 };
 
 enum {
-	kVoodooHDAActionSetMixer = 0x40
+	kVoodooHDAActionSetMixer = 0x40,
+	kVoodooHDAActionGetMixers = 0x50,
+	kVoodooHDAActionSetMath = 0x60
 };
 
 @interface VoodooHDAPref : NSPreferencePane 
@@ -75,8 +85,16 @@ enum {
     IBOutlet NSSlider *sliderSynth;
     IBOutlet NSSlider *sliderTreble;
     IBOutlet NSSlider *sliderVideo;
+
+    IBOutlet NSSlider *sliderNoise;
+    IBOutlet NSSlider *sliderVolume;
+	IBOutlet NSSlider *sliderStereo;
+    
+    IBOutlet NSButton *soundVector;
+	IBOutlet NSButton *stereoEnhance;
+
     IBOutlet NSPopUpButton *selector;
-	
+ 	
 	UInt8 currentChannel;
 	ChannelInfo *chInfo;
 	io_service_t service;
@@ -84,14 +102,17 @@ enum {
 
 }
 //- (bool) updateChannelInfo;
+- (bool) updateMath;
 - (bool) updateSliders;
 - (void) awakeFromNib;
 - (void) didUnselect;
 - (bool) saveSettings;
 - (IBAction)sliderMoved:(NSSlider *)sender;
 - (IBAction)selectorChanged:(NSPopUpButton *)sender;
-- (IBAction)enableAllSLiders:(NSButton *)sender;
+//- (IBAction)enableAllSLiders:(NSButton *)sender;
+- (IBAction)SSEChanged:(NSButton *)sender;
+- (IBAction)useStereoEnhance:(NSButton *)sender;
 
-- (void) changeVersionText;
+//- (void) changeVersionText;
 
 @end
