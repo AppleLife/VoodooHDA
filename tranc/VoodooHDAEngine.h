@@ -57,7 +57,7 @@ public:
 	void messageHandler(UInt32 type, const char *format, ...) __attribute__ ((format (printf, 3, 4)));
 
 	void setPinName(/*UInt32 type, */const char* name);
-	void enumiratePinNames(void);
+//	void enumiratePinNames(void);
 	const char *getPortName();
 	const char *getDescription();
 	void identifyPaths();
@@ -74,7 +74,7 @@ public:
 
 	bool createAudioStream(IOAudioStreamDirection direction, void *sampleBuffer,
 			UInt32 sampleBufferSize, IOAudioSampleRate minSampleRate, IOAudioSampleRate maxSampleRate,
-			UInt32 supPcmSizeRates, UInt32 sampleForma);
+			UInt32 supPcmSizeRates, UInt32 sampleFormat, UInt32 channels);
 	bool createAudioStream();
 
 	bool createAudioControls();

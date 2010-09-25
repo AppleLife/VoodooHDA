@@ -356,6 +356,7 @@ bool VoodooHDAEngine::createAudioStream()
 	IOAudioStreamDirection direction;
 	IOAudioSampleRate minSampleRate, maxSampleRate;
 	UInt8 *sampleBuffer;
+	UInt32 channels;
 
 	ASSERT(!mStream);
 
@@ -367,7 +368,7 @@ bool VoodooHDAEngine::createAudioStream()
 	direction = getEngineDirection();
 
 //	logMsg("formats: ");
-	for (UInt32 n = 0; (n < 8) && mChannel->formats[n]; n++)
+//	for (UInt32 n = 0; (n < 8) && mChannel->formats[n]; n++)
 //		logMsg("0x%lx ", mChannel->formats[n]);
 //	logMsg("\n");
 
@@ -377,7 +378,7 @@ bool VoodooHDAEngine::createAudioStream()
 	}
 
 //	logMsg("sample rates: ");
-	for (UInt32 n = 0; (n < 16) && mChannel->pcmRates[n]; n++)
+//	for (UInt32 n = 0; (n < 16) && mChannel->pcmRates[n]; n++)
 //		logMsg("%ld ", mChannel->pcmRates[n]);
 //	logMsg("(min: %ld, max: %ld)\n", mChannel->caps.minSpeed, mChannel->caps.maxSpeed);
 
@@ -389,20 +390,21 @@ bool VoodooHDAEngine::createAudioStream()
 	minSampleRate.fraction = 0;
 	maxSampleRate.whole = mChannel->caps.maxSpeed;
 	maxSampleRate.fraction = 0;
-
+	channels = mChannel->caps.channels;
+	logMsg("(min: %ld, max: %ld) channels=%d\n", (long int)mChannel->caps.minSpeed, (long int)mChannel->caps.maxSpeed, (int)channels);
 	sampleBuffer = (UInt8 *) mChannel->buffer->virtAddr;
 	mBufferSize = HDA_BUFSZ_MAX; // hardcoded in pcmAttach()
 	if (!createAudioStream(direction, sampleBuffer, mBufferSize, minSampleRate, maxSampleRate,
-			mChannel->supPcmSizeRates, kIOAudioStreamSampleFormatLinearPCM)) {
-		errorMsg("error: createAudioStream failed\n");
+			mChannel->supPcmSizeRates, kIOAudioStreamSampleFormatLinearPCM, channels)) {
+		errorMsg("error: createAudioStream failed channels=%d\n", (int)channels);
 		goto done;
 	}
-#if 0
+#if 1
 	if (HDA_PARAM_SUPP_STREAM_FORMATS_AC3(mChannel->supStreamFormats)) {
 //		logMsg("adding AC3 audio stream\n");
 		if (!createAudioStream(direction, sampleBuffer, mBufferSize, minSampleRate, maxSampleRate,
-							   mChannel->supPcmSizeRates, kIOAudioStreamSampleFormatAC3)) {
-			errorMsg("error: createAudioStream failed\n");
+							   mChannel->supPcmSizeRates, kIOAudioStreamSampleFormatAC3, channels)) {
+			errorMsg("error: createAudioStream AC3 failed\n");
 		}
 	}
 #endif
@@ -413,13 +415,13 @@ done:
 
 bool VoodooHDAEngine::createAudioStream(IOAudioStreamDirection direction, void *sampleBuffer,
 		UInt32 sampleBufferSize, IOAudioSampleRate minSampleRate, IOAudioSampleRate maxSampleRate,
-		UInt32 supPcmSizeRates, UInt32 sampleFormat)
+		UInt32 supPcmSizeRates, UInt32 sampleFormat, UInt32 channels)
 {
 	bool result = false;
 	const char *description;
 
 	IOAudioStreamFormat format = {
-		2,												// number of channels
+		channels,										// number of channels
 		sampleFormat, //kIOAudioStreamSampleFormatLinearPCM,			// sample format
 		kIOAudioStreamNumericRepresentationSignedInt,	// numeric format
 		0,												// bit depth (to be filled in)
@@ -468,6 +470,7 @@ bool VoodooHDAEngine::createAudioStream(IOAudioStreamDirection direction, void *
 	if (HDA_PARAM_SUPP_PCM_SIZE_RATE_24BIT(supPcmSizeRates)) {
 		format.fBitDepth = 24;
 		format.fBitWidth = 32;
+//		format.fBitWidth = 24;
 		mStream->addAvailableFormat(&format, &minSampleRate, &maxSampleRate);
 //		logMsg(" 24");
 	}
@@ -551,11 +554,13 @@ UInt32 VoodooHDAEngine::getCurrentSampleFrame()
 
 // pauseAudioEngine, beginConfigurationChange, completeConfigurationChange, resumeAudioEngine
 
-IOReturn VoodooHDAEngine::performFormatChange(IOAudioStream *audioStream, const IOAudioStreamFormat *newFormat,
-		const IOAudioSampleRate *newSampleRate)
+IOReturn VoodooHDAEngine::performFormatChange(IOAudioStream *audioStream,
+											  const IOAudioStreamFormat *newFormat,
+											  const IOAudioSampleRate *newSampleRate)
 {
 	IOReturn result = kIOReturnError;
 	int setResult;
+	UInt32 ossFormat;
 	bool wasRunning = (getState() == kIOAudioEngineRunning);
 
 	// ASSERT(audioStream == mStream);
@@ -571,10 +576,22 @@ IOReturn VoodooHDAEngine::performFormatChange(IOAudioStream *audioStream, const 
 	if (wasRunning)
 		stopAudioEngine();
 
+	int channels = newFormat->fNumChannels;
 	if (newFormat) {
-		UInt32 ossFormat = AFMT_STEREO;
+		if (channels == 2) {
+			ossFormat = AFMT_STEREO;
+		} else if (channels == 4) {
+			ossFormat = SND_FORMAT(0, 4, 0);
+		} else if (channels == 6) {
+			ossFormat = SND_FORMAT(0, 6, 1);
+		} else if (channels == 8) {
+			ossFormat = SND_FORMAT(0, 8, 1);
+		} else {
+			ossFormat = AFMT_STEREO;
+		}
+		//ossFormat = AFMT_STEREO; //till now always
 
-		ASSERT(newFormat->fNumChannels == 2);
+		//ASSERT(newFormat->fNumChannels == 2);
 		//ASSERT(newFormat->fSampleFormat == kIOAudioStreamSampleFormatLinearPCM);
 		ASSERT(newFormat->fNumericRepresentation == kIOAudioStreamNumericRepresentationSignedInt);
 		ASSERT(newFormat->fAlignment == kIOAudioStreamAlignmentLowByte);
@@ -588,8 +605,7 @@ IOReturn VoodooHDAEngine::performFormatChange(IOAudioStream *audioStream, const 
 				break;
 			case 20:		
 			case 24: // xxx: make clear distinction between 24/32-bit
-				ossFormat |= AFMT_S24_LE;
-				break;
+			//break;
 			case 32:
 				ASSERT(newFormat->fBitWidth == 32); 
 				ossFormat |= AFMT_S32_LE;
@@ -598,7 +614,8 @@ IOReturn VoodooHDAEngine::performFormatChange(IOAudioStream *audioStream, const 
 				BUG("unsupported bit depth");
 				goto done;
 		}
-
+		//IOLog("ossFormat=%08x\n", (unsigned int)ossFormat);
+		
 		setResult = mDevice->channelSetFormat(mChannel, ossFormat);
 	//	logMsg("channelSetFormat(0x%08lx) for channel %d returned %d\n", ossFormat, getEngineId(),
 	//			setResult);
@@ -608,12 +625,16 @@ IOReturn VoodooHDAEngine::performFormatChange(IOAudioStream *audioStream, const 
 		}
 
 		ASSERT(mBufferSize);
-		mSampleSize = (SAMPLE_CHANNELS * (newFormat->fBitWidth / 8));
+		if (channels == 0) {
+			channels = 2;
+		}
+		mSampleSize = (channels * (newFormat->fBitWidth / 8));
 		mNumSampleFrames = mBufferSize / mSampleSize;
 		setNumSampleFramesPerBuffer(mNumSampleFrames);
 
-//		logMsg("buffer size: %ld, channels: %d, bit depth: %d, # samp. frames: %ld\n", mBufferSize,
-//				SAMPLE_CHANNELS, newFormat->fBitDepth, mNumSampleFrames);
+		logMsg("buffer size: %ld, channels: %d, bit depth: %d, # samp. frames: %ld\n", (long int)mBufferSize,
+				channels, newFormat->fBitDepth, (long int)mNumSampleFrames);
+		//goto done;
 	}
 
 	if (newSampleRate) {
@@ -830,14 +851,21 @@ IOReturn VoodooHDAEngine::volumeChanged(IOAudioControl *volumeControl, SInt32 ol
 				/* Left channel */
 				if(volumeControl->getChannelID() == 1) {
 					oldOutVolumeLeft = newValue;
-					mDevice->audioCtlOssMixerSet(pcmDevice, ossDev, newValue, pcmDevice->right[0]);
-					mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_PCM, newValue, pcmDevice->right[0]);
+					if (mEnableVolumeChangeFix) {
+						mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_PCM, newValue, pcmDevice->right[0]);
+					} else {
+						mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_VOLUME, newValue, pcmDevice->right[0]);
+					}
+
 				}
 				/* Right channel */
 				else if(volumeControl->getChannelID() == 2) {
 					oldOutVolumeRight = newValue;
-					mDevice->audioCtlOssMixerSet(pcmDevice, ossDev, pcmDevice->left[0], newValue);
-					mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_PCM, pcmDevice->left[0], newValue);
+					if (mEnableVolumeChangeFix) {
+						mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_PCM, pcmDevice->left[0], newValue);
+					} else {
+						mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_VOLUME, pcmDevice->left[0], newValue);
+					}					
 				}
 				
 				break;
@@ -849,11 +877,12 @@ IOReturn VoodooHDAEngine::volumeChanged(IOAudioControl *volumeControl, SInt32 ol
 				break;
 		}
 		// cue8chalk: this seems to be needed when pin configs aren't set properly
-		if (mEnableVolumeChangeFix) {
+/*		if (mEnableVolumeChangeFix) {
 			for (int n = 0; n < SOUND_MIXER_NRDEVICES; n++){
 				mDevice->audioCtlOssMixerSet(pcmDevice, n, newValue, newValue);
 			}
 		}
+ */
 	}
 	
     return kIOReturnSuccess;

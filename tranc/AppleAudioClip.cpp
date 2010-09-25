@@ -249,8 +249,93 @@ static void	ClipFloat32ToSInt16LE_4(const Float32* inInputBuffer, SInt16* outOut
 	}
 }
 
+// Stereo
+	static void	ClipFloat32ToSInt24LE_8(const Float32* inInputBuffer, SInt32* outOutputBuffer, UInt32 inNumberSamples)
+	{
+		register UInt32 theLeftOvers = inNumberSamples % 8;
+		
+		while(inNumberSamples > theLeftOvers)
+		{
+			register Float32 theFloat32Value11 = *(inInputBuffer + 0);
+			register Float32 theFloat32Value21 = *(inInputBuffer + 2);
+			register Float32 theFloat32Value31 = *(inInputBuffer + 4);
+			register Float32 theFloat32Value41 = *(inInputBuffer + 6);
+			register Float32 theFloat32Value12 = *(inInputBuffer + 1);
+			register Float32 theFloat32Value22 = *(inInputBuffer + 3);
+			register Float32 theFloat32Value32 = *(inInputBuffer + 5);
+			register Float32 theFloat32Value42 = *(inInputBuffer + 7);
+			
+			inInputBuffer += 8;
+			
+			theFloat32Value11 = ClipFloat32ForSInt24(theFloat32Value11);
+			theFloat32Value21 = ClipFloat32ForSInt24(theFloat32Value21);
+			theFloat32Value31 = ClipFloat32ForSInt24(theFloat32Value31);
+			theFloat32Value41 = ClipFloat32ForSInt24(theFloat32Value41);
+			theFloat32Value12 = ClipFloat32ForSInt24(theFloat32Value12);
+			theFloat32Value22 = ClipFloat32ForSInt24(theFloat32Value22);
+			theFloat32Value32 = ClipFloat32ForSInt24(theFloat32Value32);
+			theFloat32Value42 = ClipFloat32ForSInt24(theFloat32Value42);
+			
+			// Multiply by kFloat32ToSInt32 instead of kFloat32toSInt24 to make the binary operations below work properly.
+			register UInt32 a1 = (UInt32)(SInt32)(theFloat32Value11 * kFloat32ToSInt32);
+			register UInt32 b1 = (UInt32)(SInt32)(theFloat32Value21 * kFloat32ToSInt32);
+			register UInt32 c1 = (UInt32)(SInt32)(theFloat32Value31 * kFloat32ToSInt32);
+			register UInt32 d1 = (UInt32)(SInt32)(theFloat32Value41 * kFloat32ToSInt32);
+			register UInt32 a2 = (UInt32)(SInt32)(theFloat32Value12 * kFloat32ToSInt32);
+			register UInt32 b2 = (UInt32)(SInt32)(theFloat32Value22 * kFloat32ToSInt32);
+			register UInt32 c2 = (UInt32)(SInt32)(theFloat32Value32 * kFloat32ToSInt32);
+			register UInt32 d2 = (UInt32)(SInt32)(theFloat32Value42 * kFloat32ToSInt32);
+			//						a    b    c    d					a    b    c    d
+			//	IN REGISTER:		123X 456X 789X ABCX					abc0 def0 ghi0 jkl0
+			//	OUT REGISTERS:		6123 8945 ABC7						fabc hide jklg
+			//	OUT MEMORY:			3216 5498 7CBA
+			
+			register SInt32 theOutputValue11 = ((b1 << 16) & 0xFF000000) | (a1 >> 8);
+			register SInt32 theOutputValue21 = ((c1 << 8) & 0xFFFF0000) | ((b1 >> 16) & 0x0000FFFF);
+			register SInt32 theOutputValue31 = (d1 & 0xFFFFFF00) | ((c1 >> 24) & 0x000000FF);
+			register SInt32 theOutputValue12 = ((b2 << 16) & 0xFF000000) | (a2 >> 8);
+			register SInt32 theOutputValue22 = ((c2 << 8) & 0xFFFF0000) | ((b2 >> 16) & 0x0000FFFF);
+			register SInt32 theOutputValue32 = (d2 & 0xFFFFFF00) | ((c2 >> 24) & 0x000000FF);
+			//	store everything back to memory
+			*(outOutputBuffer + 0) = theOutputValue11;
+			*(outOutputBuffer + 1) = theOutputValue12;
+			*(outOutputBuffer + 2) = theOutputValue21;
+			*(outOutputBuffer + 3) = theOutputValue22;
+			*(outOutputBuffer + 4) = theOutputValue31;
+			*(outOutputBuffer + 5) = theOutputValue32;
+			
+			outOutputBuffer += 6;
+			
+			inNumberSamples -= 8;
+		}
+		
+		SInt8* theOutputBuffer = (SInt8*)outOutputBuffer;
+		while(inNumberSamples > 0)
+		{
+			register Float32 theFloat32Value = *inInputBuffer;
+			++inInputBuffer;
+			
+			theFloat32Value = ClipFloat32ForSInt24(theFloat32Value);
+			
+			// Multiply by kFloat32ToSInt32 instead of kFloat32toSInt24 to make the binary operations below work properly.
+			register SInt32 theSInt32Value = (SInt32)(theFloat32Value * kFloat32ToSInt32);
+			
+			// Byte swapping will be handled automatically by the CPU if necessary.
+			*(theOutputBuffer + 0) = (SInt8)((((UInt32)theSInt32Value) >> 8) & 0x000000FF);
+			*(theOutputBuffer + 1) = (SInt8)((((UInt32)theSInt32Value) >> 16) & 0x000000FF);
+			*(theOutputBuffer + 2) = (SInt8)((((UInt32)theSInt32Value) >> 24) & 0x000000FF);
+			
+			theOutputBuffer += 3;
+			
+			--inNumberSamples;
+		}
+		
+			
+}
+			
 //	Float32 -> SInt24
 //	we use the MaxSInt32 value because of how we munge the data
+#if 0
 static void	ClipFloat32ToSInt24LE_4(const Float32* inInputBuffer, SInt32* outOutputBuffer, UInt32 inNumberSamples)
 {
 	register UInt32 theLeftOvers = inNumberSamples % 4;
@@ -334,7 +419,7 @@ static void	ClipFloat32ToSInt24LE_4(const Float32* inInputBuffer, SInt32* outOut
 		--inNumberSamples;
 	}
 }
-
+#endif
 //	Float32 -> SInt32
 static void	ClipFloat32ToSInt32LE_4(const Float32* inInputBuffer, SInt32* outOutputBuffer, UInt32 inNumberSamples)
 {
@@ -3669,12 +3754,32 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
     }
 	UInt32 firstSample = firstSampleFrame * streamFormat->fNumChannels;
 	UInt32 numSamples = numSampleFrames * streamFormat->fNumChannels;
+	int lastSample = firstSample + numSamples;
 	Float32 *floatMixBuf = ((Float32*)mixBuf) + firstSample;
+	Float32 *floatMixBuf2 = ((Float32*)mixBuf); // + firstSample;
 	SInt16 *theOutputBufferSInt16;
 	SInt8  *theOutputBufferSInt8;
 	UInt8* theOutputBufferSInt24;
 	SInt32* theOutputBufferSInt32;
 	bool SSE2 = mChannel->vectorize;
+	bool Stereo = mChannel->useStereo;
+	int base = mChannel->StereoBase; 
+	if (base) base = mChannel->StereoBase * 2 - 14;
+	if (Stereo && base) {
+		if (base > 0) {
+			for (int i=firstSample; i<lastSample; i+=2) {
+				int j = i - base*10;
+				if (j < 0) j=0;
+				floatMixBuf2[i] += floatMixBuf2[j+1]/2.0;
+				floatMixBuf2[i+1] += floatMixBuf2[j]/2.0;
+			}			
+		} else
+			for (int i=0; i<(int)numSamples; i+=2) {
+				floatMixBuf[i] -= (floatMixBuf[i+1]/10.0) * base;
+				floatMixBuf[i+1] -= (floatMixBuf[i]/10.0) * base;
+			}			
+	}
+	
 	
 	UInt8 *sourceBuf = (UInt8 *) sampleBuf;
 	
@@ -3709,12 +3814,13 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 					
 				case 20:
 				case 24:
+					
 					theOutputBufferSInt24 = ((UInt8*)sampleBuf) + (firstSample * 3);
 					if (nativeEndianInts) {
 						if (SSE2) {
 							Float32ToNativeInt24(floatMixBuf, theOutputBufferSInt24, numSamples);
 						} else {
-							ClipFloat32ToSInt24LE_4(floatMixBuf, (SInt32*)theOutputBufferSInt24, numSamples);						
+							ClipFloat32ToSInt24LE_8(floatMixBuf, (SInt32*)theOutputBufferSInt24, numSamples);		
 						}
 					}
 					else
@@ -3758,6 +3864,8 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 		UInt32 size = numSampleFrames * (streamFormat->fBitWidth / 8) * streamFormat->fNumChannels;
 		memcpy(&((SInt8 *) sampleBuf)[offset], &((SInt8 *) mixBuf)[offset], size);
 	}
+	
+	
 	
 	return kIOReturnSuccess;
 }

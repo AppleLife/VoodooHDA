@@ -21,7 +21,7 @@ const char *gConnTypes[4] = { "Jack", "None", "Fixed", "Both" };
 const char *gJacks[11] = {"Unknown", "1/8", "1/4", "ATAPI", "RCA", "Optic", "Digital", "Analog",
 		"Multi", "XLR", "RJ-11"};
 
-const ChannelCaps gDefaultChanCaps = { 48000, 48000, (UInt32 []) { AFMT_STEREO | AFMT_S16_LE, 0 }, 0 };
+const ChannelCaps gDefaultChanCaps = { 48000, 48000, (UInt32 []) { AFMT_STEREO | AFMT_S16_LE, 0 }, 0, 2};
 
 /*
  * Scan the bus for available codecs, starting with num.
@@ -2615,7 +2615,7 @@ void VoodooHDADevice::dumpDstNid(PcmDevice *pcmDevice, nid_t nid, int depth)
 		//if (widget->ossdev >= 0) {
 		if (widget->ossmask != 0) {
 			dumpMsg("\n");
-			return;
+			//return;
 		}
 	}
 	dumpMsg("\n");
@@ -3725,7 +3725,7 @@ int VoodooHDADevice::pcmChannelSetup(Channel *channel)
 		channel->io[ret++] = assocs[channel->assocNum].dacs[i];
 
 		/* Do not count redirection pin/dac channels. */
-		if (i == 15 && assocs[channel->assocNum].hpredir >= 0)
+		if ((ret>1) && (assocs[channel->assocNum].hpredir >= 0))  //Slice exclude (i==15)
 			continue;
 		channels += HDA_PARAM_AUDIO_WIDGET_CAP_CC(widget->params.widgetCap) + 1;
 		if (HDA_PARAM_AUDIO_WIDGET_CAP_CC(widget->params.widgetCap) != 1)
@@ -3743,8 +3743,8 @@ int VoodooHDADevice::pcmChannelSetup(Channel *channel)
 	assocs[channel->assocNum].pinset = pinset;
 	channel->supStreamFormats = fmtcap;
 	channel->supPcmSizeRates = pcmcap;
-	IOLog("pcmSetup: ret=%d pinset=%08x fmtcap=%08x pcmcap=%08x channels=%d\n",
-		  ret, pinset, (unsigned int)fmtcap, (unsigned int)pcmcap, channels);
+	//IOLog("pcmSetup: ret=%d pinset=%08x fmtcap=%08x pcmcap=%08x channels=%d\n",
+	//	  ret, pinset, (unsigned int)fmtcap, (unsigned int)pcmcap, channels);
 	/*
 	 *  8bit = 0
 	 * 16bit = 1
@@ -3769,13 +3769,13 @@ int VoodooHDADevice::pcmChannelSetup(Channel *channel)
 				channel->formats[i++] = AFMT_S16_LE;
 				if (channel->bit32 == 4)
 					channel->formats[i++] = AFMT_S32_LE;
-				else if (channel->bit32) channel->formats[i++] = AFMT_S24_LE;
+				else if (channel->bit32) channel->formats[i++] = AFMT_S32_LE; //AFMT_S24_LE;
 			}
 			if (channels >= 2) {
 				channel->formats[i++] = AFMT_S16_LE | AFMT_STEREO; 
 				if (channel->bit32 == 4)
 					channel->formats[i++] = AFMT_S32_LE | AFMT_STEREO;
-				else if (channel->bit32) channel->formats[i++] = AFMT_S24_LE  | AFMT_STEREO;
+				else if (channel->bit32) channel->formats[i++] = AFMT_S32_LE  | AFMT_STEREO;
 			}
 			if (channels == 4 || /* Any 4-channel */
 			    pinset == 0x0007 || /* 5.1 */
@@ -3784,20 +3784,20 @@ int VoodooHDADevice::pcmChannelSetup(Channel *channel)
 				channel->formats[i++] = SND_FORMAT(AFMT_S16_LE, 4, 0);
 				if (channel->bit32 == 4)
 					channel->formats[i++] = SND_FORMAT(AFMT_S32_LE, 4, 0);
-				else if (channel->bit32) channel->formats[i++] = SND_FORMAT(AFMT_S24_LE, 4, 0);
+				else if (channel->bit32) channel->formats[i++] = SND_FORMAT(AFMT_S32_LE, 4, 0);
 			}
 			if (channels == 6 || /* Any 6-channel */
 			    pinset == 0x0017) {  /* 7.1 */
 				channel->formats[i++] = SND_FORMAT(AFMT_S16_LE, 6, 1);
 				if (channel->bit32 == 4)
 					channel->formats[i++] = SND_FORMAT(AFMT_S32_LE, 6, 1);
-				else if (channel->bit32) channel->formats[i++] = SND_FORMAT(AFMT_S24_LE, 6, 1);
+				else if (channel->bit32) channel->formats[i++] = SND_FORMAT(AFMT_S32_LE, 6, 1);
 			}
 			if (channels == 8) { /* Any 8-channel */
 				channel->formats[i++] = SND_FORMAT(AFMT_S16_LE, 8, 1);
 				if (channel->bit32 == 4)
 					channel->formats[i++] = SND_FORMAT(AFMT_S32_LE, 8, 1);
-				else if (channel->bit32) channel->formats[i++] = SND_FORMAT(AFMT_S24_LE, 8, 1);
+				else if (channel->bit32) channel->formats[i++] = SND_FORMAT(AFMT_S32_LE, 8, 1);
 			}
 		}
 		if (HDA_PARAM_SUPP_STREAM_FORMATS_AC3(fmtcap))
@@ -3832,6 +3832,7 @@ int VoodooHDADevice::pcmChannelSetup(Channel *channel)
 			channel->caps.minSpeed = channel->pcmRates[0];
 			channel->caps.maxSpeed = channel->pcmRates[i - 1];
 		}
+		channel->caps.channels = channels;
 	}
 
 	return ret;
