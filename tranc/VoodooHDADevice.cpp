@@ -1191,7 +1191,7 @@ IOReturn VoodooHDADevice::handleAction(OSObject *owner, void *arg0, void *arg1, 
 		ch = ((action >> 8) & 0xFF);
 		opt = ((action >> 16) & 0xFF);
 		val = ((action >> 24) & 0xFF);
-		IOLog("HDA: Channel=%02x Options=%02x Value=%02x\n", ch, opt, val);
+		//IOLog("HDA: Channel=%02x Options=%02x Value=%02x\n", ch, opt, val);
 			  //device->vectorize?"Yes":"No", device->noiseLevel,
 			  //device->useStereo?"Yes":"No", device->StereoBase);
 		
