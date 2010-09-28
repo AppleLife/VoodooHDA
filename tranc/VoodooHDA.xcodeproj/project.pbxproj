@@ -456,7 +456,7 @@
 					"\"$(SRCROOT)/build/Release\"",
 				);
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 2.7.0;
+				MODULE_VERSION = 2.7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = VoodooHDA;
 				VALID_ARCHS = "i386 x86_64";
