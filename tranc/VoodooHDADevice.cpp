@@ -2454,20 +2454,17 @@ void VoodooHDADevice::streamSetup(Channel *channel)
 	int totalchn;
 	nid_t cad = channel->funcGroup->codec->cad;
 	UInt16 format, digFormat;
-	//	UInt16 chmap[2][5] = {{ 0x0010, 0x0001, 0x0201, 0x0231, 0x0231 }, /* 5.1 */
-	//		{ 0x0010, 0x0001, 0x2001, 0x2031, 0x2431 }};/* 7.1 */
+	UInt16 chmap[2][5] = {{ 0x0010, 0x0001, 0x0201, 0x0231, 0x0231 }, /* 5.1 */
+			{ 0x0010, 0x0001, 0x2001, 0x2031, 0x2431 }};/* 7.1 */
 	int map = -1;
 	
-	//	totalchn = AFMT_CHANNEL(channel->format);
-	if (channel->format & (AFMT_STEREO | AFMT_AC3)) {
+	totalchn = AFMT_CHANNEL(channel->format);
+/*	if (channel->format & (AFMT_STEREO | AFMT_AC3)) {
 		totalchn = 2;
 	} else
 		totalchn = 1;
-	
+*/	
 
-	if(mVerbose >= 2)
-		logMsg("PCMDIR_%s: Stream setup format=%08lx speed=%ld\n", (channel->direction == PCMDIR_PLAY) ?
-			"PLAY" : "REC", (long unsigned int)channel->format, (long int)channel->speed);
 	format = 0;
 	if (channel->format & AFMT_S16_LE)
 		format |= channel->bit16 << 4;
@@ -2499,7 +2496,7 @@ void VoodooHDADevice::streamSetup(Channel *channel)
 	digFormat = HDA_CMD_SET_DIGITAL_CONV_FMT1_DIGEN;
 	if (channel->format & AFMT_AC3)
 		digFormat |= HDA_CMD_SET_DIGITAL_CONV_FMT1_NAUDIO;
-
+	
 	for (int i = 0, chn = 0; channel->io[i] != -1; i++) {
 		Widget *widget;
 		int c;
@@ -2508,23 +2505,41 @@ void VoodooHDADevice::streamSetup(Channel *channel)
 		if (!widget)
 			continue;
 
-		if ((assoc->hpredir >= 0) && (i == assoc->pincnt))
-			chn = 0;
+//		if ((assoc->hpredir >= 0) && (i == assoc->pincnt))
+//			chn = 0;
+		/* If HP redirection is enabled, but failed to use same DAC make last DAC one to duplicate first one. */
+		if (assoc->hpredir >= 0 && i == assoc->pincnt)
+			c = (channel->streamId << 4);
+		else {
+			if (map >= 0) /* Map known speaker setups. */
+				chn = (((chmap[map][totalchn / 2] >> i * 4) &
+						0xf) - 1) * 2;
+			if (chn < 0 || chn >= totalchn) {
+				/* This is until OSS will support multichannel. Should be: c = 0; to disable unused DAC */
+				c = 0;
+			} else {
+				c = (channel->streamId << 4) | chn;
+			}			
+		}		
+		if(mVerbose >= 2)
+			logMsg("PCMDIR_%s: Stream setup nid=%d format=%08lx speed=%ld , dfmt=0x%04x, chan=0x%04x\n",
+				   (channel->direction == PCMDIR_PLAY) ?"PLAY" : "REC", channel->io[i], 
+				   (long unsigned int)channel->format, (long int)channel->speed, digFormat, c);
+		
+		
 //		logMsg("PCMDIR_%s: Stream setup nid=%d: format=0x%04x, digFormat=0x%04x\n",
 //				(channel->direction == PCMDIR_PLAY) ? "PLAY" : "REC", channel->io[i], format, digFormat);
 		sendCommand(HDA_CMD_SET_CONV_FMT(cad, channel->io[i], format), cad);
 		if (HDA_PARAM_AUDIO_WIDGET_CAP_DIGITAL(widget->params.widgetCap))
 			sendCommand(HDA_CMD_SET_DIGITAL_CONV_FMT1(cad, channel->io[i], digFormat), cad);
-		/* If HP redirection is enabled, but failed to use same DAC make last DAC one to duplicate first one. */
-		if (assoc->hpredir >= 0 && i == assoc->pincnt)
-			c = (channel->streamId << 4);
-		else if (chn >= totalchn) {
-			/* This is until OSS will support multichannel. Should be: c = 0; to disable unused DAC */
-			c = (channel->streamId << 4);
-		} else
-			c = (channel->streamId << 4) | chn;
 		sendCommand(HDA_CMD_SET_CONV_STREAM_CHAN(cad, channel->io[i], c), cad);
-		chn += HDA_PARAM_AUDIO_WIDGET_CAP_STEREO(widget->params.widgetCap) ? 2 : 1;
+#if MULTICHANNEL
+		sendCommand(HDA_CMD_SET_CONV_CHAN_COUNT(cad, channel->io[i], 1), cad);
+		sendCommand(HDA_CMD_SET_HDMI_CHAN_SLOT(cad, channel->io[i], 0x00), cad);
+		sendCommand(HDA_CMD_SET_HDMI_CHAN_SLOT(cad, channel->io[i], 0x11), cad);
+#endif
+		
+		chn += HDA_PARAM_AUDIO_WIDGET_CAP_CC(widget->params.widgetCap) + 1;
 	}
 }
 
@@ -2733,7 +2748,7 @@ void VoodooHDADevice::createPrefPanelMemoryBuf(FunctionGroup *funcGroup)
 	if(mPrefPanelMemoryBuf == 0) {
 		//logMsg("VoodooHDADevice::createPrefPanelMemoryBuf allocate memory\n");
 		//mPrefPanelMemoryBufSize = nSliderTabsCount*sizeof(sliders);
-		mPrefPanelMemoryBufSize = 24*sizeof(ChannelInfo);
+		mPrefPanelMemoryBufSize = SOUND_MIXER_NRDEVICES*sizeof(ChannelInfo);
 		mPrefPanelMemoryBuf = (ChannelInfo*)allocMem(mPrefPanelMemoryBufSize);
 		bzero(mPrefPanelMemoryBuf, mPrefPanelMemoryBufSize); 
 	
@@ -2861,7 +2876,7 @@ void VoodooHDADevice::changeSliderValue(UInt8 tabNum, UInt8 sliderNum, UInt8 new
 	}
 	
 }
-
+//Slice
 void VoodooHDADevice::setMath(UInt8 tabNum, UInt8 sliderNum, UInt8 newValue)
 {
 	VoodooHDAEngine *engine;
