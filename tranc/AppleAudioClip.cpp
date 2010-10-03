@@ -3770,6 +3770,8 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 	if (base) base = mChannel->StereoBase * 2 - 14;
 	if (Stereo && base) {
 		if (base > 0) {
+			//Slice: It is interesting but with artefacts so disabled
+			/*
 			for (int i=firstSample; i<lastSample; i+=2) {
 				int j = i - base*2;
 				if (j < 0) {
@@ -3785,6 +3787,12 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 					floatMixBuf2[i] += floatMixBuf2[j+1]/2.0;
 					floatMixBuf2[i+1] += floatMixBuf2[j]/2.0;
 				}
+			}
+			 */
+			//Simple mixer
+			for (int i=firstSample; i<lastSample; i+=2) {
+				floatMixBuf2[i] += (floatMixBuf2[i+1]/10.0) * base;
+				floatMixBuf2[i+1] += (floatMixBuf2[i]/10.0) * base;						
 			}			
 		} else
 			for (int i=0; i<(int)numSamples; i+=2) {
@@ -3792,13 +3800,18 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 				floatMixBuf[i+1] -= (floatMixBuf[i]/10.0) * base;
 			}			
 	}
+	if (Boost) {
+		for (int i=firstSample; i<lastSample; i++) {
+			floatMixBuf2[i] *= Boost;
+		}
+	}
 	floatMixBufOld = floatMixBuf2 + numSamples - base * 2;
 	emptyStream = FALSE;
 	
 #ifndef TIGER	
 	UInt8 *sourceBuf = (UInt8 *) sampleBuf;
 #endif		
-	
+	long int noiseMask = ~((long int)(1 << mChannel->noiseLevel) - 1);
 	// figure out what sort of blit we need to do
 	if ((streamFormat->fSampleFormat == kIOAudioStreamSampleFormatLinearPCM) && streamFormat->fIsMixable) {
 		// it's mixable linear PCM, which means we will be calling a blitter, which works in samples
@@ -3821,6 +3834,10 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 #ifndef TIGER						
 						if (SSE2) {
 							Float32ToNativeInt16(floatMixBuf, theOutputBufferSInt16, numSamples);
+							for (int i=0; i<(int)numSamples; i++) {
+								theOutputBufferSInt16[i] &= noiseMask;
+							}
+							
 						} else
 #endif							
 						{
@@ -3859,11 +3876,16 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 #ifndef TIGER						
 						if (SSE2) {
 							Float32ToNativeInt32(floatMixBuf, theOutputBufferSInt32, numSamples);
+							for (int i=0; i<(int)numSamples; i++) {
+								theOutputBufferSInt32[i] &= noiseMask;
+							}
+							
 						} else
 #endif						
 						{					
 							ClipFloat32ToSInt32LE_4(floatMixBuf, theOutputBufferSInt32, numSamples);
 						}
+						
 					}
 #ifndef TIGER						
 					else
@@ -3911,7 +3933,7 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf, void *destB
     floatDestBuf = (float *)destBuf;
 	UInt32 firstSample = firstSampleFrame * streamFormat->fNumChannels;
 	numSamples = numSamplesLeft = numSampleFrames * streamFormat->fNumChannels;
-	long int noiseMask = ~((1 << mChannel->noiseLevel) - 1);
+	long int noiseMask = ~((long int)(1 << mChannel->noiseLevel) - 1);
 	
 	UInt8 *sourceBuf = (UInt8 *) sampleBuf; 
 	SInt8 *inputBuf8;

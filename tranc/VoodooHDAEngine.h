@@ -26,6 +26,7 @@ public:
 	UInt32 mBufferSize;
 	UInt32 mSampleSize;
 	UInt32 mNumSampleFrames;
+	UInt32 Boost;
 /*	bool vectorize;
 	int noiseLevel;
 	bool useStereo;

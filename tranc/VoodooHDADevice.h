@@ -93,6 +93,7 @@ public:
 	UInt16 oldConfig;
 //
 	bool mSwitchCh;
+	UInt32 Boost;
 	
 	const char *mControllerName;
 	UInt32 mDeviceId, mSubDeviceId;
