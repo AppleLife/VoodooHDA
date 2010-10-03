@@ -5,6 +5,7 @@
 #include "OssCompat.h"
 
 const ControllerListItem gControllerList[] = {
+	{ HDA_INTEL_CPT,			"Intel Cougar Point"},
 	{ HDA_INTEL_82801F,			"Intel 82801F" },
 	{ HDA_INTEL_63XXESB,		"Intel 631x/632xESB" },
 	{ HDA_INTEL_82801G,			"Intel 82801G" },
@@ -66,6 +67,8 @@ const ControllerListItem gControllerList[] = {
 const CodecListItem gCodecList[] = {
 	{ HDA_CODEC_CS4206,			"Cirrus Logic CS4206" },
 	{ HDA_CODEC_CS4207,			"Cirrus Logic CS4207" },
+	{ HDA_CODEC_XFIEA,			"Creative X-Fi Extreme A"},
+	{ HDA_CODEC_XFIED,			"Creative X-Fi Extreme D"},
 	{ HDA_CODEC_ALC260,			"Realtek ALC260" },
 	{ HDA_CODEC_ALC262,			"Realtek ALC262" },
 	{ HDA_CODEC_ALC267,			"Realtek ALC267" },
@@ -162,6 +165,7 @@ const CodecListItem gCodecList[] = {
 	{ HDA_CODEC_CX20561,		"Conexant CX20561 (Hermosa)" },
 	{ HDA_CODEC_CX20582,		"Conexant CX20582 (Pebble)" },
 	{ HDA_CODEC_CX20583,		"Conexant CX20583 (Pebble HSF)" },
+	{ HDA_CODEC_CX20585,		"Conexant CX20585" },
 	{ HDA_CODEC_VT1708_8,		"VIA VT1708_8" },
 	{ HDA_CODEC_VT1708_9,		"VIA VT1708_9" },
 	{ HDA_CODEC_VT1708_A,		"VIA VT1708_A" },

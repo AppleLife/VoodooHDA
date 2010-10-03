@@ -45,7 +45,7 @@
 			<key>InhibitCache</key>
 			<true/>
 			<key>Vectorize</key>
-			<true/>
+			<false/>
 			<key>Noise</key>
 			<integer>2</integer>
 			<key>VoodooHDAVerboseLevel</key>

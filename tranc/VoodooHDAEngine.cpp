@@ -332,15 +332,15 @@ bool VoodooHDAEngine::initHardware(IOService *provider)
 		errorMsg("error: createAudioStream failed\n");
 		goto done;
 	}
-
+	emptyStream = true;
 	if (!createAudioControls()) {
 		errorMsg("error: createAudioControls failed\n");
 		goto done;
 	}
-	mChannel->vectorize = mDevice->vectorize;
-	 mChannel->noiseLevel = mDevice->noiseLevel;
-	 mChannel->useStereo = mDevice->useStereo;
-	 mChannel->StereoBase = mDevice->StereoBase;
+	mChannel->vectorize  = mDevice->vectorize;
+	mChannel->noiseLevel = mDevice->noiseLevel;
+	mChannel->useStereo  = mDevice->useStereo;
+	mChannel->StereoBase = mDevice->StereoBase;
 	
 	result = true;
 done:

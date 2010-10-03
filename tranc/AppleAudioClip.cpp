@@ -3757,21 +3757,34 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 	int lastSample = firstSample + numSamples;
 	Float32 *floatMixBuf = ((Float32*)mixBuf) + firstSample;
 	Float32 *floatMixBuf2 = ((Float32*)mixBuf); // + firstSample;
+	//Float32 *floatMixBufOld; must be global
 	SInt16 *theOutputBufferSInt16;
 	SInt8  *theOutputBufferSInt8;
 	UInt8* theOutputBufferSInt24;
 	SInt32* theOutputBufferSInt32;
-//	bool SSE2 = mChannel->vectorize;
+#ifndef TIGER	
+	bool SSE2 = mChannel->vectorize;
+#endif	
 	bool Stereo = mChannel->useStereo;
 	int base = mChannel->StereoBase; 
 	if (base) base = mChannel->StereoBase * 2 - 14;
 	if (Stereo && base) {
 		if (base > 0) {
 			for (int i=firstSample; i<lastSample; i+=2) {
-				int j = i - base*10;
-				if (j < 0) j=0;
-				floatMixBuf2[i] += floatMixBuf2[j+1]/2.0;
-				floatMixBuf2[i+1] += floatMixBuf2[j]/2.0;
+				int j = i - base*2;
+				if (j < 0) {
+					if (!emptyStream) {
+						floatMixBuf2[i] += floatMixBufOld[i+1]/2.0;
+						floatMixBuf2[i+1] += floatMixBufOld[i]/2.0;
+					} else {
+						floatMixBuf2[i] += floatMixBuf2[i+1]/2.0;
+						floatMixBuf2[i+1] += floatMixBuf2[i]/2.0;						
+					}
+
+				} else {
+					floatMixBuf2[i] += floatMixBuf2[j+1]/2.0;
+					floatMixBuf2[i+1] += floatMixBuf2[j]/2.0;
+				}
 			}			
 		} else
 			for (int i=0; i<(int)numSamples; i+=2) {
@@ -3779,6 +3792,8 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 				floatMixBuf[i+1] -= (floatMixBuf[i]/10.0) * base;
 			}			
 	}
+	floatMixBufOld = floatMixBuf2 + numSamples - base * 2;
+	emptyStream = FALSE;
 	
 #ifndef TIGER	
 	UInt8 *sourceBuf = (UInt8 *) sampleBuf;

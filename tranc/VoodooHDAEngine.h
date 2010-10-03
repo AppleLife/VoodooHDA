@@ -34,6 +34,8 @@ public:
 	Channel *mChannel;
 	VoodooHDADevice *mDevice;
 	IOAudioStream *mStream;
+	bool emptyStream;
+	float *floatMixBufOld;
 
 	const char *mPortName;
 	const char *mName;
