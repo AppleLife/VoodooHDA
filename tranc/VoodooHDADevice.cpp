@@ -101,6 +101,12 @@ bool VoodooHDADevice::init(OSDictionary *dict)
 		noiseLevel = verboseLevelNum->unsigned32BitValue();
 	else
 		noiseLevel = 0;
+
+	verboseLevelNum = OSDynamicCast(OSNumber, dict->getObject("Boost"));
+	if (verboseLevelNum)
+		Boost = verboseLevelNum->unsigned32BitValue();
+	else
+		Boost = 0;
 	
 
 	mLock = IOLockAlloc();
@@ -670,7 +676,8 @@ bool VoodooHDADevice::createAudioEngine(Channel *channel)
 	
 	// cue8chalk: set volume change fix on the engine
 	audioEngine->mEnableVolumeChangeFix = mEnableVolumeChangeFix;
-
+	
+	audioEngine->Boost = Boost;
 	// Active the audio engine - this will cause the audio engine to have start() and
 	// initHardware() called on it. After this function returns, that audio engine should
 	// be ready to begin vending audio services to the system.
@@ -2459,11 +2466,12 @@ void VoodooHDADevice::streamSetup(Channel *channel)
 	int map = -1;
 	
 	totalchn = AFMT_CHANNEL(channel->format);
-/*	if (channel->format & (AFMT_STEREO | AFMT_AC3)) {
-		totalchn = 2;
-	} else
-		totalchn = 1;
-*/	
+	if (!totalchn) {
+		if (channel->format & (AFMT_STEREO | AFMT_AC3)) { //Slice - AC3 supports more then Stereo, but here we force 2
+			totalchn = 2;
+		} else
+			totalchn = 1;
+	}
 
 	format = 0;
 	if (channel->format & AFMT_S16_LE)
