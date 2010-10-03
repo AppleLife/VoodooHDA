@@ -5,6 +5,7 @@
  *  Created by Andy Vandijck on 12/03/10.
  *  Copyright 2010 AnV Software. All rights reserved.
  *
+ *  Slice, 05.10.2010 some additions
  */
 
 #ifdef TIGER // needed for compile fix
