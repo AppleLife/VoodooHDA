@@ -21,7 +21,7 @@
 #include "TigerAdditionals.h"
 #endif
 
-#define HDAC_REVISION "20100226_0142"
+#define HDAC_REVISION "20100917_0142"
 
 #define LOCK()		lock(__FUNCTION__)
 #define UNLOCK()	unlock(__FUNCTION__)

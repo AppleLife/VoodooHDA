@@ -852,7 +852,7 @@ IOReturn VoodooHDAEngine::volumeChanged(IOAudioControl *volumeControl, SInt32 ol
 				if(volumeControl->getChannelID() == 1) {
 					oldOutVolumeLeft = newValue;
 					if (mEnableVolumeChangeFix) {
-						mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_PCM, newValue, pcmDevice->right[0]);
+						mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_PCM, newValue, newValue);
 					} else {
 						mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_VOLUME, newValue, pcmDevice->right[0]);
 					}
@@ -862,7 +862,7 @@ IOReturn VoodooHDAEngine::volumeChanged(IOAudioControl *volumeControl, SInt32 ol
 				else if(volumeControl->getChannelID() == 2) {
 					oldOutVolumeRight = newValue;
 					if (mEnableVolumeChangeFix) {
-						mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_PCM, pcmDevice->left[0], newValue);
+						mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_PCM, newValue, newValue);
 					} else {
 						mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_VOLUME, pcmDevice->left[0], newValue);
 					}					
@@ -877,12 +877,12 @@ IOReturn VoodooHDAEngine::volumeChanged(IOAudioControl *volumeControl, SInt32 ol
 				break;
 		}
 		// cue8chalk: this seems to be needed when pin configs aren't set properly
-/*		if (mEnableVolumeChangeFix) {
+		if (mEnableVolumeChangeFix) {
 			for (int n = 0; n < SOUND_MIXER_NRDEVICES; n++){
 				mDevice->audioCtlOssMixerSet(pcmDevice, n, newValue, newValue);
 			}
 		}
- */
+ 
 	}
 	
     return kIOReturnSuccess;
