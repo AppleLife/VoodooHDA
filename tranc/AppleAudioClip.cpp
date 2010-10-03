@@ -3761,7 +3761,7 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 	SInt8  *theOutputBufferSInt8;
 	UInt8* theOutputBufferSInt24;
 	SInt32* theOutputBufferSInt32;
-	bool SSE2 = mChannel->vectorize;
+//	bool SSE2 = mChannel->vectorize;
 	bool Stereo = mChannel->useStereo;
 	int base = mChannel->StereoBase; 
 	if (base) base = mChannel->StereoBase * 2 - 14;
@@ -3780,8 +3780,9 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 			}			
 	}
 	
-	
+#ifndef TIGER	
 	UInt8 *sourceBuf = (UInt8 *) sampleBuf;
+#endif		
 	
 	// figure out what sort of blit we need to do
 	if ((streamFormat->fSampleFormat == kIOAudioStreamSampleFormatLinearPCM) && streamFormat->fIsMixable) {
@@ -3802,14 +3803,19 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 				case 16:
 					theOutputBufferSInt16 = ((SInt16*)sampleBuf) + firstSample;
 					if (nativeEndianInts) {
+#ifndef TIGER						
 						if (SSE2) {
 							Float32ToNativeInt16(floatMixBuf, theOutputBufferSInt16, numSamples);
-						} else {
+						} else
+#endif							
+						{
 							ClipFloat32ToSInt16LE_4(floatMixBuf, theOutputBufferSInt16, numSamples);
 						}
 					}
+#ifndef TIGER						
 					else
 						Float32ToSwapInt16(floatMixBuf, theOutputBufferSInt16, numSamples);
+#endif					
 					break;
 					
 				case 20:
@@ -3817,28 +3823,38 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 					
 					theOutputBufferSInt24 = ((UInt8*)sampleBuf) + (firstSample * 3);
 					if (nativeEndianInts) {
+#ifndef TIGER						
 						if (SSE2) {
 							Float32ToNativeInt24(floatMixBuf, theOutputBufferSInt24, numSamples);
-						} else {
+						} else 
+#endif							
+						{
 							ClipFloat32ToSInt24LE_8(floatMixBuf, (SInt32*)theOutputBufferSInt24, numSamples);		
 						}
 					}
+#ifndef TIGER						
 					else
 						Float32ToSwapInt24(floatMixBuf, theOutputBufferSInt24, numSamples);
+#endif
 					break;
 					
 				case 32:
 					theOutputBufferSInt32 = ((SInt32*)sampleBuf) + firstSample;
 					if (nativeEndianInts) {
+#ifndef TIGER						
 						if (SSE2) {
 							Float32ToNativeInt32(floatMixBuf, theOutputBufferSInt32, numSamples);
-						} else {					
+						} else
+#endif						
+						{					
 							ClipFloat32ToSInt32LE_4(floatMixBuf, theOutputBufferSInt32, numSamples);
 						}
 					}
+#ifndef TIGER						
 					else
 						Float32ToSwapInt32(floatMixBuf, (SInt32 *) &sourceBuf[4 * firstSample],
 										   numSamples);
+#endif					
 					break;
 					
 				default:
@@ -3887,8 +3903,9 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf, void *destB
 	SInt16 *inputBuf16;
 	const UInt8 *inputBuf24;
 	SInt32 *inputBuf32;
+#ifndef TIGER	
 	bool SSE2 = mChannel->vectorize;
-	
+#endif	
 	
 	// figure out what sort of blit we need to do
 	if ((streamFormat->fSampleFormat == kIOAudioStreamSampleFormatLinearPCM) && streamFormat->fIsMixable) {
@@ -3912,25 +3929,33 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf, void *destB
 				case 16:
 					inputBuf16 = &(((SInt16 *)sampleBuf)[firstSample]);
 					if (nativeEndianInts) {
+#ifndef TIGER						
 						if (SSE2) {
 							NativeInt16ToFloat32(inputBuf16, floatDestBuf, numSamples);
 						} else {
+#endif							
 							while (numSamplesLeft-- > 0) 
 							{	
 								*(floatDestBuf++) = (float)(*(inputBuf16++) &= (SInt16)noiseMask) * kOneOverMaxSInt16Value;
 							}
+							
 						}
+#ifndef TIGER							
 					} else
 						SwapInt16ToFloat32(inputBuf16, floatDestBuf, numSamples);
+#endif				
 					break;
 					
 				case 20:
-				case 24:
+				case 24: //impossible for Intel chipset, dunno for other
 					inputBuf24 = &(((UInt8 *)sampleBuf)[firstSample * 3]);
 					if (nativeEndianInts){
+#ifndef TIGER						
 						if (SSE2) {
 							NativeInt24ToFloat32(inputBuf24, floatDestBuf, numSamples);
-						} else {
+						} else
+#endif							
+						{
 							// Multiply by 3 because 20 and 24 bit samples are packed into only three bytes, so we have to index bytes, not shorts or longs
 							register SInt32 inputSample;
 							
@@ -3951,23 +3976,31 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf, void *destB
 												  | (SInt32 (*(inputBuf24 + 2)) << 16));
 							*(floatDestBuf++) = (float)inputSample * kOneOverMaxSInt24Value;
 						}
-					} else
+					}
+#ifndef TIGER						
+					else
 						SwapInt24ToFloat32(inputBuf24, floatDestBuf, numSamples);
+#endif					
 					break;
 					
 				case 32:
 					inputBuf32 = &(((SInt32 *)sampleBuf)[firstSample]);
 					if (nativeEndianInts) {
+#ifndef TIGER						
 						if (SSE2) {
 							NativeInt32ToFloat32(inputBuf32, floatDestBuf, numSamples);
-						} else {
+						} else
+#endif							
+						{
 							while (numSamplesLeft-- > 0) {	
 								*(floatDestBuf++) = (float)(*(inputBuf32++) & noiseMask) * kOneOverMaxSInt32Value;
 							}
 						}
 					}
+#ifndef TIGER						
 					else
 						SwapInt32ToFloat32(inputBuf32, floatDestBuf, numSamples);
+#endif					
 					break;
 					
 				default:
