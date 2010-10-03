@@ -13,6 +13,11 @@
 
 #include "Shared.h"
 
+#ifdef TIGER
+#include "TigerAdditionals.h"
+#endif
+
+
 #define super IOUserClient
 OSDefineMetaClassAndStructors(VoodooHDAUserClient, IOUserClient);
 

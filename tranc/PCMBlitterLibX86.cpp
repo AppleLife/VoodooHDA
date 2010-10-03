@@ -1,6 +1,7 @@
 #include "License.h"
-
+#ifndef TIGER
 #include <TargetConditionals.h>
+#endif
 
 #define _MM_MALLOC_H_INCLUDED 1	// we don't want this header
 #include "xmmintrin.h"

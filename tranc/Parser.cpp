@@ -8,6 +8,10 @@
 #include "Common.h"
 #include "Verbs.h"
 
+#ifdef TIGER
+#include "TigerAdditionals.h"
+#endif
+
 const char *gColorTypes[16] = { "Unknown", "Black", "Grey", "Blue", "Green", "Red",
 		"Orange", "Yellow", "Purple", "Pink", "Res.A", "Res.B", "Res.C", "Res.D",
 		"White", "Other" };
@@ -4412,7 +4416,12 @@ void VoodooHDADevice::catPinName(Widget *widget)
 	if (where == 0x19) ConnType = "ATAPI";
 	
 
-
+#ifdef TIGER
+//	strncpy(buf, str, sizeof (buf));
+#else	
+//	strlcpy(buf, str, sizeof (buf));
+#endif
+	
 	
 	strlcpy(widget->name, "pin: ", 6);
 	strlcat(widget->name, devstr, sizeof (widget->name));

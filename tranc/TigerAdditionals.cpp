@@ -35,4 +35,16 @@ vprintf_vhda(const char *fmt, va_list ap)
 	return 0;
 }
 
+int snprintf_vhda(char *text, size_t maxlen, const char *fmt, ...)
+{
+    va_list ap;
+    int retval;
+	
+    va_start(ap, fmt);
+    retval = vsnprintf(text, maxlen, fmt, ap);
+    va_end(ap);
+	
+    return retval;
+}
+
 #endif
