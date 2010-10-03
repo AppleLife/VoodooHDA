@@ -9,11 +9,6 @@
 /* Begin PBXBuildFile section */
 		120156031244377E00611BC7 /* AppleAudioClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12BDC91012440B5D00B327AE /* AppleAudioClip.cpp */; };
 		12AD194112482F6500761B3F /* PCMBlitterLibX86.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C0A70EF74C2700A14C68 /* PCMBlitterLibX86.cpp */; };
-		12B21F1C12464EEC002948CA /* emmintrin.h in Headers */ = {isa = PBXBuildFile; fileRef = 12B21F1612464EEC002948CA /* emmintrin.h */; };
-		12B21F1D12464EEC002948CA /* float.h in Headers */ = {isa = PBXBuildFile; fileRef = 12B21F1712464EEC002948CA /* float.h */; };
-		12B21F1E12464EEC002948CA /* mm_malloc.h in Headers */ = {isa = PBXBuildFile; fileRef = 12B21F1812464EEC002948CA /* mm_malloc.h */; };
-		12B21F1F12464EEC002948CA /* mm3dnow.h in Headers */ = {isa = PBXBuildFile; fileRef = 12B21F1912464EEC002948CA /* mm3dnow.h */; };
-		12B21F2012464EEC002948CA /* mmintrin.h in Headers */ = {isa = PBXBuildFile; fileRef = 12B21F1A12464EEC002948CA /* mmintrin.h */; };
 		12B21F2112464EEC002948CA /* xmmintrin.h in Headers */ = {isa = PBXBuildFile; fileRef = 12B21F1B12464EEC002948CA /* xmmintrin.h */; };
 		12BDC90E12440B4E00B327AE /* TigerAdditionals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12BDC90C12440B4E00B327AE /* TigerAdditionals.cpp */; };
 		12BDC90F12440B4E00B327AE /* TigerAdditionals.h in Headers */ = {isa = PBXBuildFile; fileRef = 12BDC90D12440B4E00B327AE /* TigerAdditionals.h */; };
@@ -30,7 +25,6 @@
 		CE6725A50EF078B100FAFBED /* VoodooHDADevice.h in Headers */ = {isa = PBXBuildFile; fileRef = CE6725A10EF078B100FAFBED /* VoodooHDADevice.h */; };
 		CE6725A60EF078B100FAFBED /* VoodooHDAEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6725A20EF078B100FAFBED /* VoodooHDAEngine.cpp */; };
 		CE6725A70EF078B100FAFBED /* VoodooHDAEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = CE6725A30EF078B100FAFBED /* VoodooHDAEngine.h */; };
-		CE6725A90EF078BB00FAFBED /* License.h in Headers */ = {isa = PBXBuildFile; fileRef = CE6725A80EF078BB00FAFBED /* License.h */; };
 		CE6725D70EF0880E00FAFBED /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = CE6725D60EF0880E00FAFBED /* Common.h */; };
 		CE709B500EFF2AA400EE77FF /* VoodooHDAUserClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE709B4E0EFF2AA400EE77FF /* VoodooHDAUserClient.cpp */; };
 		CE709B510EFF2AA400EE77FF /* VoodooHDAUserClient.h in Headers */ = {isa = PBXBuildFile; fileRef = CE709B4F0EFF2AA400EE77FF /* VoodooHDAUserClient.h */; };
@@ -169,7 +163,6 @@
 			files = (
 				CE6725A50EF078B100FAFBED /* VoodooHDADevice.h in Headers */,
 				CE6725A70EF078B100FAFBED /* VoodooHDAEngine.h in Headers */,
-				CE6725A90EF078BB00FAFBED /* License.h in Headers */,
 				CE6725D70EF0880E00FAFBED /* Common.h in Headers */,
 				CE4522120EF210FD00600B68 /* Models.h in Headers */,
 				CE4522130EF210FD00600B68 /* Private.h in Headers */,
@@ -180,11 +173,6 @@
 				CE709B530EFF2AAF00EE77FF /* Shared.h in Headers */,
 				CE4F4C390F04274500AF2B7B /* OssCompat.h in Headers */,
 				12BDC90F12440B4E00B327AE /* TigerAdditionals.h in Headers */,
-				12B21F1C12464EEC002948CA /* emmintrin.h in Headers */,
-				12B21F1D12464EEC002948CA /* float.h in Headers */,
-				12B21F1E12464EEC002948CA /* mm_malloc.h in Headers */,
-				12B21F1F12464EEC002948CA /* mm3dnow.h in Headers */,
-				12B21F2012464EEC002948CA /* mmintrin.h in Headers */,
 				12B21F2112464EEC002948CA /* xmmintrin.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -296,7 +284,7 @@
 					i386,
 					x86_64,
 				);
-				DEAD_CODE_STRIPPING = YES;
+				DEAD_CODE_STRIPPING = NO;
 				ENABLE_OPENMP_SUPPORT = YES;
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -327,7 +315,8 @@
 					x86_64,
 				);
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = "${MODULE_VERSION}";
+				CURRENT_PROJECT_VERSION = 2.7;
+				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_MODEL_TUNING = "";
@@ -341,8 +330,9 @@
 					"\"$(SRCROOT)/build/Release\"",
 				);
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 2.7.0;
+				MODULE_VERSION = 2.7.2;
 				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = YES;
 				PRODUCT_NAME = VoodooHDA;
 				VALID_ARCHS = "i386 x86_64";
 				WARNING_CFLAGS = (
@@ -360,7 +350,7 @@
 					x86_64,
 					i386,
 				);
-				DEAD_CODE_STRIPPING = YES;
+				DEAD_CODE_STRIPPING = NO;
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_FAST_MATH = YES;
@@ -387,7 +377,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = "";
+				CURRENT_PROJECT_VERSION = 2.7;
 				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -403,8 +393,9 @@
 					"\"$(SRCROOT)/build/Release\"",
 				);
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 2.7.1;
+				MODULE_VERSION = 2.7.2;
 				ONLY_ACTIVE_ARCH = NO;
+				PREBINDING = YES;
 				PRODUCT_NAME = VoodooHDA;
 				VALID_ARCHS = "i386 x86_64";
 				WARNING_CFLAGS = (
@@ -422,7 +413,7 @@
 					i386,
 					x86_64,
 				);
-				DEAD_CODE_STRIPPING = YES;
+				DEAD_CODE_STRIPPING = NO;
 				ENABLE_OPENMP_SUPPORT = YES;
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -448,12 +439,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = (
-					i386,
-					x86_64,
-				);
+				ARCHS = i386;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = "${MODULE_VERSION}";
+				CURRENT_PROJECT_VERSION = 2.7;
+				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_MODEL_TUNING = "";
@@ -467,8 +456,9 @@
 					"\"$(SRCROOT)/build/Release\"",
 				);
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 2.7.1;
+				MODULE_VERSION = 2.7.2;
 				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = YES;
 				PRODUCT_NAME = VoodooHDA;
 				VALID_ARCHS = "i386 x86_64";
 				WARNING_CFLAGS = (
@@ -483,7 +473,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				DEAD_CODE_STRIPPING = YES;
+				DEAD_CODE_STRIPPING = NO;
 				ENABLE_OPENMP_SUPPORT = YES;
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -512,12 +502,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = (
-					i386,
-					x86_64,
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = "${MODULE_VERSION}";
+				CURRENT_PROJECT_VERSION = 2.7;
+				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_MODEL_TUNING = "";
@@ -531,10 +519,12 @@
 					"\"$(SRCROOT)/build/Release\"",
 				);
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 2.7.1;
+				MODULE_VERSION = 2.7.2;
 				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = YES;
 				PRODUCT_NAME = VoodooHDA;
-				VALID_ARCHS = "i386 x86_64";
+				SDKROOT = macosx10.4;
+				VALID_ARCHS = "ppc i386";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -548,7 +538,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = "${MODULE_VERSION}";
+				CURRENT_PROJECT_VERSION = 2.7;
+				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -563,7 +554,8 @@
 					"\"$(SRCROOT)/build/Release\"",
 				);
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 0.2.6;
+				MODULE_VERSION = 2.7.2;
+				PREBINDING = YES;
 				PRODUCT_NAME = VoodooHDA;
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -578,7 +570,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = "";
+				CURRENT_PROJECT_VERSION = 2.7;
 				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -594,8 +586,9 @@
 					"\"$(SRCROOT)/build/Release\"",
 				);
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 2.7.1;
+				MODULE_VERSION = 2.7.2;
 				ONLY_ACTIVE_ARCH = NO;
+				PREBINDING = YES;
 				PRODUCT_NAME = VoodooHDA;
 				VALID_ARCHS = "i386 x86_64";
 				WARNING_CFLAGS = (
@@ -611,7 +604,7 @@
 			buildSettings = {
 				ARCHS = i386;
 				COPY_PHASE_STRIP = YES;
-				DEAD_CODE_STRIPPING = YES;
+				DEAD_CODE_STRIPPING = NO;
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_FAST_MATH = YES;
@@ -639,7 +632,7 @@
 					x86_64,
 					i386,
 				);
-				DEAD_CODE_STRIPPING = YES;
+				DEAD_CODE_STRIPPING = NO;
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_FAST_MATH = YES;
