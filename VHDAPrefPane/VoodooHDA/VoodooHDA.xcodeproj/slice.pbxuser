@@ -1,8 +1,7 @@
 // !$*UTF8*$!
 {
 	089C1669FE841209C02AAC07 /* Project object */ = {
-		activeBuildConfigurationName = "Release Leo";
-		activeSDKPreference = macosx10.6;
+		activeBuildConfigurationName = "Release Tiger";
 		activeTarget = 8D202CE80486D31800D8A456 /* VoodooHDA */;
 		addToTargets = (
 			8D202CE80486D31800D8A456 /* VoodooHDA */,
@@ -40,7 +39,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					675,
+					243,
 					20,
 					48,
 					43,
@@ -63,9 +62,9 @@
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
 					20,
-					651,
+					219,
 					20,
-					48.16259765625,
+					48,
 					43,
 					43,
 					20,
@@ -81,18 +80,8 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 307025039;
-			PBXWorkspaceStateSaveDate = 307025039;
-		};
-		perUserProjectItems = {
-			12A7EE42124CCAE400DF601E = 12A7EE42124CCAE400DF601E /* PBXTextBookmark */;
-			12A7EE67124CD1F100DF601E = 12A7EE67124CD1F100DF601E /* PBXTextBookmark */;
-			12A7EE6E124CD34B00DF601E = 12A7EE6E124CD34B00DF601E /* PBXTextBookmark */;
-			12A7EE78124CD4F900DF601E /* PBXTextBookmark */ = 12A7EE78124CD4F900DF601E /* PBXTextBookmark */;
-			12A7EE79124CD4F900DF601E /* PBXTextBookmark */ = 12A7EE79124CD4F900DF601E /* PBXTextBookmark */;
-			12A7EE7F124CD52900DF601E /* PBXTextBookmark */ = 12A7EE7F124CD52900DF601E /* PBXTextBookmark */;
-			12E1D915121C23A2002EB548 = 12E1D915121C23A2002EB548 /* PBXTextBookmark */;
-			12FF815F124BE3B900FA46EB = 12FF815F124BE3B900FA46EB /* PBXBookmark */;
+			PBXPerProjectTemplateStateSaveDate = 307804587;
+			PBXWorkspaceStateSaveDate = 307804587;
 		};
 		sourceControlManager = 12E1D8FD121C1F22002EB548 /* Source Control */;
 		userBuildSettings = {
@@ -105,94 +94,20 @@
 			sepNavVisRange = "{0, 107}";
 		};
 	};
-	12A7EE42124CCAE400DF601E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = F506C03C013D9D7901CA16C8 /* VoodooHDAPref.h */;
-		name = "VoodooHDAPref.h: 94";
-		rLen = 13;
-		rLoc = 2226;
-		rType = 0;
-		vrLen = 843;
-		vrLoc = 1948;
-	};
-	12A7EE67124CD1F100DF601E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = F506C03D013D9D7901CA16C8 /* VoodooHDAPref.m */;
-		rLen = 13;
-		rLoc = 10200;
-		rType = 0;
-	};
-	12A7EE6E124CD34B00DF601E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = F506C03D013D9D7901CA16C8 /* VoodooHDAPref.m */;
-		name = "VoodooHDAPref.m: 345";
-		rLen = 13;
-		rLoc = 10200;
-		rType = 0;
-		vrLen = 495;
-		vrLoc = 9734;
-	};
-	12A7EE78124CD4F900DF601E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = F506C03D013D9D7901CA16C8 /* VoodooHDAPref.m */;
-		rLen = 7;
-		rLoc = 9130;
-		rType = 0;
-	};
-	12A7EE79124CD4F900DF601E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = F506C03D013D9D7901CA16C8 /* VoodooHDAPref.m */;
-		name = "VoodooHDAPref.m: 303";
-		rLen = 0;
-		rLoc = 9221;
-		rType = 0;
-		vrLen = 1110;
-		vrLoc = 8670;
-	};
-	12A7EE7F124CD52900DF601E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = F506C03D013D9D7901CA16C8 /* VoodooHDAPref.m */;
-		name = "VoodooHDAPref.m: 302";
-		rLen = 7;
-		rLoc = 9130;
-		rType = 0;
-		vrLen = 1235;
-		vrLoc = 8503;
-	};
 	12E1D8FD121C1F22002EB548 /* Source Control */ = {
 		isa = PBXSourceControlManager;
 		fallbackIsa = XCSourceControlManager;
-		isSCMEnabled = 0;
+		isSCMEnabled = 1;
 		scmConfiguration = {
 			repositoryNamesForRoots = {
 				"" = voodoohda;
 			};
 		};
+		scmType = scm.subversion;
 	};
 	12E1D8FE121C1F22002EB548 /* Code sense */ = {
 		isa = PBXCodeSenseManager;
 		indexTemplatePath = "";
-	};
-	12E1D915121C23A2002EB548 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 12E1D916121C23A2002EB548 /* IOGraphicsLib.h */;
-		name = "IOGraphicsLib.h: 51";
-		rLen = 18;
-		rLoc = 3552;
-		rType = 0;
-		vrLen = 1175;
-		vrLoc = 2745;
-	};
-	12E1D916121C23A2002EB548 /* IOGraphicsLib.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = IOGraphicsLib.h;
-		path = /System/Library/Frameworks/IOKit.framework/Versions/A/Headers/graphics/IOGraphicsLib.h;
-		sourceTree = "<absolute>";
-	};
-	12FF815F124BE3B900FA46EB /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = F506C040013D9D8001CA16C8 /* VoodooHDAPref.tiff */;
 	};
 	8D202CE80486D31800D8A456 /* VoodooHDA */ = {
 		activeExec = 0;
@@ -206,9 +121,10 @@
 	};
 	F506C03D013D9D7901CA16C8 /* VoodooHDAPref.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {853, 7241}}";
-			sepNavSelRange = "{9130, 7}";
+			sepNavIntBoundsRect = "{{0, 0}, {734, 8414}}";
+			sepNavSelRange = "{9906, 0}";
 			sepNavVisRange = "{8503, 1235}";
+			sepNavVisRect = "{{0, 4577}, {734, 195}}";
 		};
 	};
 }

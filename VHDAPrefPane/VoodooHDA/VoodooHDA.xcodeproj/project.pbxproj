@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 42;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		12B365B01247EC1600B2A6D2 /* Slice.tif in Resources */ = {isa = PBXBuildFile; fileRef = 12B365AF1247EC1600B2A6D2 /* Slice.tif */; };
 		8D202CEA0486D31800D8A456 /* VoodooHDA_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCFA20370C41700C91783 /* VoodooHDA_Prefix.pch */; };
 		8D202CEB0486D31800D8A456 /* VoodooHDAPref.h in Headers */ = {isa = PBXBuildFile; fileRef = F506C03C013D9D7901CA16C8 /* VoodooHDAPref.h */; };
 		8D202CED0486D31800D8A456 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
@@ -24,7 +23,6 @@
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		12B365AF1247EC1600B2A6D2 /* Slice.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Slice.tif; sourceTree = "<group>"; };
 		32DBCFA20370C41700C91783 /* VoodooHDA_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoodooHDA_Prefix.pch; sourceTree = "<group>"; };
 		8D202CF70486D31800D8A456 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D202CF80486D31800D8A456 /* VoodooHDA.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoodooHDA.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -33,7 +31,7 @@
 		F506C03C013D9D7901CA16C8 /* VoodooHDAPref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoodooHDAPref.h; sourceTree = "<group>"; };
 		F506C03D013D9D7901CA16C8 /* VoodooHDAPref.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoodooHDAPref.m; sourceTree = "<group>"; };
 		F506C040013D9D8001CA16C8 /* VoodooHDAPref.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = VoodooHDAPref.tiff; sourceTree = "<group>"; };
-		F506C043013D9D8C01CA16C8 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/VoodooHDAPref.xib; sourceTree = "<group>"; };
+		F506C043013D9D8C01CA16C8 /* English */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.xib; name = English; path = English.lproj/VoodooHDAPref.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,7 +72,6 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				12B365AF1247EC1600B2A6D2 /* Slice.tif */,
 				8D202CF70486D31800D8A456 /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 				F506C040013D9D8001CA16C8 /* VoodooHDAPref.tiff */,
@@ -190,7 +187,6 @@
 				8D202CED0486D31800D8A456 /* InfoPlist.strings in Resources */,
 				8D202CEE0486D31800D8A456 /* VoodooHDAPref.tiff in Resources */,
 				8D202CEF0486D31800D8A456 /* VoodooHDAPref.xib in Resources */,
-				12B365B01247EC1600B2A6D2 /* Slice.tif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,7 +233,21 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		12A7EE84124CD5DC00DF601E /* Release Leo */ = {
+		12692ED412573E850000B6BE /* Release Tiger */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = VoodooHDA_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
+				PRODUCT_NAME = VoodooHDA;
+				WRAPPER_EXTENSION = prefPane;
+			};
+			name = "Release Tiger";
+		};
+		12692ED512573E850000B6BE /* Release Tiger */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = i386;
@@ -251,8 +261,29 @@
 				MODULE_VERSION = 1.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				VALID_ARCHS = "i386 x86_64";
+			};
+			name = "Release Tiger";
+		};
+		12A7EE84124CD5DC00DF601E /* Release Leo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				GCC_AUTO_VECTORIZATION = YES;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_ONE_BYTE_BOOL = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MODULE_VERSION = 1.1;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DTIGER";
+				PREBINDING = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				VALID_ARCHS = i386;
 			};
 			name = "Release Leo";
 		};
@@ -318,7 +349,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Debug;
@@ -340,7 +371,7 @@
 				MODULE_VERSION = 1.1;
 				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Release;
@@ -354,6 +385,7 @@
 				1DBD214908BA80EA00186707 /* Debug */,
 				1DBD214A08BA80EA00186707 /* Release */,
 				12A7EE85124CD5DC00DF601E /* Release Leo */,
+				12692ED412573E850000B6BE /* Release Tiger */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -364,6 +396,7 @@
 				1DBD214D08BA80EA00186707 /* Debug */,
 				1DBD214E08BA80EA00186707 /* Release */,
 				12A7EE84124CD5DC00DF601E /* Release Leo */,
+				12692ED512573E850000B6BE /* Release Tiger */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

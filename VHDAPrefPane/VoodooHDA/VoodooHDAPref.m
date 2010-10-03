@@ -303,6 +303,15 @@ failure:
 //								 in.info.device, in.info.val, self->chInfo[ch].mixerValues[24].value]];
 	size_t outsize = sizeof(UInt32);
 	//*outsize = sizeof(UInt32);
+#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
+    ret = IOConnectMethodStructureIStructureO( connect,
+											   kVoodooHDAActionMethod,
+											   sizeof(in),			/* structureInputSize */
+											   &outsize,    /* structureOutputSize */
+											   &in,        /* inputStructure */
+											   &out);       /* ouputStructure */
+#else    	
+											   
 	ret = IOConnectCallStructMethod(connect,
 									kVoodooHDAActionMethod,
 									&in,
@@ -310,6 +319,7 @@ failure:
 									&out,
 									&outsize
 									);
+#endif											   
 	if (ret != KERN_SUCCESS) {
 		NSRunCriticalAlertPanel( 
 								NSLocalizedString( @"Error", "MsgBox"), 
@@ -404,6 +414,14 @@ bool sendAction(UInt8 ch, UInt8 dev, UInt8 val) {  //value of slider to driver
 	
 	size_t outsize = sizeof(UInt32);
 	//*outsize = sizeof(UInt32);
+#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
+    ret = IOConnectMethodStructureIStructureO( connect, kVoodooHDAActionMethod,
+											  sizeof(in),			/* structureInputSize */
+											  &outsize,    /* structureOutputSize */
+											  &in,        /* inputStructure */
+											  &out);       /* ouputStructure */
+#else    	
+
 	ret = IOConnectCallStructMethod(connect,
 									kVoodooHDAActionMethod,
 									&in,
@@ -411,6 +429,7 @@ bool sendAction(UInt8 ch, UInt8 dev, UInt8 val) {  //value of slider to driver
 									&out,
 									&outsize
 									);
+#endif									
 	if (ret != KERN_SUCCESS) {
 		NSRunCriticalAlertPanel( 
 								NSLocalizedString( @"Error", "MsgBox"), 
