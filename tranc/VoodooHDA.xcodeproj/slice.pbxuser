@@ -1,8 +1,7 @@
 // !$*UTF8*$!
 {
 	089C1669FE841209C02AAC07 /* Project object */ = {
-		activeArchitecturePreference = i386;
-		activeBuildConfigurationName = "Release Multichannel";
+		activeBuildConfigurationName = "Release_Tiger Multi";
 		activeTarget = 32D94FC30562CBF700B6AF17 /* VoodooHDA */;
 		addToTargets = (
 			32D94FC30562CBF700B6AF17 /* VoodooHDA */,
@@ -14,7 +13,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					727,
+					243,
 					20,
 					48,
 					43,
@@ -77,34 +76,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 307053990;
-			PBXWorkspaceStateSaveDate = 307053990;
-		};
-		perUserProjectItems = {
-			12A7EF14124D13AD00DF601E = 12A7EF14124D13AD00DF601E /* PBXTextBookmark */;
-			12A7EF15124D13AD00DF601E = 12A7EF15124D13AD00DF601E /* PBXTextBookmark */;
-			12A7EF16124D13AD00DF601E = 12A7EF16124D13AD00DF601E /* PBXTextBookmark */;
-			12A7EF18124D13AD00DF601E = 12A7EF18124D13AD00DF601E /* PBXTextBookmark */;
-			12A7EF30124D14E300DF601E = 12A7EF30124D14E300DF601E /* PBXTextBookmark */;
-			12AF6B7312482D38003895C2 = 12AF6B7312482D38003895C2 /* PBXTextBookmark */;
-			12AF6B7912482D38003895C2 = 12AF6B7912482D38003895C2 /* PBXTextBookmark */;
-			12B08B40124969780007D439 = 12B08B40124969780007D439 /* PBXTextBookmark */;
-			12B21F0812464E84002948CA = 12B21F0812464E84002948CA /* PBXTextBookmark */;
-			12B21F0912464E84002948CA = 12B21F0912464E84002948CA /* PBXTextBookmark */;
-			12B21F3C12466E2B002948CA = 12B21F3C12466E2B002948CA /* PBXTextBookmark */;
-			12B21F6B12466FDF002948CA = 12B21F6B12466FDF002948CA /* PBXTextBookmark */;
-			12B35AB1124D42A900C0B57F = 12B35AB1124D42A900C0B57F /* PBXTextBookmark */;
-			12B35AB2124D42A900C0B57F = 12B35AB2124D42A900C0B57F /* PBXTextBookmark */;
-			12B35AB3124D42A900C0B57F = 12B35AB3124D42A900C0B57F /* PBXTextBookmark */;
-			12B35AB4124D42A900C0B57F = 12B35AB4124D42A900C0B57F /* PBXTextBookmark */;
-			12CB5F58124D48BE007D5C3F /* XCBuildMessageTextBookmark */ = 12CB5F58124D48BE007D5C3F /* XCBuildMessageTextBookmark */;
-			12CB5F59124D48BE007D5C3F /* PBXTextBookmark */ = 12CB5F59124D48BE007D5C3F /* PBXTextBookmark */;
-			12CB5F5E124D48D9007D5C3F /* PBXTextBookmark */ = 12CB5F5E124D48D9007D5C3F /* PBXTextBookmark */;
-			12CB5F5F124D48D9007D5C3F /* PBXTextBookmark */ = 12CB5F5F124D48D9007D5C3F /* PBXTextBookmark */;
-			12CB5F61124D48D9007D5C3F /* PBXTextBookmark */ = 12CB5F61124D48D9007D5C3F /* PBXTextBookmark */;
-			12CFF4FC124C197E00ABC972 = 12CFF4FC124C197E00ABC972 /* PlistBookmark */;
-			12CFF4FD124C197E00ABC972 = 12CFF4FD124C197E00ABC972 /* PBXTextBookmark */;
-			12CFF4FE124C197E00ABC972 = 12CFF4FE124C197E00ABC972 /* PlistBookmark */;
+			PBXPerProjectTemplateStateSaveDate = 307907030;
+			PBXWorkspaceStateSaveDate = 307907030;
 		};
 		sourceControlManager = 12F6C0C81243DB5B00B39552 /* Source Control */;
 		userBuildSettings = {
@@ -117,121 +90,6 @@
 			sepNavVisRange = "{0, 45}";
 		};
 	};
-	12A7EF14124D13AD00DF601E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 12BDC91012440B5D00B327AE /* AppleAudioClip.cpp */;
-		name = "AppleAudioClip.cpp: 307";
-		rLen = 1;
-		rLoc = 12442;
-		rType = 0;
-		vrLen = 1257;
-		vrLoc = 12265;
-	};
-	12A7EF15124D13AD00DF601E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE709B520EFF2AAF00EE77FF /* Shared.h */;
-		name = "Shared.h: 73";
-		rLen = 76;
-		rLoc = 1580;
-		rType = 0;
-		vrLen = 725;
-		vrLoc = 990;
-	};
-	12A7EF16124D13AD00DF601E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE45220F0EF210FD00600B68 /* Private.h */;
-		name = "Private.h: 291";
-		rLen = 0;
-		rLoc = 7808;
-		rType = 0;
-		vrLen = 779;
-		vrLoc = 7390;
-	};
-	12A7EF18124D13AD00DF601E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE6725A30EF078B100FAFBED /* VoodooHDAEngine.h */;
-		name = "VoodooHDAEngine.h: 34";
-		rLen = 7;
-		rLoc = 559;
-		rType = 0;
-		vrLen = 749;
-		vrLoc = 242;
-	};
-	12A7EF30124D14E300DF601E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE6725A10EF078B100FAFBED /* VoodooHDADevice.h */;
-		name = "VoodooHDADevice.h: 370";
-		rLen = 0;
-		rLoc = 11850;
-		rType = 0;
-		vrLen = 1426;
-		vrLoc = 10944;
-	};
-	12AF6B7312482D38003895C2 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE4F4C380F04274500AF2B7B /* OssCompat.h */;
-		name = "OssCompat.h: 26";
-		rLen = 0;
-		rLoc = 1246;
-		rType = 0;
-		vrLen = 1879;
-		vrLoc = 92;
-	};
-	12AF6B7912482D38003895C2 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 12BDC91112440B5D00B327AE /* AppleAudioClip.h */;
-		name = "AppleAudioClip.h: 58";
-		rLen = 0;
-		rLoc = 1742;
-		rType = 0;
-		vrLen = 1161;
-		vrLoc = 1337;
-	};
-	12B08B40124969780007D439 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE6725AA0EF078CB00FAFBED /* AudioClip.cpp */;
-		name = "AudioClip.cpp: 4";
-		rLen = 0;
-		rLoc = 82;
-		rType = 0;
-		vrLen = 1264;
-		vrLoc = 0;
-	};
-	12B21EFC12464E06002948CA /* xmmintrin.h */ = {
-		isa = PBXFileReference;
-		fileEncoding = 4;
-		lastKnownFileType = sourcecode.c.h;
-		name = xmmintrin.h;
-		path = "/Volumes/LeoHD/Projects/VoodooHDA/voodoohda-270/xmmintrin.h";
-		sourceTree = "<absolute>";
-	};
-	12B21F0812464E84002948CA /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 12B21EFC12464E06002948CA /* xmmintrin.h */;
-		name = "xmmintrin.h: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 1420;
-		vrLoc = 0;
-	};
-	12B21F0912464E84002948CA /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 12B21F0A12464E84002948CA /* float.h */;
-		name = "float.h: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 1277;
-		vrLoc = 0;
-	};
-	12B21F0A12464E84002948CA /* float.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = float.h;
-		path = /Volumes/LeoHD/Projects/VoodooHDA/V271/voodoohda/tranc/float.h;
-		sourceTree = "<absolute>";
-	};
 	12B21F1612464EEC002948CA /* emmintrin.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {733, 25909}}";
@@ -239,72 +97,12 @@
 			sepNavVisRange = "{28165, 1180}";
 		};
 	};
-	12B21F2C12464F1C002948CA /* project.pbxproj */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = text.pbxproject;
-		name = project.pbxproj;
-		path = /Volumes/LeoHD/Projects/VoodooHDA/V271/voodoohda/tranc/VoodooHDA.xcodeproj/project.pbxproj;
-		sourceTree = "<absolute>";
-	};
-	12B21F3C12466E2B002948CA /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 12B21F2C12464F1C002948CA /* project.pbxproj */;
-		name = "project.pbxproj: 679";
-		rLen = 0;
-		rLoc = 30626;
-		rType = 0;
-		vrLen = 1816;
-		vrLoc = 0;
-	};
-	12B21F6B12466FDF002948CA /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CEF7C0A70EF74C2700A14C68 /* PCMBlitterLibX86.cpp */;
-		name = "PCMBlitterLibX86.cpp: 6";
-		rLen = 0;
-		rLoc = 116;
-		rType = 0;
-		vrLen = 947;
-		vrLoc = 0;
-	};
-	12B35AB1124D42A900C0B57F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE6725A00EF078B100FAFBED /* VoodooHDADevice.cpp */;
-		name = "VoodooHDADevice.cpp: 2357";
-		rLen = 16;
-		rLoc = 65653;
-		rType = 0;
-		vrLen = 1005;
-		vrLoc = 65061;
-	};
-	12B35AB2124D42A900C0B57F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE6725A20EF078B100FAFBED /* VoodooHDAEngine.cpp */;
-		name = "VoodooHDAEngine.cpp: 594";
-		rLen = 0;
-		rLoc = 16554;
-		rType = 0;
-		vrLen = 1353;
-		vrLoc = 15993;
-	};
-	12B35AB3124D42A900C0B57F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE5D398A0EF4784000140715 /* Parser.cpp */;
-		name = "Parser.cpp: 3796";
-		rLen = 10;
-		rLoc = 123202;
-		rType = 0;
-		vrLen = 1578;
-		vrLoc = 122810;
-	};
-	12B35AB4124D42A900C0B57F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE5D398A0EF4784000140715 /* Parser.cpp */;
-		name = "Parser.cpp: 3660";
-		rLen = 12;
-		rLoc = 118591;
-		rType = 0;
-		vrLen = 1096;
-		vrLoc = 118409;
+	12B21F1B12464EEC002948CA /* xmmintrin.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {453, 22498}}";
+			sepNavSelRange = "{1683, 23}";
+			sepNavVisRect = "{{0, 897}, {453, 201}}";
+		};
 	};
 	12BDC91012440B5D00B327AE /* AppleAudioClip.cpp */ = {
 		uiCtxt = {
@@ -322,110 +120,16 @@
 			sepNavVisRange = "{468, 960}";
 		};
 	};
-	12CB5F58124D48BE007D5C3F /* XCBuildMessageTextBookmark */ = {
-		isa = PBXTextBookmark;
-		comments = "Format '%08x' expects type 'unsigned int', but argument 4 has type 'UInt32'";
-		fRef = CE5D398A0EF4784000140715 /* Parser.cpp */;
-		fallbackIsa = XCBuildMessageTextBookmark;
-		rLen = 1;
-		rLoc = 3746;
-		rType = 1;
-	};
-	12CB5F59124D48BE007D5C3F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE5D398A0EF4784000140715 /* Parser.cpp */;
-		name = "Parser.cpp: 3747";
-		rLen = 0;
-		rLoc = 121307;
-		rType = 0;
-		vrLen = 1258;
-		vrLoc = 120641;
-	};
-	12CB5F5E124D48D9007D5C3F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE5D398A0EF4784000140715 /* Parser.cpp */;
-		name = "Parser.cpp: 3746";
-		rLen = 0;
-		rLoc = 121226;
-		rType = 0;
-		vrLen = 1215;
-		vrLoc = 120628;
-	};
-	12CB5F5F124D48D9007D5C3F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 12CB5F60124D48D9007D5C3F /* slice.pbxuser */;
-		name = "slice.pbxuser: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 1297;
-		vrLoc = 0;
-	};
-	12CB5F60124D48D9007D5C3F /* slice.pbxuser */ = {
-		isa = PBXFileReference;
-		name = slice.pbxuser;
-		path = /Volumes/LeoHD/Projects/VoodooHDA/V271/voodoohda/tranc/VoodooHDA.xcodeproj/slice.pbxuser;
-		sourceTree = "<absolute>";
-	};
-	12CB5F61124D48D9007D5C3F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 12CB5F62124D48D9007D5C3F /* slice.pbxuser */;
-		name = "slice.pbxuser: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 1297;
-		vrLoc = 0;
-	};
-	12CB5F62124D48D9007D5C3F /* slice.pbxuser */ = {
-		isa = PBXFileReference;
-		name = slice.pbxuser;
-		path = /Volumes/LeoHD/Projects/VoodooHDA/V271/voodoohda/tranc/VoodooHDA.xcodeproj/slice.pbxuser;
-		sourceTree = "<absolute>";
-	};
-	12CFF4FC124C197E00ABC972 /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = A54ED8370FEE91E700CA5717 /* version.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-			CFBundleShortVersionString,
-		);
-		name = /Volumes/LeoHD/Projects/VoodooHDA/V271/voodoohda/tranc/version.plist;
-		rLen = 0;
-		rLoc = 9223372036854775808;
-	};
-	12CFF4FD124C197E00ABC972 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 089C167EFE841241C02AAC07 /* English */;
-		name = "InfoPlist.strings: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 45;
-		vrLoc = 0;
-	};
-	12CFF4FE124C197E00ABC972 /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = 32D94FCF0562CBF700B6AF17 /* Info.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-			CFBundleVersion,
-		);
-		name = /Volumes/LeoHD/Projects/VoodooHDA/V271/voodoohda/tranc/Info.plist;
-		rLen = 0;
-		rLoc = 9223372036854775808;
-	};
 	12F6C0C81243DB5B00B39552 /* Source Control */ = {
 		isa = PBXSourceControlManager;
 		fallbackIsa = XCSourceControlManager;
-		isSCMEnabled = 0;
+		isSCMEnabled = 1;
 		scmConfiguration = {
 			repositoryNamesForRoots = {
 				"" = voodoohda;
 			};
 		};
+		scmType = scm.subversion;
 	};
 	12F6C0C91243DB5B00B39552 /* Code sense */ = {
 		isa = PBXCodeSenseManager;
@@ -436,9 +140,11 @@
 	};
 	CE45220E0EF210FD00600B68 /* Models.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {708, 5980}}";
-			sepNavSelRange = "{0, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {633, 6524}}";
+			sepNavSelRange = "{578, 14}";
 			sepNavVisRange = "{0, 977}";
+			sepNavVisRect = "{{0, 13}, {633, 575}}";
+			sepNavWindowFrame = "{{15, 52}, {678, 689}}";
 		};
 	};
 	CE45220F0EF210FD00600B68 /* Private.h */ = {
@@ -464,9 +170,11 @@
 	};
 	CE4F4C380F04274500AF2B7B /* OssCompat.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {733, 1703}}";
+			sepNavIntBoundsRect = "{{0, 0}, {633, 1848}}";
 			sepNavSelRange = "{4854, 10}";
 			sepNavVisRange = "{3544, 1586}";
+			sepNavVisRect = "{{0, 0}, {633, 575}}";
+			sepNavWindowFrame = "{{15, 52}, {678, 689}}";
 		};
 	};
 	CE5D398A0EF4784000140715 /* Parser.cpp */ = {
@@ -478,9 +186,10 @@
 	};
 	CE6725A00EF078B100FAFBED /* VoodooHDADevice.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {905, 38974}}";
-			sepNavSelRange = "{65653, 16}";
+			sepNavIntBoundsRect = "{{0, 0}, {734, 41636}}";
+			sepNavSelRange = "{11348, 0}";
 			sepNavVisRange = "{65061, 1005}";
+			sepNavVisRect = "{{0, 5144}, {734, 195}}";
 		};
 	};
 	CE6725A10EF078B100FAFBED /* VoodooHDADevice.h */ = {
@@ -510,6 +219,14 @@
 			sepNavSelRange = "{2405, 23}";
 			sepNavVisRange = "{1792, 1349}";
 			sepNavWindowFrame = "{{15, 271}, {704, 602}}";
+		};
+	};
+	CE6725D60EF0880E00FAFBED /* Common.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {633, 575}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRect = "{{0, 0}, {633, 575}}";
+			sepNavWindowFrame = "{{15, 52}, {678, 689}}";
 		};
 	};
 	CE709B4E0EFF2AA400EE77FF /* VoodooHDAUserClient.cpp */ = {

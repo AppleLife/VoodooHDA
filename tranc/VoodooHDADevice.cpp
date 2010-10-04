@@ -349,14 +349,14 @@ IOService *VoodooHDADevice::probe(IOService *provider, SInt32 *score)
 		
 		return NULL;
 	}
-
+/*
 	classCode = mPciNub->configRead32(kIOPCIConfigClassCode & 0xfc) >> 8;
 	subClass = (classCode >> 8) & 0xff;
 	devClass = (classCode >> 16) & 0xff;
 	if ((devClass != PCI_CLASS_MULTI) || (subClass != PCI_SUBCLASS_MULTI_HDA)) {
 		result = NULL;
 		goto done;
-	}
+	}*/ //Slice - do not check class code twice, it is performed by IOKit
 
 	vendorId = mPciNub->configRead16(kIOPCIConfigVendorID);
 	deviceId = mPciNub->configRead16(kIOPCIConfigDeviceID);
@@ -373,7 +373,7 @@ IOService *VoodooHDADevice::probe(IOService *provider, SInt32 *score)
 	if (!mControllerName)
 		mControllerName = "Generic";
 
-	dumpMsg("Controller: %s (vendor ID: %04x, device ID: %04x)\n", mControllerName, vendorId, deviceId);
+	errorMsg("Controller: %s (vendor ID: %04x, device ID: %04x)\n", mControllerName, vendorId, deviceId);
 
 	subVendorId = mPciNub->configRead16(kIOPCIConfigSubSystemVendorID);
 	subDeviceId = mPciNub->configRead16(kIOPCIConfigSubSystemID);
