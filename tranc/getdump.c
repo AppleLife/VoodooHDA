@@ -4,16 +4,21 @@
 #include <stdint.h>
 
 #include <IOKit/IOKitLib.h>
-
+#define SOUND_MIXER_NRDEVICES 25
 #include "Shared.h"
 
 void printMsgBuffer(io_service_t service)
 {
 	kern_return_t ret;
 	io_connect_t connect = 0;
+#if __LP64__
+	mach_vm_address_t address;
+	mach_vm_size_t size;	
+#else	
 	vm_address_t address;
 	vm_size_t size;
-
+#endif	
+	
 	ret = IOServiceOpen(service, mach_task_self(), 0, &connect);
 	if (ret != KERN_SUCCESS) {
 		printf("error: IOServiceOpen returned 0x%08x\n", ret);
