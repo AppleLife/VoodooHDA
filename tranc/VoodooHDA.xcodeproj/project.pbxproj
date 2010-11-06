@@ -45,6 +45,7 @@
 		12BDC91012440B5D00B327AE /* AppleAudioClip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppleAudioClip.cpp; sourceTree = "<group>"; };
 		12BDC91112440B5D00B327AE /* AppleAudioClip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleAudioClip.h; sourceTree = "<group>"; };
 		12BDC91212440B5D00B327AE /* AppleAudioCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleAudioCommon.h; sourceTree = "<group>"; };
+		12C8768D1286201B0039DC15 /* getdump.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = getdump.c; sourceTree = "<group>"; };
 		12F6C09B1243D9A500B39552 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = /System/Library/Frameworks/Kernel.framework; sourceTree = "<absolute>"; };
 		32D94FCF0562CBF700B6AF17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		32D94FD00562CBF700B6AF17 /* VoodooHDA.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoodooHDA.kext; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +117,7 @@
 		247142CAFF3F8F9811CA285C /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				12C8768D1286201B0039DC15 /* getdump.c */,
 				12B21F1612464EEC002948CA /* emmintrin.h */,
 				12B21F1712464EEC002948CA /* float.h */,
 				12B21F1812464EEC002948CA /* mm_malloc.h */,
