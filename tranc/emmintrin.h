@@ -32,7 +32,7 @@
 #define _EMMINTRIN_H_INCLUDED
 
 #ifdef __SSE2__
-#include <xmmintrin.h>
+#include "xmmintrin.h"
 
 /* SSE2 */
 typedef double __v2df __attribute__ ((__vector_size__ (16)));
