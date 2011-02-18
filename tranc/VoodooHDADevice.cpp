@@ -46,10 +46,13 @@ bool VoodooHDADevice::init(OSDictionary *dict)
 	OSNumber *verboseLevelNum;
 	OSBoolean *osBool;
 	extern kmod_info_t kmod_info;
-
+	mVerbose = 0;
+	if (!super::init(dict))
+		return false;
+	
 	dumpMsg("Loading VoodooHDA %s (based on hdac version " HDAC_REVISION ")\n", kmod_info.version);
-
-	ASSERT(dict);
+	
+//	ASSERT(dict);
 	verboseLevelNum = OSDynamicCast(OSNumber, dict->getObject(kVoodooHDAVerboseLevelKey));
 	if (verboseLevelNum)
 		mVerbose = verboseLevelNum->unsigned32BitValue();
@@ -59,9 +62,6 @@ bool VoodooHDADevice::init(OSDictionary *dict)
 	mMessageLock = IOLockAlloc();
 
 	logMsg("VoodooHDADevice[%p]::init\n", this);
-
-	if (!super::init(dict))
-		return false;
 
 	// cue8chalk: read flag for volume change fix
 	// TODO - when VoodooHDA properly supports multiple devices (at least on my system - lol)
@@ -124,7 +124,7 @@ bool VoodooHDADevice::init(OSDictionary *dict)
 	mMsgBufferPos = 0;
 	
 	mSwitchCh = false;
-
+//TODO - allocMem at init??? May be better to move it into start?
 	mMsgBuffer = (char *) allocMem(mMsgBufferSize);
 	if (!mMsgBuffer) {
 		errorMsg("error: couldn't allocate message buffer (%ld bytes)\n", mMsgBufferSize);
@@ -340,6 +340,7 @@ IOService *VoodooHDADevice::probe(IOService *provider, SInt32 *score)
 		errorMsg("error: couldn't cast provider to IOPCIDevice\n");
 		return NULL;
 	}
+	//TODO - retain may panic, exclude?
 	mPciNub->retain();
 	if (!mPciNub->open(this)) {
 		errorMsg("error: couldn't open PCI device\n");
@@ -424,7 +425,7 @@ bool VoodooHDADevice::initHardware(IOService *provider)
 	setDeviceName(string);
 	setDeviceShortName("VoodooHDA ");
 	setManufacturerName("Voodoo ");
-	// todo: setDeviceModelName
+	//TODO: setDeviceModelName
 	setDeviceTransportType(kIOAudioDeviceTransportTypeOther);
 
 //	logMsg("deviceId: %08lx, subDeviceId: %08lx\n", mDeviceId, mSubDeviceId);
