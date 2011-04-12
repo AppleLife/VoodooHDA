@@ -947,3 +947,18 @@ IOReturn VoodooHDAEngine::gainChanged(IOAudioControl *gainControl, SInt32 oldVal
 	
     return kIOReturnSuccess;
 }
+
+OSString *VoodooHDAEngine::getLocalUniqueID()
+{
+	if (!mDevice || !mDevice->mPciNub)
+			return IOAudioEngine::getLocalUniqueID();
+	
+	OSString *ioName = OSDynamicCast(OSString, reinterpret_cast<IORegistryEntry *>(mDevice->mPciNub)->getProperty("IOName"));
+	if (!ioName)
+			return IOAudioEngine::getLocalUniqueID();
+	
+	char str[64] = "";
+	snprintf(str, sizeof(str), "%s:%lx", ioName->getCStringNoCopy(), (long unsigned int)IOAudioEngine::index);
+	return OSString::withCString(str);
+}
+

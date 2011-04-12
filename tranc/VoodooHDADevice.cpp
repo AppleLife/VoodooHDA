@@ -200,8 +200,8 @@ IOService *VoodooHDADevice::probe(IOService *provider, SInt32 *score)
 {
 	IOService *result;
 	UInt16 vendorId, deviceId, subVendorId, subDeviceId;
-	UInt32 classCode;
-	UInt8 devClass, subClass;
+//	UInt32 classCode;
+//	UInt8 devClass, subClass;
 	bool contIsGeneric = false;
 	int n;
 
@@ -382,7 +382,7 @@ IOService *VoodooHDADevice::probe(IOService *provider, SInt32 *score)
 	if (mSubDeviceId == HP_NX6325_SUBVENDORX)
 		mSubDeviceId = HP_NX6325_SUBVENDOR;
 
-done:
+//done:
 	mPciNub->close(this);
 
 	return result;
