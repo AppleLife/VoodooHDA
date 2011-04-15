@@ -1,6 +1,7 @@
 // !$*UTF8*$!
 {
 	089C1669FE841209C02AAC07 /* Project object */ = {
+		activeArchitecturePreference = i386;
 		activeBuildConfigurationName = "Release Multichannel";
 		activeTarget = 32D94FC30562CBF700B6AF17 /* VoodooHDA */;
 		addToTargets = (
@@ -76,12 +77,13 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 324321460;
-			PBXWorkspaceStateSaveDate = 324321460;
+			PBXPerProjectTemplateStateSaveDate = 324368020;
+			PBXWorkspaceStateSaveDate = 324368020;
 		};
 		perUserProjectItems = {
-			12F8AE4B1354C18600FD82C4 /* XCBuildMessageTextBookmark */ = 12F8AE4B1354C18600FD82C4 /* XCBuildMessageTextBookmark */;
-			12F8AE4C1354C18600FD82C4 /* PBXTextBookmark */ = 12F8AE4C1354C18600FD82C4 /* PBXTextBookmark */;
+			1269DC5D1355771000F91B3B /* PBXTextBookmark */ = 1269DC5D1355771000F91B3B /* PBXTextBookmark */;
+			1269DC5E1355771000F91B3B /* XCBuildMessageTextBookmark */ = 1269DC5E1355771000F91B3B /* XCBuildMessageTextBookmark */;
+			1269DC601355771000F91B3B /* PBXTextBookmark */ = 1269DC601355771000F91B3B /* PBXTextBookmark */;
 		};
 		sourceControlManager = 12F6C0C81243DB5B00B39552 /* Source Control */;
 		userBuildSettings = {
@@ -92,6 +94,53 @@
 			sepNavIntBoundsRect = "{{0, 0}, {905, 508}}";
 			sepNavSelRange = "{0, 0}";
 			sepNavVisRange = "{0, 45}";
+		};
+	};
+	1269DC5D1355771000F91B3B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CE6725A00EF078B100FAFBED /* VoodooHDADevice.cpp */;
+		name = "VoodooHDADevice.cpp: 203";
+		rLen = 0;
+		rLoc = 5438;
+		rType = 0;
+		vrLen = 941;
+		vrLoc = 796;
+	};
+	1269DC5E1355771000F91B3B /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Dereferencing type-punned pointer will break strict-aliasing rules";
+		fRef = 1269DC5F1355771000F91B3B /* OSBase.h */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 51;
+		rType = 1;
+	};
+	1269DC5F1355771000F91B3B /* OSBase.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = OSBase.h;
+		path = /System/Library/Frameworks/Kernel.framework/PrivateHeaders/libkern/OSBase.h;
+		sourceTree = "<absolute>";
+	};
+	1269DC601355771000F91B3B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1269DC611355771000F91B3B /* OSBase.h */;
+		name = "OSBase.h: 52";
+		rLen = 0;
+		rLoc = 1620;
+		rType = 0;
+		vrLen = 371;
+		vrLoc = 1284;
+	};
+	1269DC611355771000F91B3B /* OSBase.h */ = {
+		isa = PBXFileReference;
+		name = OSBase.h;
+		path = /System/Library/Frameworks/Kernel.framework/PrivateHeaders/libkern/OSBase.h;
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {848, 1131}}";
+			sepNavSelRange = "{1620, 0}";
+			sepNavVisRange = "{1284, 371}";
 		};
 	};
 	12B21F1612464EEC002948CA /* emmintrin.h */ = {
@@ -138,25 +187,6 @@
 	12F6C0C91243DB5B00B39552 /* Code sense */ = {
 		isa = PBXCodeSenseManager;
 		indexTemplatePath = "";
-	};
-	12F8AE4B1354C18600FD82C4 /* XCBuildMessageTextBookmark */ = {
-		isa = PBXTextBookmark;
-		comments = "Unused variable 'classCode'";
-		fRef = CE6725A00EF078B100FAFBED /* VoodooHDADevice.cpp */;
-		fallbackIsa = XCBuildMessageTextBookmark;
-		rLen = 1;
-		rLoc = 202;
-		rType = 1;
-	};
-	12F8AE4C1354C18600FD82C4 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = CE6725A00EF078B100FAFBED /* VoodooHDADevice.cpp */;
-		name = "VoodooHDADevice.cpp: 203";
-		rLen = 0;
-		rLoc = 5438;
-		rType = 0;
-		vrLen = 801;
-		vrLoc = 4957;
 	};
 	32D94FC30562CBF700B6AF17 /* VoodooHDA */ = {
 		activeExec = 0;
@@ -210,9 +240,9 @@
 	};
 	CE6725A00EF078B100FAFBED /* VoodooHDADevice.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {848, 38051}}";
+			sepNavIntBoundsRect = "{{0, 0}, {848, 38207}}";
 			sepNavSelRange = "{5438, 0}";
-			sepNavVisRange = "{4957, 801}";
+			sepNavVisRange = "{796, 941}";
 			sepNavVisRect = "{{0, 5144}, {734, 195}}";
 			sepNavWindowFrame = "{{84, 252}, {750, 558}}";
 		};

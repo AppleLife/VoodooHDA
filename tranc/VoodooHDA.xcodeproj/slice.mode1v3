@@ -216,7 +216,6 @@
 				<string>servicesModulefind</string>
 				<string>com.apple.ide.PBXToolbarStopButton</string>
 				<string>get-info</string>
-				<string>go</string>
 				<string>NSToolbarFlexibleSpaceItem</string>
 				<string>com.apple.pbx.toolbar.searchfield</string>
 			</array>
@@ -301,7 +300,7 @@
 							<real>164</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>136 110 1117 668 0 0 1280 778 </string>
+						<string>269 210 1117 668 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -317,7 +316,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>VoodooHDADevice.cpp</string>
+								<string>OSBase.h</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -325,14 +324,15 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>VoodooHDADevice.cpp</string>
+										<string>OSBase.h</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>12F8AE4C1354C18600FD82C4</string>
+										<string>1269DC601355771000F91B3B</string>
 										<key>history</key>
 										<array>
-											<string>12F8AE4B1354C18600FD82C4</string>
+											<string>1269DC5D1355771000F91B3B</string>
+											<string>1269DC5E1355771000F91B3B</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -344,14 +344,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {909, 413}}</string>
+								<string>{{0, 0}, {909, 406}}</string>
 								<key>RubberWindowFrame</key>
-								<string>136 110 1117 668 0 0 1280 778 </string>
+								<string>269 210 1117 668 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>413pt</string>
+							<string>406pt</string>
 						</dict>
 						<dict>
 							<key>BecomeActive</key>
@@ -366,14 +366,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 418}, {909, 209}}</string>
+								<string>{{0, 411}, {909, 216}}</string>
 								<key>RubberWindowFrame</key>
-								<string>136 110 1117 668 0 0 1280 778 </string>
+								<string>269 210 1117 668 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>209pt</string>
+							<string>216pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -392,9 +392,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>12F8AE4D1354C18600FD82C4</string>
+				<string>1269DC621355771000F91B3B</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>12F8AE4E1354C18600FD82C4</string>
+				<string>1269DC631355771000F91B3B</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -533,10 +533,10 @@
 	<key>WindowOrderList</key>
 	<array>
 		<string>1216737A105A739A00220A9C</string>
-		<string>/Developer/Projects/VoodooHDA/tranc/VoodooHDA.xcodeproj</string>
+		<string>/Users/slice/Projects/VoodooHDA/tranc/VoodooHDA.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>136 110 1117 668 0 0 1280 778 </string>
+	<string>269 210 1117 668 0 0 1440 878 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -557,7 +557,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>VoodooHDADevice.cpp</string>
+								<string>OSBase.h</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -566,7 +566,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {1020, 415}}</string>
 								<key>RubberWindowFrame</key>
-								<string>67 111 1020 667 0 0 1280 778 </string>
+								<string>108 211 1020 667 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -592,7 +592,7 @@
 								<key>Frame</key>
 								<string>{{0, 420}, {1020, 206}}</string>
 								<key>RubberWindowFrame</key>
-								<string>67 111 1020 667 0 0 1280 778 </string>
+								<string>108 211 1020 667 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXBuildResultsModule</string>
@@ -615,7 +615,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1216737A105A739A00220A9C</string>
-				<string>12F8AE461354C16800FD82C4</string>
+				<string>1269DC5C1355770E00F91B3B</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -624,7 +624,7 @@
 			<key>WindowContentMinSize</key>
 			<string>486 300</string>
 			<key>WindowString</key>
-			<string>67 111 1020 667 0 0 1280 778 </string>
+			<string>108 211 1020 667 0 0 1440 878 </string>
 			<key>WindowToolGUID</key>
 			<string>1216737A105A739A00220A9C</string>
 			<key>WindowToolIsVisible</key>
