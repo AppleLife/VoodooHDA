@@ -40,7 +40,11 @@
 			<string>VoodooHDAUserClient</string>
 			<key>VoodooHDAEnableVolumeChangeFix</key>
 			<false/>
+			<key>VoodooHDAEnableHalfMicVolumeFix</key>
+			<false/>
 			<key>VoodooHDAEnableHalfVolumeFix</key>
+			<false/>
+			<key>VoodooHDAEnableMuteFix</key>
 			<false/>
 			<key>InhibitCache</key>
 			<true/>

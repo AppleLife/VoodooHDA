@@ -163,6 +163,9 @@ public:
 	// cue8chalk: flag to enable/disable volume fix (loaded from plist)
 	bool mEnableVolumeChangeFix;
 	bool mEnableHalfVolumeFix;
+    // VertexBZ: flags to enable/disable Mic and Mute fixes (loaded from plist)
+	bool mEnableHalfMicVolumeFix;
+	bool mEnableMuteFix;
 	
 	/**************/
 

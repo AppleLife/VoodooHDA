@@ -77,13 +77,16 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 324368020;
-			PBXWorkspaceStateSaveDate = 324368020;
+			PBXPerProjectTemplateStateSaveDate = 334602193;
+			PBXWorkspaceStateSaveDate = 334602193;
 		};
 		perUserProjectItems = {
 			1269DC5D1355771000F91B3B /* PBXTextBookmark */ = 1269DC5D1355771000F91B3B /* PBXTextBookmark */;
-			1269DC5E1355771000F91B3B /* XCBuildMessageTextBookmark */ = 1269DC5E1355771000F91B3B /* XCBuildMessageTextBookmark */;
-			1269DC601355771000F91B3B /* PBXTextBookmark */ = 1269DC601355771000F91B3B /* PBXTextBookmark */;
+			128EB6F113D1674700E0DA4B /* PBXTextBookmark */ = 128EB6F113D1674700E0DA4B /* PBXTextBookmark */;
+			12FF34CD13F1A1C900C99495 /* PBXTextBookmark */ = 12FF34CD13F1A1C900C99495 /* PBXTextBookmark */;
+			12FF34CE13F1A1C900C99495 /* PlistBookmark */ = 12FF34CE13F1A1C900C99495 /* PlistBookmark */;
+			12FF34CF13F1A1C900C99495 /* XCBuildMessageTextBookmark */ = 12FF34CF13F1A1C900C99495 /* XCBuildMessageTextBookmark */;
+			12FF34D113F1A1C900C99495 /* PBXTextBookmark */ = 12FF34D113F1A1C900C99495 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 12F6C0C81243DB5B00B39552 /* Source Control */;
 		userBuildSettings = {
@@ -96,6 +99,18 @@
 			sepNavVisRange = "{0, 45}";
 		};
 	};
+	1228D13D135AE2CF0099D722 /* OSBase.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = OSBase.h;
+		path = /System/Library/Frameworks/Kernel.framework/PrivateHeaders/libkern/OSBase.h;
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {513, 1417}}";
+			sepNavSelRange = "{1620, 0}";
+			sepNavVisRange = "{1558, 108}";
+		};
+	};
 	1269DC5D1355771000F91B3B /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = CE6725A00EF078B100FAFBED /* VoodooHDADevice.cpp */;
@@ -106,42 +121,15 @@
 		vrLen = 941;
 		vrLoc = 796;
 	};
-	1269DC5E1355771000F91B3B /* XCBuildMessageTextBookmark */ = {
+	128EB6F113D1674700E0DA4B /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		comments = "Dereferencing type-punned pointer will break strict-aliasing rules";
-		fRef = 1269DC5F1355771000F91B3B /* OSBase.h */;
-		fallbackIsa = XCBuildMessageTextBookmark;
-		rLen = 1;
-		rLoc = 51;
-		rType = 1;
-	};
-	1269DC5F1355771000F91B3B /* OSBase.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = OSBase.h;
-		path = /System/Library/Frameworks/Kernel.framework/PrivateHeaders/libkern/OSBase.h;
-		sourceTree = "<absolute>";
-	};
-	1269DC601355771000F91B3B /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 1269DC611355771000F91B3B /* OSBase.h */;
+		fRef = 1228D13D135AE2CF0099D722 /* OSBase.h */;
 		name = "OSBase.h: 52";
 		rLen = 0;
 		rLoc = 1620;
 		rType = 0;
-		vrLen = 371;
-		vrLoc = 1284;
-	};
-	1269DC611355771000F91B3B /* OSBase.h */ = {
-		isa = PBXFileReference;
-		name = OSBase.h;
-		path = /System/Library/Frameworks/Kernel.framework/PrivateHeaders/libkern/OSBase.h;
-		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {848, 1131}}";
-			sepNavSelRange = "{1620, 0}";
-			sepNavVisRange = "{1284, 371}";
-		};
+		vrLen = 378;
+		vrLoc = 1288;
 	};
 	12B21F1612464EEC002948CA /* emmintrin.h */ = {
 		uiCtxt = {
@@ -188,6 +176,64 @@
 		isa = PBXCodeSenseManager;
 		indexTemplatePath = "";
 	};
+	12FF34CD13F1A1C900C99495 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CE5D398A0EF4784000140715 /* Parser.cpp */;
+		name = "Parser.cpp: 4364";
+		rLen = 39;
+		rLoc = 142490;
+		rType = 0;
+		vrLen = 956;
+		vrLoc = 142008;
+	};
+	12FF34CE13F1A1C900C99495 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 32D94FCF0562CBF700B6AF17 /* Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = /Developer/Projects/VoodooHDA/tranc/Info.plist;
+		rLen = 0;
+		rLoc = 2147483647;
+	};
+	12FF34CF13F1A1C900C99495 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "In file included from /System/Library/Frameworks/Kernel.framework/PrivateHeaders/IOKit/IOLib.h";
+		fRef = 12FF34D013F1A1C900C99495 /* IOLib.h */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 46;
+		rType = 1;
+	};
+	12FF34D013F1A1C900C99495 /* IOLib.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = IOLib.h;
+		path = /System/Library/Frameworks/Kernel.framework/PrivateHeaders/IOKit/IOLib.h;
+		sourceTree = "<absolute>";
+	};
+	12FF34D113F1A1C900C99495 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 12FF34D213F1A1C900C99495 /* IOLib.h */;
+		name = "IOLib.h: 47";
+		rLen = 27;
+		rLoc = 1610;
+		rType = 0;
+		vrLen = 625;
+		vrLoc = 1040;
+	};
+	12FF34D213F1A1C900C99495 /* IOLib.h */ = {
+		isa = PBXFileReference;
+		name = IOLib.h;
+		path = /System/Library/Frameworks/Kernel.framework/PrivateHeaders/IOKit/IOLib.h;
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {848, 5577}}";
+			sepNavSelRange = "{1610, 27}";
+			sepNavVisRange = "{1040, 625}";
+		};
+	};
 	32D94FC30562CBF700B6AF17 /* VoodooHDA */ = {
 		activeExec = 0;
 	};
@@ -232,9 +278,9 @@
 	};
 	CE5D398A0EF4784000140715 /* Parser.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {691, 61295}}";
-			sepNavSelRange = "{7496, 8}";
-			sepNavVisRange = "{7194, 1066}";
+			sepNavIntBoundsRect = "{{0, 0}, {848, 61243}}";
+			sepNavSelRange = "{142490, 39}";
+			sepNavVisRange = "{142008, 956}";
 			sepNavWindowFrame = "{{61, 273}, {750, 558}}";
 		};
 	};
@@ -302,9 +348,9 @@
 	};
 	CE9337FC0EF226E000776BCD /* Tables.c */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {843, 4940}}";
-			sepNavSelRange = "{16587, 5}";
-			sepNavVisRange = "{15043, 2354}";
+			sepNavIntBoundsRect = "{{0, 0}, {843, 4836}}";
+			sepNavSelRange = "{14884, 90}";
+			sepNavVisRange = "{13835, 2161}";
 		};
 	};
 	CEF7C0A40EF74C2700A14C68 /* PCMBlitterLib.cpp */ = {

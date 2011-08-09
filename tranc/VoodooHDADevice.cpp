@@ -40,6 +40,9 @@ OSDefineMetaClassAndStructors(VoodooHDADevice, IOAudioDevice)
 // cue8chalk: added to allow for the volume change fix to be controlled from the plist
 #define kVoodooHDAEnableVolumeChangeFixKey "VoodooHDAEnableVolumeChangeFix"
 #define kVoodooHDAEnableHalfVolumeFixKey "VoodooHDAEnableHalfVolumeFix"
+// VertexBZ: added to allow for the Mic and Mute fixes to be controlled from the plist
+#define kVoodooHDAEnableHalfMicVolumeFixKey "VoodooHDAEnableHalfMicVolumeFix"
+#define kVoodooHDAEnableMuteFixKey "VoodooHDAEnableMuteFix"
 
 bool VoodooHDADevice::init(OSDictionary *dict)
 {
@@ -79,6 +82,22 @@ bool VoodooHDADevice::init(OSDictionary *dict)
 		mEnableHalfVolumeFix = (bool)osBool->getValue();
 	} else {
 		mEnableHalfVolumeFix = false;
+	}
+    
+    // VertexBZ: Half Mic volume slider fix
+    osBool = OSDynamicCast(OSBoolean, dict->getObject(kVoodooHDAEnableHalfMicVolumeFixKey));
+	if (osBool) {
+		mEnableHalfMicVolumeFix = (bool)osBool->getValue();
+	} else {
+		mEnableHalfMicVolumeFix = false;
+	}
+    
+    // VertexBZ: Mute fix
+    osBool = OSDynamicCast(OSBoolean, dict->getObject(kVoodooHDAEnableMuteFixKey));
+	if (osBool) {
+		mEnableMuteFix = (bool)osBool->getValue();
+	} else {
+		mEnableMuteFix = false;
 	}
 
 //Slice - some chipsets needed Inhibit Cache
@@ -677,6 +696,8 @@ bool VoodooHDADevice::createAudioEngine(Channel *channel)
 	
 	// cue8chalk: set volume change fix on the engine
 	audioEngine->mEnableVolumeChangeFix = mEnableVolumeChangeFix;
+    // VertexBZ: set Mute fix on the engine
+	audioEngine->mEnableMuteFix = mEnableMuteFix;
 	
 	audioEngine->Boost = Boost;
 	// Active the audio engine - this will cause the audio engine to have start() and
@@ -2202,7 +2223,8 @@ int VoodooHDADevice::audioCtlOssMixerSet(PcmDevice *pcmDevice, UInt32 dev, UInt3
 		mute = (lvol == 0) ? HDA_AMP_MUTE_LEFT : 0;
 		mute |= (rvol == 0) ? HDA_AMP_MUTE_RIGHT : 0;
 
-		if (mEnableHalfVolumeFix) {
+        // VertexBZ: Separated flags for Volume/PCM and Mic Half Volume fixes
+		if ((mEnableHalfVolumeFix && ((dev == SOUND_MIXER_VOLUME && !mEnableVolumeChangeFix) || (dev == SOUND_MIXER_PCM && mEnableVolumeChangeFix))) || (dev == SOUND_MIXER_MIC && mEnableHalfMicVolumeFix)) {
 			// cue8chalk: lerp the volume between the midpoint and the end to get the true value
 			lvol = ilerp(control->offset >> 1, control->offset, ((lvol * control->step + 50) / 100) / (control->offset != 0 ? (float)control->offset : 1));
 			rvol = ilerp(control->offset >> 1, control->offset, ((rvol * control->step + 50) / 100) / (control->offset != 0 ? (float)control->offset : 1));
@@ -2210,7 +2232,7 @@ int VoodooHDADevice::audioCtlOssMixerSet(PcmDevice *pcmDevice, UInt32 dev, UInt3
 			lvol = (lvol * control->step + 50) / 100;
 			rvol = (rvol * control->step + 50) / 100;
 		}
-		
+        
 		audioCtlAmpSet(control, mute, lvol, rvol);
 	}
 

@@ -604,8 +604,7 @@ IOReturn VoodooHDAEngine::performFormatChange(IOAudioStream *audioStream,
 				ossFormat |= AFMT_S16_LE;
 				break;
 			case 20:		
-			case 24: // xxx: make clear distinction between 24/32-bit
-			//break;
+			case 24:
 			case 32:
 				ASSERT(newFormat->fBitWidth == 32); 
 				ossFormat |= AFMT_S32_LE;
@@ -908,15 +907,28 @@ IOReturn VoodooHDAEngine::muteChanged(IOAudioControl *muteControl, SInt32 oldVal
     
 	int ossDev = ( getEngineDirection() == kIOAudioStreamDirectionOutput) ? SOUND_MIXER_VOLUME:
 																			SOUND_MIXER_MIC;
-	
+    
 	PcmDevice *pcmDevice = mChannel->pcmDevice;
-	
+    
 	if (newValue) {
-		mDevice->audioCtlOssMixerSet(pcmDevice, ossDev, 0, 0);
+        // VertexBZ: Mute fix
+        if(mEnableMuteFix){
+            mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_PCM, 0, 0);
+        } else {
+            mDevice->audioCtlOssMixerSet(pcmDevice, ossDev, 0, 0);
+        }
 	} else {
-		mDevice->audioCtlOssMixerSet(pcmDevice, ossDev,
-									   (ossDev == SOUND_MIXER_VOLUME) ? oldOutVolumeLeft : oldInputGain,
-									   (ossDev == SOUND_MIXER_VOLUME) ? oldOutVolumeRight: oldInputGain);
+        // VertexBZ: Mute fix
+        if(mEnableMuteFix){
+            mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_PCM,
+                                         (ossDev == SOUND_MIXER_VOLUME) ? oldOutVolumeLeft : oldInputGain,
+                                         (ossDev == SOUND_MIXER_VOLUME) ? oldOutVolumeRight: oldInputGain);
+        } else {
+            
+            mDevice->audioCtlOssMixerSet(pcmDevice, ossDev,
+                                         (ossDev == SOUND_MIXER_VOLUME) ? oldOutVolumeLeft : oldInputGain,
+                                         (ossDev == SOUND_MIXER_VOLUME) ? oldOutVolumeRight: oldInputGain);
+        }
 	}
     
     return kIOReturnSuccess;

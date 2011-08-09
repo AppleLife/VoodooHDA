@@ -56,6 +56,8 @@ public:
 
 	// cue8chalk: flag for volume change fix
 	bool mEnableVolumeChangeFix;
+    // VertexBZ: flag for mute fix
+	bool mEnableMuteFix;
 	
 	void messageHandler(UInt32 type, const char *format, ...) __attribute__ ((format (printf, 3, 4)));
 

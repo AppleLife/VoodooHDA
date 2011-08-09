@@ -364,11 +364,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_GROUP = wheel;
 				INSTALL_OWNER = root;
-				MODULE_VERSION = 2.7.2;
+				MODULE_VERSION = 2.7.3;
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_CFLAGS = "-DMULTICHANNEL";
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-DMULTICHANNEL",
+				);
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = "";
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = "Release Multichannel";
@@ -395,10 +398,11 @@
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\\\"$(SRCROOT)/build/Release\\\"";
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 2.7.2;
+				MODULE_VERSION = 2.7.3;
 				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = YES;
 				PRODUCT_NAME = VoodooHDA;
+				SDKROOT = "";
 				VALID_ARCHS = "i386 x86_64";
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -432,7 +436,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DMULTICHANNEL";
 				PREBINDING = NO;
-				SDKROOT = macosx10.4;
+				SDKROOT = macosx10.5;
 				VALID_ARCHS = i386;
 			};
 			name = "Release_Leo Multi";
