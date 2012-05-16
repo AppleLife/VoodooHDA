@@ -2529,7 +2529,7 @@ void VoodooHDADevice::dumpNodes(FunctionGroup *funcGroup)
 		if ((widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_AUDIO_OUTPUT) ||
 				(widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_AUDIO_INPUT)) {
 			dumpAudioFormats(widget->params.supStreamFormats, widget->params.supPcmSizeRates);
-		} else if ((widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX))
+		} else if (widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX)
 			dumpPin(widget);
 		if (widget->params.eapdBtl != HDAC_INVALID)
 			dumpMsg("           EAPD: 0x%08lx\n", (long unsigned int)widget->params.eapdBtl);
@@ -3888,8 +3888,8 @@ int VoodooHDADevice::pcmChannelSetup(Channel *channel)
 		/* if (HDA_PARAM_SUPP_STREAM_FORMATS_FLOAT32(cap)) */
 		if (!HDA_PARAM_SUPP_STREAM_FORMATS_PCM(cap) && !HDA_PARAM_SUPP_STREAM_FORMATS_AC3(cap))
 			continue;
-		/* Many codec does not declare AC3 support on SPDIF.
-		   I don't beleave that they doesn't support it! */
+		/* Many codecs do not declare AC3 support on SPDIF.
+		   I don't beleave that they don't support it! */
 		if (HDA_PARAM_AUDIO_WIDGET_CAP_DIGITAL(widget->params.widgetCap))
 			cap |= HDA_PARAM_SUPP_STREAM_FORMATS_AC3_MASK;
 		if (ret == 0) {
@@ -4569,7 +4569,7 @@ void VoodooHDADevice::extDumpNodes(FunctionGroup *funcGroup)
 		if ((widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_AUDIO_OUTPUT) ||
 			(widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_AUDIO_INPUT)) {
 			//dumpAudioFormats(widget->params.supStreamFormats, widget->params.supPcmSizeRates);
-		} else if ((widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX)) {
+		} else if (widget->type == HDA_PARAM_AUDIO_WIDGET_CAP_TYPE_PIN_COMPLEX) {
 			extDumpPin(widget);
 		}
 		

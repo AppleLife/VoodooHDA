@@ -100,6 +100,22 @@ bool VoodooHDADevice::init(OSDictionary *dict)
 		mEnableMuteFix = false;
 	}
 
+    // VertexBZ: Half Mic volume slider fix
+    osBool = OSDynamicCast(OSBoolean, dict->getObject(kVoodooHDAEnableHalfMicVolumeFixKey));
+	if (osBool) {
+		mEnableHalfMicVolumeFix = (bool)osBool->getValue();
+	} else {
+		mEnableHalfMicVolumeFix = false;
+	}
+    
+    // VertexBZ: Mute fix
+    osBool = OSDynamicCast(OSBoolean, dict->getObject(kVoodooHDAEnableMuteFixKey));
+	if (osBool) {
+		mEnableMuteFix = (bool)osBool->getValue();
+	} else {
+		mEnableMuteFix = false;
+	}
+
 //Slice - some chipsets needed Inhibit Cache
 	osBool = OSDynamicCast(OSBoolean, dict->getObject("InhibitCache"));
 	if (osBool) {
@@ -2224,7 +2240,9 @@ int VoodooHDADevice::audioCtlOssMixerSet(PcmDevice *pcmDevice, UInt32 dev, UInt3
 		mute |= (rvol == 0) ? HDA_AMP_MUTE_RIGHT : 0;
 
         // VertexBZ: Separated flags for Volume/PCM and Mic Half Volume fixes
-		if ((mEnableHalfVolumeFix && ((dev == SOUND_MIXER_VOLUME && !mEnableVolumeChangeFix) || (dev == SOUND_MIXER_PCM && mEnableVolumeChangeFix))) || (dev == SOUND_MIXER_MIC && mEnableHalfMicVolumeFix)) {
+		if ((dev == SOUND_MIXER_VOLUME && mEnableHalfVolumeFix) ||
+            (dev == SOUND_MIXER_PCM && mEnableVolumeChangeFix) ||
+            (dev == SOUND_MIXER_MIC && mEnableHalfMicVolumeFix)) {
 			// cue8chalk: lerp the volume between the midpoint and the end to get the true value
 			lvol = ilerp(control->offset >> 1, control->offset, ((lvol * control->step + 50) / 100) / (control->offset != 0 ? (float)control->offset : 1));
 			rvol = ilerp(control->offset >> 1, control->offset, ((rvol * control->step + 50) / 100) / (control->offset != 0 ? (float)control->offset : 1));
@@ -2521,13 +2539,12 @@ void VoodooHDADevice::streamSetup(Channel *channel)
 	 else if (assoc->pinset == 0x0017) // Standard 7.1 
 		map = 1;
 	
-
-	writeData16(channel->off + HDAC_SDFMT, format);
-		
 	digFormat = HDA_CMD_SET_DIGITAL_CONV_FMT1_DIGEN;
 	if (channel->format & AFMT_AC3)
 		digFormat |= HDA_CMD_SET_DIGITAL_CONV_FMT1_NAUDIO;
 	
+	writeData16(channel->off + HDAC_SDFMT, format);
+    
 	for (int i = 0, chn = 0; channel->io[i] != -1; i++) {
 		Widget *widget;
 		int c;

@@ -78,8 +78,8 @@ public:
 	int getEngineId();
 
 	bool createAudioStream(IOAudioStreamDirection direction, void *sampleBuffer,
-			UInt32 sampleBufferSize, IOAudioSampleRate minSampleRate, IOAudioSampleRate maxSampleRate,
-			UInt32 supPcmSizeRates, UInt32 sampleFormat, UInt32 channels);
+			UInt32 sampleBufferSize, UInt32 *pcmRates,
+			UInt32 supPcmSizeRates, UInt32 supStreamFormats, UInt32 channels);
 	bool createAudioStream();
 
 	bool createAudioControls();

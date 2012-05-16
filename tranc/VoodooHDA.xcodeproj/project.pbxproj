@@ -364,7 +364,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_GROUP = wheel;
 				INSTALL_OWNER = root;
-				MODULE_VERSION = 2.7.3;
+				MODULE_VERSION = 2.7.4;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-fno-strict-aliasing",
@@ -398,7 +398,7 @@
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\\\"$(SRCROOT)/build/Release\\\"";
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 2.7.3;
+				MODULE_VERSION = 2.7.4;
 				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = YES;
 				PRODUCT_NAME = VoodooHDA;
@@ -596,7 +596,7 @@
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\\\"$(SRCROOT)/build/Release\\\"";
 				MODULE_NAME = org.voodoo.driver.VoodooHDA;
-				MODULE_VERSION = 2.7.2;
+				MODULE_VERSION = 2.7.4;
 				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = YES;
 				PRODUCT_NAME = VoodooHDA;
@@ -655,7 +655,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_GROUP = wheel;
 				INSTALL_OWNER = root;
-				MODULE_VERSION = 2.7.2;
+				MODULE_VERSION = 2.7.4;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
 				PREBINDING = NO;

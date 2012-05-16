@@ -22,8 +22,8 @@ OSDefineMetaClassAndStructors(VoodooHDAEngine, IOAudioEngine)
 
 #define SAMPLE_CHANNELS		2	// forced stereo quirk is always enabled
 
-#define SAMPLE_OFFSET		32	// note: these values definitely need to be tweaked
-#define SAMPLE_LATENCY		16
+#define SAMPLE_OFFSET		64	// note: these values definitely need to be tweaked
+#define SAMPLE_LATENCY		32
 
 extern const char *gDeviceTypes[], *gConnTypes[];
 
@@ -373,7 +373,7 @@ bool VoodooHDAEngine::createAudioStream()
 //	logMsg("\n");
 
 	if (!HDA_PARAM_SUPP_STREAM_FORMATS_PCM(mChannel->supStreamFormats)) {
-		errorMsg("error: channel doesn't support pcm stream format\n");
+		errorMsg("error: channel doesn't support PCM stream format\n");
 		goto done;
 	}
 
@@ -394,12 +394,12 @@ bool VoodooHDAEngine::createAudioStream()
 	logMsg("(min: %ld, max: %ld) channels=%d\n", (long int)mChannel->caps.minSpeed, (long int)mChannel->caps.maxSpeed, (int)channels);
 	sampleBuffer = (UInt8 *) mChannel->buffer->virtAddr;
 	mBufferSize = HDA_BUFSZ_MAX; // hardcoded in pcmAttach()
-	if (!createAudioStream(direction, sampleBuffer, mBufferSize, minSampleRate, maxSampleRate,
-			mChannel->supPcmSizeRates, kIOAudioStreamSampleFormatLinearPCM, channels)) {
+    if (!createAudioStream(direction, sampleBuffer, mBufferSize, mChannel->pcmRates,
+                           mChannel->supPcmSizeRates, mChannel->supStreamFormats, channels)) {
 		errorMsg("error: createAudioStream failed channels=%d\n", (int)channels);
 		goto done;
 	}
-#if 1
+#if 0
 	if (HDA_PARAM_SUPP_STREAM_FORMATS_AC3(mChannel->supStreamFormats)) {
 //		logMsg("adding AC3 audio stream\n");
 		if (!createAudioStream(direction, sampleBuffer, mBufferSize, minSampleRate, maxSampleRate,
@@ -414,15 +414,15 @@ done:
 }
 
 bool VoodooHDAEngine::createAudioStream(IOAudioStreamDirection direction, void *sampleBuffer,
-		UInt32 sampleBufferSize, IOAudioSampleRate minSampleRate, IOAudioSampleRate maxSampleRate,
-		UInt32 supPcmSizeRates, UInt32 sampleFormat, UInt32 channels)
+		UInt32 sampleBufferSize, UInt32 *pcmRates,
+		UInt32 supPcmSizeRates, UInt32 supStreamFormats, UInt32 channels)
 {
 	bool result = false;
-	const char *description;
+//	const char *description;
 
 	IOAudioStreamFormat format = {
 		channels,										// number of channels
-		sampleFormat, //kIOAudioStreamSampleFormatLinearPCM,			// sample format
+		0,                                              // sample format (to be filled in)
 		kIOAudioStreamNumericRepresentationSignedInt,	// numeric format
 		0,												// bit depth (to be filled in)
 		0,												// bit width (to be filled in)
@@ -432,64 +432,82 @@ bool VoodooHDAEngine::createAudioStream(IOAudioStreamDirection direction, void *
 		0												// driver-defined tag
 	};
 
+    IOAudioStreamFormatExtension formatEx = {
+		kFormatExtensionCurrentVersion,					// version
+		0,                                              // flags
+		0,											    // frames per packet (to be filled in)
+		0												// bytes per packet (to be filled in)
+	};
+    
+    IOAudioSampleRate sampleRate = {
+        0,
+        0
+    };
+    
 	ASSERT(!mStream);
 
 //	logMsg("VoodooHDAEngine[%p]::createAudioStream(%d, %p, %ld)\n", this, direction, sampleBuffer,
 //			sampleBufferSize);
 
-	if (direction == kIOAudioStreamDirectionOutput) {
-		if (sampleFormat == kIOAudioStreamSampleFormatAC3)
-			description = "AC3 Output stream";
-		else
-			description = "Output stream";
-	}
-	else if (direction == kIOAudioStreamDirectionInput) {
-		if (sampleFormat == kIOAudioStreamSampleFormatAC3)
-			description = "AC3 Input stream";
-		else
-			description = "Input stream";
-	}
-	else
-		BUG("unknown direction");
-
 	mStream = new IOAudioStream;
-	if (!mStream->initWithAudioEngine(this, direction, 1, description)) {
+	if (!mStream->initWithAudioEngine(this, direction, 1)) {
 		errorMsg("error: IOAudioStream::initWithAudioEngine failed\n");
 		goto done;
 	}
 
 	mStream->setSampleBuffer(sampleBuffer, sampleBufferSize); // also creates mix buffer
 
-//	logMsg("supported bit depths:");
+    for(int i = 0; pcmRates[i]; i++) {
+        sampleRate.whole = pcmRates[i];
+        if(HDA_PARAM_SUPP_STREAM_FORMATS_AC3(supStreamFormats)) {
+            format.fBitDepth = 16;
+            format.fBitWidth = 16;
+            format.fSampleFormat = kIOAudioStreamSampleFormat1937AC3;
+            formatEx.fFramesPerPacket = 1536;
+            formatEx.fBytesPerPacket = formatEx.fFramesPerPacket * format.fNumChannels * (format.fBitWidth / 8);
+            format.fIsMixable = false;
+            mStream->addAvailableFormat(&format, &formatEx, &sampleRate, &sampleRate);
+        }
+        format.fSampleFormat = kIOAudioStreamSampleFormatLinearPCM;
+        formatEx.fFramesPerPacket = 1;
 	if (HDA_PARAM_SUPP_PCM_SIZE_RATE_16BIT(supPcmSizeRates)) {
 		format.fBitDepth = 16;
 		format.fBitWidth = 16;
-		mStream->addAvailableFormat(&format, &minSampleRate, &maxSampleRate);
-//		logMsg(" 16");
+            formatEx.fBytesPerPacket = format.fNumChannels * (format.fBitWidth / 8);
+            format.fIsMixable = false;
+            mStream->addAvailableFormat(&format, &formatEx, &sampleRate, &sampleRate);
+            format.fIsMixable = true;
+            mStream->addAvailableFormat(&format, &formatEx, &sampleRate, &sampleRate);
 	}
 	if (HDA_PARAM_SUPP_PCM_SIZE_RATE_24BIT(supPcmSizeRates)) {
 		format.fBitDepth = 24;
 		format.fBitWidth = 32;
 //		format.fBitWidth = 24;
-		mStream->addAvailableFormat(&format, &minSampleRate, &maxSampleRate);
-//		logMsg(" 24");
+            formatEx.fBytesPerPacket = format.fNumChannels * (format.fBitWidth / 8);
+            format.fIsMixable = false;
+            mStream->addAvailableFormat(&format, &formatEx, &sampleRate, &sampleRate);
+            format.fIsMixable = true;
+            mStream->addAvailableFormat(&format, &formatEx, &sampleRate, &sampleRate);
 	}
 	if (HDA_PARAM_SUPP_PCM_SIZE_RATE_32BIT(supPcmSizeRates)) {
 		format.fBitDepth = 32;
 		format.fBitWidth = 32;
-		mStream->addAvailableFormat(&format, &minSampleRate, &maxSampleRate);
-//		logMsg(" 32");
+            formatEx.fBytesPerPacket = format.fNumChannels * (format.fBitWidth / 8);
+            format.fIsMixable = false;
+            mStream->addAvailableFormat(&format, &formatEx, &sampleRate, &sampleRate);
+            format.fIsMixable = true;
+            mStream->addAvailableFormat(&format, &formatEx, &sampleRate, &sampleRate);
+        }
 	}
+        
 	if (!format.fBitDepth || !format.fBitWidth) {
-//		logMsg(" (none)\n");
 		errorMsg("error: couldn't find supported bit depth (16, 24, or 32-bit)\n");
 		goto done;
-	} else
-//		logMsg("\n");
+    }
 
+	setSampleRate(&sampleRate);
 	mStream->setFormat(&format); // set widest format as default
-	setSampleRate(&maxSampleRate);
-	performFormatChange(mStream, &format, &maxSampleRate);
+	performFormatChange(mStream, &format, &sampleRate);
 
 	addAudioStream(mStream);
 
@@ -576,35 +594,37 @@ IOReturn VoodooHDAEngine::performFormatChange(IOAudioStream *audioStream,
 	if (wasRunning)
 		stopAudioEngine();
 
-	int channels = newFormat->fNumChannels;
 	if (newFormat) {
-		if (channels == 2) {
+	int channels = newFormat->fNumChannels;
+
+        if(!channels) {
+            channels = 2;
+        }
+
 			ossFormat = AFMT_STEREO;
+
+        if (newFormat->fSampleFormat == kIOAudioStreamSampleFormat1937AC3) {
+            ossFormat = AFMT_AC3;
 		} else if (channels == 4) {
 			ossFormat = SND_FORMAT(0, 4, 0);
 		} else if (channels == 6) {
 			ossFormat = SND_FORMAT(0, 6, 1);
 		} else if (channels == 8) {
 			ossFormat = SND_FORMAT(0, 8, 1);
-		} else {
-			ossFormat = AFMT_STEREO;
 		}
-		//ossFormat = AFMT_STEREO; //till now always
 
-		//ASSERT(newFormat->fNumChannels == 2);
-		//ASSERT(newFormat->fSampleFormat == kIOAudioStreamSampleFormatLinearPCM);
 		ASSERT(newFormat->fNumericRepresentation == kIOAudioStreamNumericRepresentationSignedInt);
 		ASSERT(newFormat->fAlignment == kIOAudioStreamAlignmentLowByte);
 		ASSERT(newFormat->fByteOrder == kIOAudioStreamByteOrderLittleEndian);
-		ASSERT(newFormat->fIsMixable);
 
+        if(ossFormat != AFMT_AC3) {
 		switch (newFormat->fBitDepth) {
 			case 16:
 				ASSERT(newFormat->fBitWidth == 16);
 				ossFormat |= AFMT_S16_LE;
 				break;
 			case 20:		
-			case 24:
+            case 24:
 			case 32:
 				ASSERT(newFormat->fBitWidth == 32); 
 				ossFormat |= AFMT_S32_LE;
@@ -613,6 +633,7 @@ IOReturn VoodooHDAEngine::performFormatChange(IOAudioStream *audioStream,
 				BUG("unsupported bit depth");
 				goto done;
 		}
+        }
 		//IOLog("ossFormat=%08x\n", (unsigned int)ossFormat);
 		
 		setResult = mDevice->channelSetFormat(mChannel, ossFormat);
@@ -624,10 +645,10 @@ IOReturn VoodooHDAEngine::performFormatChange(IOAudioStream *audioStream,
 		}
 
 		ASSERT(mBufferSize);
-		if (channels == 0) {
+/*		if (channels == 0) {
 			channels = 2;
-		}
-		mSampleSize = (channels * (newFormat->fBitWidth / 8));
+		} */
+		mSampleSize = channels * (newFormat->fBitWidth / 8);
 		mNumSampleFrames = mBufferSize / mSampleSize;
 		setNumSampleFramesPerBuffer(mNumSampleFrames);
 
@@ -915,7 +936,7 @@ IOReturn VoodooHDAEngine::muteChanged(IOAudioControl *muteControl, SInt32 oldVal
         if(mEnableMuteFix){
             mDevice->audioCtlOssMixerSet(pcmDevice, SOUND_MIXER_PCM, 0, 0);
         } else {
-            mDevice->audioCtlOssMixerSet(pcmDevice, ossDev, 0, 0);
+		mDevice->audioCtlOssMixerSet(pcmDevice, ossDev, 0, 0);
         }
 	} else {
         // VertexBZ: Mute fix
@@ -925,10 +946,10 @@ IOReturn VoodooHDAEngine::muteChanged(IOAudioControl *muteControl, SInt32 oldVal
                                          (ossDev == SOUND_MIXER_VOLUME) ? oldOutVolumeRight: oldInputGain);
         } else {
             
-            mDevice->audioCtlOssMixerSet(pcmDevice, ossDev,
-                                         (ossDev == SOUND_MIXER_VOLUME) ? oldOutVolumeLeft : oldInputGain,
-                                         (ossDev == SOUND_MIXER_VOLUME) ? oldOutVolumeRight: oldInputGain);
-        }
+		mDevice->audioCtlOssMixerSet(pcmDevice, ossDev,
+									   (ossDev == SOUND_MIXER_VOLUME) ? oldOutVolumeLeft : oldInputGain,
+									   (ossDev == SOUND_MIXER_VOLUME) ? oldOutVolumeRight: oldInputGain);
+		}
 	}
     
     return kIOReturnSuccess;

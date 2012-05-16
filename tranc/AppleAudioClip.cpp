@@ -3762,8 +3762,10 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 	SInt8  *theOutputBufferSInt8;
 	UInt8* theOutputBufferSInt24;
 	SInt32* theOutputBufferSInt32;
+	long int noiseMask = ~((long int)(1 << mChannel->noiseLevel) - 1);
 #ifndef TIGER	
 	bool SSE2 = mChannel->vectorize;
+	UInt8 *sourceBuf = (UInt8 *) sampleBuf;
 #endif	
 	bool Stereo = mChannel->useStereo;
 	int base = mChannel->StereoBase; 
@@ -3807,11 +3809,7 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 	}
 	floatMixBufOld = floatMixBuf2 + numSamples - base * 2;
 	emptyStream = FALSE;
-	
-#ifndef TIGER	
-	UInt8 *sourceBuf = (UInt8 *) sampleBuf;
-#endif		
-	long int noiseMask = ~((long int)(1 << mChannel->noiseLevel) - 1);
+
 	// figure out what sort of blit we need to do
 	if ((streamFormat->fSampleFormat == kIOAudioStreamSampleFormatLinearPCM) && streamFormat->fIsMixable) {
 		// it's mixable linear PCM, which means we will be calling a blitter, which works in samples
@@ -3915,10 +3913,9 @@ IOReturn VoodooHDAEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf,
 		// it's not linear PCM or it's not mixable, so just copy the data into the target buffer
 		UInt32 offset = firstSampleFrame * (streamFormat->fBitWidth / 8) * streamFormat->fNumChannels;
 		UInt32 size = numSampleFrames * (streamFormat->fBitWidth / 8) * streamFormat->fNumChannels;
-		memcpy(&((SInt8 *) sampleBuf)[offset], &((SInt8 *) mixBuf)[offset], size);
+//        memcpy(&((SInt8 *) sampleBuf)[offset], &((SInt8 *) mixBuf)[offset], size);
+        memcpy((UInt8 *)sampleBuf + offset, (UInt8 *)mixBuf, size);
 	}
-	
-	
 	
 	return kIOReturnSuccess;
 }
@@ -3935,7 +3932,6 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf, void *destB
 	numSamples = numSamplesLeft = numSampleFrames * streamFormat->fNumChannels;
 	long int noiseMask = ~((long int)(1 << mChannel->noiseLevel) - 1);
 	
-	UInt8 *sourceBuf = (UInt8 *) sampleBuf; 
 	SInt8 *inputBuf8;
 	SInt16 *inputBuf16;
 	const UInt8 *inputBuf24;
@@ -4073,7 +4069,7 @@ IOReturn VoodooHDAEngine::convertInputSamples(const void *sampleBuf, void *destB
 		// it's not linear PCM or it's not mixable, so just copy the data into the target buffer
 		UInt32 offset = firstSampleFrame * (streamFormat->fBitWidth / 8) * streamFormat->fNumChannels;
 		UInt32 size = numSampleFrames * (streamFormat->fBitWidth / 8) * streamFormat->fNumChannels;
-		memcpy(destBuf, &sourceBuf[offset], size);
+		memcpy((UInt8 *)destBuf, (UInt8 *)sampleBuf + offset, size);
 	}
 	
 	return kIOReturnSuccess;

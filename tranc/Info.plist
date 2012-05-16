@@ -51,13 +51,17 @@
 			<key>Vectorize</key>
 			<false/>
 			<key>Noise</key>
-			<integer>2</integer>
+			<integer>0</integer>
 			<key>VoodooHDAVerboseLevel</key>
 			<integer>0</integer>
 			<key>NodesToPatch</key>
 			<array/>
 			<key>MixerValues</key>
 			<dict>
+				<key>Rec</key>
+				<string>70</string>
+				<key>PCM</key>
+				<string>90</string>
 				<key>iMix</key>
 				<string>0</string>
 				<key>iGain</key>
