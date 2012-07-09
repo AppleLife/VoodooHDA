@@ -98,23 +98,7 @@ bool VoodooHDADevice::init(OSDictionary *dict)
 		mEnableMuteFix = (bool)osBool->getValue();
 	} else {
 		mEnableMuteFix = false;
-	}
-
-    // VertexBZ: Half Mic volume slider fix
-    osBool = OSDynamicCast(OSBoolean, dict->getObject(kVoodooHDAEnableHalfMicVolumeFixKey));
-	if (osBool) {
-		mEnableHalfMicVolumeFix = (bool)osBool->getValue();
-	} else {
-		mEnableHalfMicVolumeFix = false;
-	}
-    
-    // VertexBZ: Mute fix
-    osBool = OSDynamicCast(OSBoolean, dict->getObject(kVoodooHDAEnableMuteFixKey));
-	if (osBool) {
-		mEnableMuteFix = (bool)osBool->getValue();
-	} else {
-		mEnableMuteFix = false;
-	}
+	}    
 
 //Slice - some chipsets needed Inhibit Cache
 	osBool = OSDynamicCast(OSBoolean, dict->getObject("InhibitCache"));
@@ -153,7 +137,7 @@ bool VoodooHDADevice::init(OSDictionary *dict)
 		errorMsg("error: couldn't cast command gate action handler\n");
 		return false;
 	}
-
+/*
 	mMsgBufferEnabled = false;
 	mMsgBufferSize = MSG_BUFFER_SIZE;
 	mMsgBufferPos = 0;
@@ -175,7 +159,7 @@ bool VoodooHDADevice::init(OSDictionary *dict)
 		errorMsg("error: couldn't allocate ext message buffer (%ld bytes)\n", mExtMsgBufferSize);
 		return false;
 	}
-	
+*/	
 	nSliderTabsCount = 0;
 	mPrefPanelMemoryBufSize = 0;
 	mPrefPanelMemoryBuf = 0;
@@ -427,7 +411,30 @@ bool VoodooHDADevice::initHardware(IOService *provider)
 {
 	bool result = false;
 	UInt16 config, vendorId, snoop;
-
+//moved here from init ----------
+  mMsgBufferEnabled = false;
+	mMsgBufferSize = MSG_BUFFER_SIZE;
+	mMsgBufferPos = 0;
+	
+	mSwitchCh = false;
+  //TODO - allocMem at init??? May be better to move it into start?
+	mMsgBuffer = (char *) allocMem(mMsgBufferSize);
+	if (!mMsgBuffer) {
+		errorMsg("error: couldn't allocate message buffer (%ld bytes)\n", mMsgBufferSize);
+		return false;
+	}
+	
+	mExtMessageLock = IOLockAlloc();
+	mExtMsgBufferSize = MSG_BUFFER_SIZE;
+	mExtMsgBufferPos = 0;
+	
+	mExtMsgBuffer = (char *) allocMem(mExtMsgBufferSize);
+	if (!mExtMsgBuffer) {
+		errorMsg("error: couldn't allocate ext message buffer (%ld bytes)\n", mExtMsgBufferSize);
+		return false;
+	}
+//--------------  
+  
 	//logMsg("VoodooHDADevice[%p]::initHardware\n", this);
 
 	if (!mPciNub || !super::initHardware(provider))
