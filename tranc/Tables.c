@@ -6,6 +6,7 @@
 
 const ControllerListItem gControllerList[] = {
 	{ HDA_INTEL_CPT,			"Intel Cougar Point"},
+  { HDA_INTEL_SCPT,			"Intel Panther Point"},
 	{ HDA_INTEL_82801F,			"Intel 82801F" },
 	{ HDA_INTEL_63XXESB,		"Intel 631x/632xESB" },
 	{ HDA_INTEL_82801G,			"Intel 82801G" },
@@ -37,6 +38,7 @@ const ControllerListItem gControllerList[] = {
 	{ HDA_NVIDIA_MCP89_2,		"NVidia MCP89"},
 	{ HDA_NVIDIA_MCP89_3,		"NVidia MCP89"},
 	{ HDA_NVIDIA_MCP89_4,		"NVidia MCP89"},
+  { HDA_NVIDIA_GTX_570,		"NVidia GTX 570"},
 	{ HDA_ATI_SB450,			"ATI SB450" },
 	{ HDA_ATI_SB600,			"ATI SB600" },
 	{ HDA_ATI_RS600,			"ATI RS600" },
