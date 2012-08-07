@@ -464,11 +464,13 @@ bool VoodooHDADevice::initHardware(IOService *provider)
 	mPciNub->setMemoryEnable(true);
 	char string[20];
 //	strncpy(string, "Voodoo HDA Device", sizeof(string));
-  snprintf(string, sizeof(string), "Voodoo HDA Device #%x", mDeviceId);
+  snprintf(string, sizeof(string), "VoodooHDADevice%x ", (unsigned int)(mDeviceId >> 16));
 	setDeviceName(string);
 	setDeviceShortName("VoodooHDA ");
 	setManufacturerName("Voodoo ");
 	//TODO: setDeviceModelName
+  snprintf(string, sizeof(string), "VoodooHDA:%x ", (unsigned int)(mDeviceId >> 16));
+  setDeviceModelName(string);
 	setDeviceTransportType(kIOAudioDeviceTransportTypeOther);
 
 //	logMsg("deviceId: %08lx, subDeviceId: %08lx\n", mDeviceId, mSubDeviceId);
